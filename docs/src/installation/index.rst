@@ -14,6 +14,7 @@ This chapter explains how to install hystck.
 
 .. toctree::
 
+    general/index
     host/index
     guest/index
     extra/index

@@ -63,8 +63,8 @@ Install module protobuf-2.5.0::
 	$ pip install protobuf==2.5.0
 
     
-Installing Tcpdump
-==================
+Installing Tcpdump (optional)
+=============================
 
 In order to dump the network activity performed by the application during
 execution, you'll need a network sniffer properly configured to capture
@@ -97,8 +97,8 @@ Or otherwise (**not recommended**) do::
 .. _tcpdump: http://www.tcpdump.org
 
 
-Installing NFS-Server
-=====================
+Installing NFS-Server (optional)
+================================
 Hystck does not depend on specific implementation of a shared filesystem, but it will assume all template image files being available on all server, which can be easily achived by a shared filesystem.
 ::
 
@@ -130,3 +130,37 @@ This step is not required, but will make further steps easier, because Spice ena
 	$ sudo apt-get install spice-client
 	$ sudo apt-get install spice-client-gtk
 	$ sudo apt-get install python-spice-client-gtk
+
+
+Trouble shooting (optional)
+===========================
+
+If you have trouble getting everything to work, take a look at already known issues:
+
+1. KVM is throwing messages about the firewall
+::
+
+    $ sudo apt install ebtables
+
+2. Network issues
+::
+
+    $ sudo apt install dnsmasq
+
+or
+
+::
+
+    $ sudo pip install netaddr
+
+3. KVM messages about performance or missing additions
+::
+
+    $ sudo apt install qemu-utils
+
+| 4. KVM is having issues with creating the Diff-Images
+| /var/lib/libvirt/images/backing does need writing permission.
+
+::
+
+    $ sudo chmod 755 /var/lib/libvirt/images/backing
