@@ -16,6 +16,7 @@ guest = virtual_machine_monitor1.create_guest(guest_name="veratest", platform="w
 # Wait for the VM to connect to the VMM
 guest.waitTillAgentIsConnected()
 
+# Creating VeraCrypt Object to call functions on
 veracrypt_obj = None
 veracrypt_obj = guest.application("veraCryptWrapper", {})
 

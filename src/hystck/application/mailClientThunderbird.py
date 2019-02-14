@@ -214,9 +214,9 @@ class MailClientThunderbirdVmmSide(ApplicationVmmSide):
         except Exception as e:
             raise Exception("error mailer::sendMail: " + str(e))
 
-    def loadMailboxData(self):
+    def loadMailboxData(self, type):
         try:
-            m = {}
+            m = {"type": type}
             pcl_m = ph.base64pickle(m)
             load_mailbox_command = "application mailClientThunderbird " + str(self.window_id) + " loadMailboxData " + pcl_m
             self.is_busy = True
@@ -588,8 +588,75 @@ class MailClientThunderbirdWindowsGuestSide(MailClientThunderbirdPlatformIndepen
         # after all is finished
         self.agent_object.send("application " + self.module_name + " " + str(self.imParent.window_id) + " ready")
 
-    def loadMailboxData(self):
-        self.logger.info("loading mailbox data")
+    def loadMailboxData(self, args):
+        self.logger.info("function: MailClientThunderbirdGuestSide::loadMailboxData")
+
+        #implementation
+        import mailbox
+        import email.utils
+        import os
+
+
+        ad = ph.base64unpickle(args)
+
+        type= ad["type"]
+
+        from_addr = email.utils.formataddr(('Thomas', 'thomas.schaefer91@gmx.de'))
+        to_addr = email.utils.formataddr(('Theo Tester', 'theo.11111@web.de'))
+
+        if(type == "in"):
+            mboxbasepath = 'C:\\Users\\Bill\\AppData\\Roaming\\Thunderbird\\Profiles'
+            profile = next(os.walk(mboxbasepath))[1][0]
+            mboxtrailpath = '\\Mail\\pop3.web.de\\Inbox'
+            mboxfile = mboxbasepath + '\\' + profile + mboxtrailpath
+        elif(type == "out"):
+            mboxbasepath = 'C:\\Users\\Bill\\AppData\\Roaming\\Thunderbird\\Profiles'
+            profile = next(os.walk(mboxbasepath))[1][0]
+            mboxtrailpath = '\\Mail\\Local Folders\\Sent'
+            mboxfile = mboxbasepath + '\\' + profile + mboxtrailpath
+
+            # Check if folder Local Folders is available, if not create!
+            try:
+                f = open(mboxfile, "a+")
+                f.close()
+            except OSError:
+                print ("Creation of the directory %s failed" % mboxfile)
+            else:
+                print ("Successfully created the directory %s " % mboxfile)
+
+
+
+
+        else:
+            self.logger.error("Not type match found in function: MailClientThunderbirdGuestSide::loadMailboxData for type: " + type)
+
+        self.logger.debug("mbox path: " + mboxfile)
+
+        mbox = mailbox.mbox(mboxfile)
+        mbox.lock()
+        self.logger.debug("testing mail manipulation on " + mboxfile)
+        try:
+            msg = mailbox.mboxMessage()
+            msg.set_unixfrom('author Fri Feb  1 11:05:34 2018')
+            msg['From'] = from_addr
+            msg['To'] = to_addr
+            msg['Subject'] = 'Sample message 1'
+            msg.set_payload('This is the body.\nFrom (should be escaped).\nThere are 3 lines.\n')
+            mbox.add(msg)
+            mbox.flush()
+
+            msg = mailbox.mboxMessage()
+            msg.set_unixfrom('Fri Feb  1 11:07:34 2018')
+            msg['From'] = from_addr
+            msg['To'] = to_addr
+            msg['Subject'] = 'Sample message 2'
+            msg.set_payload('This is the second body.\n')
+            mbox.add(msg)
+            mbox.flush()
+        finally:
+            mbox.unlock()
+
+        self.logger.info("loaded mailbox data")
 
 class MailClientThunderbirdLinuxGuestSide(MailClientThunderbirdPlatformIndependentGuestSide):
     """<MailClient> implementation of the guest side.
@@ -768,6 +835,9 @@ class MailClientThunderbirdLinuxGuestSide(MailClientThunderbirdPlatformIndepende
         # after all is finished
         self.agent_object.send("application " + self.module_name + " " + str(self.imParent.window_id) + " ready")
 
+    def loadMailboxData(self, args):
+        self.logger.info("This functionality is not yet implemented for Linux!")
+
 
 class MailClientThunderbirdGuestSide(ApplicationGuestSide):
     """<MailClient> implementation of the guest side.
@@ -843,6 +913,15 @@ class MailClientThunderbirdGuestSide(ApplicationGuestSide):
 
     def add_pop3_account(self, args):
         self.mailClientApp.add_pop3_account(args)
+
+    def loadMailboxData(self, args):
+        """
+        Loading predefined Mails into thunderbird standard mailbox
+
+        @param
+        @param
+        """
+        self.mailClientApp.loadMailboxData(args)
 
 
 ###############################################################################
