@@ -214,6 +214,16 @@ class MailClientThunderbirdVmmSide(ApplicationVmmSide):
         except Exception as e:
             raise Exception("error mailer::sendMail: " + str(e))
 
+    def loadMailboxData(self):
+        try:
+            m = {}
+            pcl_m = ph.base64pickle(m)
+            load_mailbox_command = "application mailClientThunderbird " + str(self.window_id) + " loadMailboxData " + pcl_m
+            self.is_busy = True
+            self.guest_obj.send(load_mailbox_command)
+        except Exception as e:
+            raise Exception("error mailer::loadMailboxData: " + str(e))
+
 
 ###############################################################################
 # Commands to parse on host side
@@ -578,6 +588,8 @@ class MailClientThunderbirdWindowsGuestSide(MailClientThunderbirdPlatformIndepen
         # after all is finished
         self.agent_object.send("application " + self.module_name + " " + str(self.imParent.window_id) + " ready")
 
+    def loadMailboxData(self):
+        self.logger.info("loading mailbox data")
 
 class MailClientThunderbirdLinuxGuestSide(MailClientThunderbirdPlatformIndependentGuestSide):
     """<MailClient> implementation of the guest side.

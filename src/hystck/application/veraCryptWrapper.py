@@ -56,7 +56,7 @@ class VeraCryptWrapperVmmSide(ApplicationVmmSide):
         try:
             self.logger.info("function: VeraCryptWrapperVmmSide::open")
             self.window_id = self.guest_obj.current_window_id
-            self.guest_obj.send("application " + "veraCryptWrapper " + str(self.window_id) + " open ")  # some parameters
+            self.guest_obj.send("application " + "veraCryptWrapper " + str(self.window_id) + " open")  # some parameters
 
             self.guest_obj.current_window_id += 1
 
@@ -68,10 +68,9 @@ class VeraCryptWrapperVmmSide(ApplicationVmmSide):
         """
         try:
             self.logger.info("function: VeraCryptWrapperVmmSide::close")
-            self.guest_obj.send("application " + "veraCryptWrapper " + str(self.window_id) + " close ")
+            self.guest_obj.send("application " + "veraCryptWrapper " + str(self.window_id) + " close")
         except Exception as e:
             raise Exception("error VeraCryptWrapperVmmSide:close()" + str(e))
-
 
     def createContainer(self):
         """ Creates an encrypted container with veracrypt
@@ -82,6 +81,51 @@ class VeraCryptWrapperVmmSide(ApplicationVmmSide):
             self.logger.info("windowID: " + str(self.window_id))
             pcl_ac = ph.base64pickle(ac)
             pw_cmd = "application veraCryptWrapper " + str(self.window_id) + " createContainer " + pcl_ac
+            self.is_busy = True
+            self.guest_obj.send(pw_cmd)
+
+        except Exception as e:
+            raise Exception("error: " + str(e))
+
+    def mountContainer(self):
+        """ Mounts an encrypted container with veracrypt
+
+                """
+        try:
+            ac = {}
+            self.logger.info("windowID: " + str(self.window_id))
+            pcl_ac = ph.base64pickle(ac)
+            pw_cmd = "application veraCryptWrapper " + str(self.window_id) + " mountContainer " + pcl_ac
+            self.is_busy = True
+            self.guest_obj.send(pw_cmd)
+
+        except Exception as e:
+            raise Exception("error: " + str(e))
+
+    def copyToContainer(self):
+        """ copy to an encrypted container with veracrypt
+
+                """
+        try:
+            ac = {}
+            self.logger.info("windowID: " + str(self.window_id))
+            pcl_ac = ph.base64pickle(ac)
+            pw_cmd = "application veraCryptWrapper " + str(self.window_id) + " copyToContainer " + pcl_ac
+            self.is_busy = True
+            self.guest_obj.send(pw_cmd)
+
+        except Exception as e:
+            raise Exception("error: " + str(e))
+
+    def unmountContainer(self):
+        """ unmount an encrypted container with veracrypt
+
+                """
+        try:
+            ac = {}
+            self.logger.info("windowID: " + str(self.window_id))
+            pcl_ac = ph.base64pickle(ac)
+            pw_cmd = "application veraCryptWrapper " + str(self.window_id) + " unmountContainer " + pcl_ac
             self.is_busy = True
             self.guest_obj.send(pw_cmd)
 
@@ -226,6 +270,14 @@ class VeraCryptWrapperGuestSide(ApplicationGuestSide):
         # implementation
         self.logger.info("creating veracrypt container")
 
+    def mountContainer(self, args):
+        self.logger.info("mounting veracrypt container")
+
+    def copyToContainer(self, args):
+        self.logger.info("copy to container")
+
+    def unmountContainer(self, args):
+        self.logger.info("unmount container")
 
 ###############################################################################
 # Commands to parse on guest side

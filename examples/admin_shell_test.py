@@ -11,17 +11,15 @@ macsInUse = []
 guests = []
 guestListener = GuestListener(guests, logger)
 virtual_machine_monitor1 = Vmm(macsInUse, guests, logger)
-guest = virtual_machine_monitor1.create_guest(guest_name="veratest", platform="windows")
+guest = virtual_machine_monitor1.create_guest(guest_name="adminshelltest", platform="windows")
 
 # Wait for the VM to connect to the VMM
 guest.waitTillAgentIsConnected()
 
-veracrypt_obj = None
-veracrypt_obj = guest.application("veraCryptWrapper", {})
+guest.setOSTime("2019-01-01 12:00:00")
 
-veracrypt_obj.createContainer()
-veracrypt_obj.mountContainer()
-veracrypt_obj.copyToContainer()
-veracrypt_obj.unmountContainer()
+guest.runElevated('net user John fadf24as /ADD')
 
 time.sleep(10)
+
+#guest.shutdown("keep")

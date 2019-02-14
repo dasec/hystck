@@ -77,3 +77,7 @@ class WinAdminAgent(object):
                         str(win32api.GetLastError())))
             except win32api.error:
                 self.logger.error("Setting system time failed due to exception!")
+
+        elif cmd == "runelevated":
+            run = param[0]
+            self.logger.info("running command in elevated shell")

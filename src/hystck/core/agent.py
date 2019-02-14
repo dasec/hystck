@@ -287,6 +287,17 @@ class Agent(object):
                     self.logger.warning("Sending command to supplementary Agent failed, using fallback!")
                     self._set_os_time(ptime, blocal_time)
 
+            elif "runElevated" in package:
+                command = base64.b64decode(com[1])
+                try:
+                    msg = {"cmd": "runelevated", "param": [command]}
+                    msg = cPickle.dumps(msg)
+                    self.adminpipe.write(msg)
+                except cPickle.PickleError:
+                    self.logger.warning("Cannot pickle command data!")
+                except OSError:
+                    self.logger.warning("Sending command to supplementary Agent failed!")
+
             elif "destroyConnection" in com[0]:
                 self.disconnectedByHost = True
                 self.destroyConnection()
