@@ -22,6 +22,9 @@ try:
     #
     import hystck.utility.picklehelper as ph
 
+    # file copying
+    from shutil import copyfile
+
 except ImportError as ie:
     print("Import error! in VeraCryptWrapper.py " + str(ie))
     exit(1)
@@ -72,63 +75,66 @@ class VeraCryptWrapperVmmSide(ApplicationVmmSide):
         except Exception as e:
             raise Exception("error VeraCryptWrapperVmmSide:close()" + str(e))
 
-    def createContainer(self):
+    def createContainer(self, executable, path, size, password, hash = "sha512", encryption = "serpent", filesystem = "FAT"):
         """ Creates an encrypted container with veracrypt
-
         """
         try:
-            ac = {}
+            ac = {"path": path,
+                  "size": size,
+                  "password": password,
+                  "hash": hash,
+                  "encryption": encryption,
+                  "filesystem": filesystem,
+                  "executable": executable}
             self.logger.info("windowID: " + str(self.window_id))
             pcl_ac = ph.base64pickle(ac)
             pw_cmd = "application veraCryptWrapper " + str(self.window_id) + " createContainer " + pcl_ac
             self.is_busy = True
             self.guest_obj.send(pw_cmd)
-
         except Exception as e:
             raise Exception("error: " + str(e))
 
-    def mountContainer(self):
+    def mountContainer(self, executable, path, password, mount_point):
         """ Mounts an encrypted container with veracrypt
-
-                """
+        """
         try:
-            ac = {}
+            ac = {"path": path,
+                  "password": password,
+                  "executable": executable,
+                  "mount_point": mount_point}
             self.logger.info("windowID: " + str(self.window_id))
             pcl_ac = ph.base64pickle(ac)
             pw_cmd = "application veraCryptWrapper " + str(self.window_id) + " mountContainer " + pcl_ac
             self.is_busy = True
             self.guest_obj.send(pw_cmd)
-
         except Exception as e:
             raise Exception("error: " + str(e))
 
-    def copyToContainer(self):
+    def copyToContainer(self, src, dst):
         """ copy to an encrypted container with veracrypt
-
-                """
+        """
         try:
-            ac = {}
+            ac = {"src": src,
+                  "dst": dst}
             self.logger.info("windowID: " + str(self.window_id))
             pcl_ac = ph.base64pickle(ac)
             pw_cmd = "application veraCryptWrapper " + str(self.window_id) + " copyToContainer " + pcl_ac
             self.is_busy = True
             self.guest_obj.send(pw_cmd)
-
         except Exception as e:
             raise Exception("error: " + str(e))
 
-    def unmountContainer(self):
+    def dismountContainer(self, executable, mount_point):
         """ unmount an encrypted container with veracrypt
-
-                """
+        """
         try:
-            ac = {}
+            ac = {"executable": executable,
+                  "mount_point": mount_point}
             self.logger.info("windowID: " + str(self.window_id))
             pcl_ac = ph.base64pickle(ac)
-            pw_cmd = "application veraCryptWrapper " + str(self.window_id) + " unmountContainer " + pcl_ac
+            pw_cmd = "application veraCryptWrapper " + str(self.window_id) + " dismountContainer " + pcl_ac
             self.is_busy = True
             self.guest_obj.send(pw_cmd)
-
         except Exception as e:
             raise Exception("error: " + str(e))
 
@@ -269,15 +275,80 @@ class VeraCryptWrapperGuestSide(ApplicationGuestSide):
     def createContainer(self, args):
         # implementation
         self.logger.info("creating veracrypt container")
+        ad = ph.base64unpickle(args)
+
+        ################
+        path = ad["path"]
+        size = ad["size"]
+        password = ad["password"]
+        hash = ad["hash"]
+        encryption = ad["encryption"]
+        filesystem = ad["filesystem"]
+        executable = ad["executable"]
+        #################
+
+        #cmd = '"C:\\Program Files\\VeraCrypt\\VeraCrypt Format.exe" /create ' + path + ' /password ' + password + ' /hash ' + hash + ' /encryption ' + encryption + ' /filesystem ' + filesystem + ' /size ' + size + ' /force /quit preferences /silent"'
+        cmd = executable + ' /create ' + path + ' /password ' + password + ' /hash ' + hash + ' /encryption ' + encryption + ' /filesystem ' + filesystem + ' /size ' + size + ' /force /quit preferences /silent"'
+        try:
+            #run command line
+            #caution, shell=True can be an issue if input is untrusted
+            subprocess.call(cmd, shell=True)
+            self.logger.info("container successfully created")
+        except Exception as e:
+            self.logger.error("creating container failed: " + lineno() + ' ' + str(e))
 
     def mountContainer(self, args):
+
         self.logger.info("mounting veracrypt container")
+        ad = ph.base64unpickle(args)
+
+        ################
+        path = ad["path"]
+        password = ad["password"]
+        executable = ad["executable"]
+        mount_point = ad["mount_point"]
+        ################
+
+        #veracrypt /v myvolume.tc /l x /a /p MyPassword /e /b
+        #cmd = '"C:\\Program Files\\VeraCrypt\\VeraCrypt.exe" /v ' + path + ' /l x /a /p ' + password + ' /e /q'
+        cmd = executable + ' /v ' + path + ' /l ' + mount_point + ' /a /p ' + password + ' /e /q'
+        try:
+            subprocess.call(cmd, shell=True)
+            self.logger.info("container successfully mounted")
+        except Exception as e:
+            self.logger.error("mounting container failed: " + lineno() + ' ' + str(e))
 
     def copyToContainer(self, args):
         self.logger.info("copy to container")
+        ad = ph.base64unpickle(args)
 
-    def unmountContainer(self, args):
+        ################
+        src = ad["src"]
+        dst = ad["dst"]
+        ################
+
+        try:
+            copyfile(src, dst)
+            self.logger.info("File successfully copied to encrypted container")
+        except Exception as e:
+            self.logger.error("copying to container failed: " + lineno() + ' ' + str(e))
+
+    def dismountContainer(self, args):
         self.logger.info("unmount container")
+        ad = ph.base64unpickle(args)
+
+        ################
+        executable = ad["executable"]
+        mount_point = ad["mount_point"]
+        ################
+
+        cmd = executable + ' /q /d ' + mount_point
+        try:
+            subprocess.call(cmd, shell=True)
+            self.logger.info("container successfully dismounted")
+        except Exception as e:
+            self.logger.error("dismounting container failed: " + lineno() + ' ' + str(e))
+
 
 ###############################################################################
 # Commands to parse on guest side
