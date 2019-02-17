@@ -6,6 +6,8 @@
 #       slow VMs
 import time
 import logging
+import xml.etree.ElementTree as ET
+
 from hystck.core.vmm import Vmm
 from hystck.utility.logger_helper import create_logger
 from hystck.core.vmm import GuestListener
@@ -49,13 +51,31 @@ while mail.is_busy:
 time.sleep(10)
 
 # Send a new mail by invoking thunderbird with special command line options
-#mail.send_mail(message="testmail", subject="testmail", receiver="thomas.schaefer91@gmx.de")
-#while mail.is_busy:
-#    time.sleep(1)
-#time.sleep(10)
+mail.send_mail(message="testmail", subject="testmail", receiver="thomas.schaefer91@gmx.de")
+while mail.is_busy:
+    time.sleep(1)
+time.sleep(10)
 
-# calling mailbox function
-mail.loadMailboxData("out")
+tree = ET.parse('email.xml')
+root = tree.getroot()
+
+for item in root:
+
+    type = item[0].text
+    from_name = item[1].text
+    from_ad = item[2].text
+    to_name = item[3].text
+    to_ad = item[4].text
+    user = item[5].text
+    server = item[6].text
+    timestamp = item[7].text
+    subject = item[8].text
+    message = item[9].text
+
+    mail.loadMailboxData(type, from_name, from_ad, to_name, to_ad, user, server, timestamp, subject, message)
+
+    time.sleep(1)
+
 time.sleep(3000)
 
 # We are done, shutdown and keep the VM on disk

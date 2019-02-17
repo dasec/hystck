@@ -214,9 +214,19 @@ class MailClientThunderbirdVmmSide(ApplicationVmmSide):
         except Exception as e:
             raise Exception("error mailer::sendMail: " + str(e))
 
-    def loadMailboxData(self, type):
+    def loadMailboxData(self, type, from_name, from_ad, to_name, to_ad, user, server, timestamp, subject, message):
         try:
-            m = {"type": type}
+            m = {"type": type,
+                 "from_name": from_name,
+                 "from_ad": from_ad,
+                 "to_name": to_name,
+                 "to_ad": to_ad,
+                 "user": user,
+                 "server": server,
+                 "timestamp": timestamp,
+                 "subject": subject,
+                 "message": message
+            }
             pcl_m = ph.base64pickle(m)
             load_mailbox_command = "application mailClientThunderbird " + str(self.window_id) + " loadMailboxData " + pcl_m
             self.is_busy = True
@@ -596,61 +606,52 @@ class MailClientThunderbirdWindowsGuestSide(MailClientThunderbirdPlatformIndepen
         import email.utils
         import os
 
-
         ad = ph.base64unpickle(args)
-
         type= ad["type"]
+        from_name = ad["from_name"]
+        from_ad = ad["from_ad"]
+        to_name = ad["to_name"]
+        to_ad = ad["to_ad"]
+        user = ad["user"]
+        server = ad["server"]
+        timestamp = ad["timestamp"]
+        subject = ad["subject"]
+        message = ad["message"]
 
-        from_addr = email.utils.formataddr(('Thomas', 'thomas.schaefer91@gmx.de'))
-        to_addr = email.utils.formataddr(('Theo Tester', 'theo.11111@web.de'))
+        mboxbasepath = 'C:\\Users\\' + user + '\\AppData\\Roaming\\Thunderbird\\Profiles'
+        profile = next(os.walk(mboxbasepath))[1][0]
+
+        from_addr = email.utils.formataddr((from_name, from_ad))
+        to_addr = email.utils.formataddr((to_name, to_ad))
 
         if(type == "in"):
-            mboxbasepath = 'C:\\Users\\Bill\\AppData\\Roaming\\Thunderbird\\Profiles'
-            profile = next(os.walk(mboxbasepath))[1][0]
-            mboxtrailpath = '\\Mail\\pop3.web.de\\Inbox'
-            mboxfile = mboxbasepath + '\\' + profile + mboxtrailpath
+            mboxtrailpath = '\\Mail\\' + server + '\\Inbox'
         elif(type == "out"):
-            mboxbasepath = 'C:\\Users\\Bill\\AppData\\Roaming\\Thunderbird\\Profiles'
-            profile = next(os.walk(mboxbasepath))[1][0]
             mboxtrailpath = '\\Mail\\Local Folders\\Sent'
-            mboxfile = mboxbasepath + '\\' + profile + mboxtrailpath
-
-            # Check if folder Local Folders is available, if not create!
-            try:
-                f = open(mboxfile, "a+")
-                f.close()
-            except OSError:
-                print ("Creation of the directory %s failed" % mboxfile)
-            else:
-                print ("Successfully created the directory %s " % mboxfile)
-
-
-
-
         else:
             self.logger.error("Not type match found in function: MailClientThunderbirdGuestSide::loadMailboxData for type: " + type)
 
-        self.logger.debug("mbox path: " + mboxfile)
+        # Check if folder Local Folders is available, if not create!
+        mboxfile = mboxbasepath + '\\' + profile + mboxtrailpath
+        try:
+            f = open(mboxfile, "a+")
+            f.close()
+        except OSError:
+            print ("Creation of the directory %s failed" % mboxfile)
+        else:
+            print ("Successfully created the directory %s " % mboxfile)
 
+        self.logger.debug("mbox path: " + mboxfile)
         mbox = mailbox.mbox(mboxfile)
         mbox.lock()
         self.logger.debug("testing mail manipulation on " + mboxfile)
         try:
             msg = mailbox.mboxMessage()
-            msg.set_unixfrom('author Fri Feb  1 11:05:34 2018')
+            msg.set_unixfrom(timestamp)
             msg['From'] = from_addr
             msg['To'] = to_addr
-            msg['Subject'] = 'Sample message 1'
-            msg.set_payload('This is the body.\nFrom (should be escaped).\nThere are 3 lines.\n')
-            mbox.add(msg)
-            mbox.flush()
-
-            msg = mailbox.mboxMessage()
-            msg.set_unixfrom('Fri Feb  1 11:07:34 2018')
-            msg['From'] = from_addr
-            msg['To'] = to_addr
-            msg['Subject'] = 'Sample message 2'
-            msg.set_payload('This is the second body.\n')
+            msg['Subject'] = subject
+            msg.set_payload(message)
             mbox.add(msg)
             mbox.flush()
         finally:
