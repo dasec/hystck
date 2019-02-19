@@ -976,6 +976,7 @@ class Guest(object):
         self.send(msg)
 
     def runElevated(self, command):
+        self.logger.debug("guest runElevated")
         msg = "runElevated " + base64.b64encode(command)
         self.send(msg)
 

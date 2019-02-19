@@ -288,10 +288,12 @@ class Agent(object):
                     self._set_os_time(ptime, blocal_time)
 
             elif "runElevated" in package:
+                self.logger.debug("agent runElevated")
                 command = base64.b64decode(com[1])
                 try:
                     msg = {"cmd": "runelevated", "param": [command]}
                     msg = cPickle.dumps(msg)
+                    self.logger.debug("msg: " + msg)
                     self.adminpipe.write(msg)
                 except cPickle.PickleError:
                     self.logger.warning("Cannot pickle command data!")
