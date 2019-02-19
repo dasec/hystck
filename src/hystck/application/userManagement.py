@@ -231,11 +231,14 @@ class UserManagementGuestSide(ApplicationGuestSide):
         password = ad["password"]
         #################
 
-        cmd = base64.b64encode('net user ' + user + ' ' + password + ' /ADD')
-        try:
-            self.agent_object.do_command("runElevated " + cmd)
-        except Exception as e:
-            self.logger.error("adding user failed: " + lineno() + ' ' + str(e))
+        if platform.system() == "Windows":
+            cmd = base64.b64encode('net user ' + user + ' ' + password + ' /ADD')
+            try:
+                self.agent_object.do_command("runElevated " + cmd)
+            except Exception as e:
+                self.logger.error("adding user failed: " + lineno() + ' ' + str(e))
+        else:
+            self.logger.error("Unknown System Platform, only Windows is supported at the moment")
 
 
 ###############################################################################
