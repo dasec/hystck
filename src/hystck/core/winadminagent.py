@@ -79,5 +79,11 @@ class WinAdminAgent(object):
                 self.logger.error("Setting system time failed due to exception!")
 
         elif cmd == "runelevated":
+            self.logger.debug("runelevated winadmitnagent")
             run = param[0]
-            self.logger.info("running command in elevated shell")
+            try:
+                import subprocess
+                import os
+                subprocess.call(['runas', '/user:Administrator', os.system(run)])
+            except Exception as e:
+                self.logger.error(str(e))

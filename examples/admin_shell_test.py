@@ -13,13 +13,20 @@ guestListener = GuestListener(guests, logger)
 virtual_machine_monitor1 = Vmm(macsInUse, guests, logger)
 guest = virtual_machine_monitor1.create_guest(guest_name="adminshelltest", platform="windows")
 
+
+userManagement_obj = None
+userManagement_obj = guest.application("userManagement", {})
+
+
 # Wait for the VM to connect to the VMM
 guest.waitTillAgentIsConnected()
 
-guest.setOSTime("2019-01-01 12:00:00")
+#guest.setOSTime("2019-01-01 12:00:00")
 
-guest.runElevated('net user John fadf24as /ADD')
+userManagement_obj.addUser('John', 'fadf24s')
 
-time.sleep(10)
+#guest.runElevated('net user John fadf24as /ADD')
+
+time.sleep(3000)
 
 #guest.shutdown("keep")
