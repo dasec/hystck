@@ -109,6 +109,14 @@ class WebBrowserFirefoxVmmSide(ApplicationVmmSide):
         except Exception as e:
             raise Exception("error WebBrowserFirefoxVmmSide::browse_to: " + str(e))
 
+    def download_from(self, url, selector):
+        try:
+            self.guest_obj.send("application " + "webBrowserFirefox " + str(self.window_id) +
+                                " download_from " + url + " " + selector)
+            self.is_busy = True
+        except Exception as e:
+            raise Exception("error WebBrowserFirefoxVmmSide::download_from: " + str(e))
+
     def browse_to_link_number(self, link_number):
         """Call the <linkNumber> link on the current website in the browser.
         @param link_number: number of the link on this website to call.
@@ -328,6 +336,26 @@ class WebBrowserFirefoxGuestSide(ApplicationGuestSide):
             self.window_is_crushed = True
             self.agent_object.send("application " + self.module_name + " " + str(self.window_id) + " error")
             self.logger.error("Error in " + self.__class__.__name__ + "::open" + ": selenium is crushed: " + str(e))
+
+    def download_from(self, args):
+        """
+        This function will download something from url where selector will be the selector of the download button
+        At the moment it will only work if the file type is set to automatic download in firefox on the base image.
+        :param args:
+        :return:
+        """
+        try:
+            arguments = args.split(" ")
+            url = arguments[0]
+            selector = arguments[1]
+            self.last_driven_url = url
+            self.logger.info("downloading from: " + url + "; With the selector: " + selector)
+            self.helper.navigate_to_url(url)
+            self.helper.click_element_by_id(selector)
+            self.window_is_crushed = False
+        except Exception as e:
+            self.window_is_crushed = True
+            self.logger.error("Error: " + lineno() + " " + str(e))
 
     def browse_to_link_number(self, link_number):
         """Parse the website to find <a> elements which represent a link.
