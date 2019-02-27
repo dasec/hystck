@@ -4,6 +4,7 @@
 
 try:
     import logging
+    import os
     import sys
     import platform
     import threading
@@ -329,6 +330,7 @@ class VeraCryptWrapperGuestSide(ApplicationGuestSide):
 
         try:
             copyfile(src, dst)
+            os.remove(src)
             self.logger.info("File successfully copied to encrypted container")
         except Exception as e:
             self.logger.error("copying to container failed: " + lineno() + ' ' + str(e))
