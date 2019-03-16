@@ -1,0 +1,24 @@
+<root>
+    <general>
+        <imagename>kipo_scenario</imagename>
+        <author>Thomas Schaefer</author>
+        <hash>sha256: beb54582e5bce16d7fcbe0b9f3c535001142edf8ea8b89b79e7210deb359d725</hash>
+        <date>03-15-2019 20:54</date>
+        <baseimage>windows-template.qcow2</baseimage>
+        <basehash>sha256: 716b7514e2095e3709ca84463944cc7535859df056daa484701d5149166bf0ca</basehash>
+    </general>
+    <mails>
+        <mail>Mail from: mr_blue@secret.de to: theo.test1@web.de subject: New Warez at: Fri Feb  1 11:05:34 2018</mail>
+        <mail>Mail from: theo.test1@web.de to: mr_blue@secret.de subject: Re: New Warez at: Fri Feb  1 18:15:34 2018</mail>
+    </mails>
+    <downloads>
+        <download>Downloaded file from: http://192.168.2.104/test/index.html</download>
+    </downloads>
+    <browsings>
+        <browsing>Browsed url: http://192.168.2.104</browsing>
+        <browsing>Browsed url: http://192.168.2.104/test/index.html</browsing>
+    </browsings>
+    <container>
+        <veracrypt>VeraCrypt Container generated and mounted with following parameters: Size:10M; pass:passtest; path:C:\Users\Bill\Desktop\test.hc; content: test.jpeg</veracrypt>
+    </container>
+</root>
