@@ -99,6 +99,28 @@ function loadXML()
             child = child.firstChild;
             document.getElementById('data').appendChild(child);
 
+            var browsings = xmlDoc.getElementsByTagName("browsing");
+            for (var i = 0; i < browsings.length; i++) {
+                var str = xmlDoc.getElementsByTagName("browsing")[i].childNodes[0].nodeValue;
+
+                var child = document.createElement('div');
+                child.innerHTML = str;
+                child = child.firstChild;
+                document.getElementById('data').appendChild(child);
+
+                var str = "<br />";
+                var child = document.createElement('div');
+                child.innerHTML = str;
+                child = child.firstChild;
+                document.getElementById('data').appendChild(child);
+            }
+
+            var str = "<br />";
+            var child = document.createElement('div');
+            child.innerHTML = str;
+            child = child.firstChild;
+            document.getElementById('data').appendChild(child);
+
 
             var container = xmlDoc.getElementsByTagName("veracrypt");
             for (var i = 0; i < downloads.length; i++) {

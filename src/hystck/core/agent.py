@@ -311,7 +311,7 @@ class Agent(object):
                         os.system('reg delete \"HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ComDlg32\\OpenSavePidlMRU\\py\"  /f')
                         os.system('reg delete \"HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ComDlg32\\OpenSavePidlMRU\\pyc\"  /f')
                     # cleaning filesystem
-                    os.system("rmdir /s /q C:\\Users\\Bill\\Desktop\\hystck")
+                    # os.system("rmdir /s /q C:\\Users\\Bill\\Desktop\\hystck")
                     os.system("rmdir /s /q C:\\Python27\\Lib\\site-packages\\hystck")
                 except OSError:
                     self.logger.warning("Executing commands failed.")

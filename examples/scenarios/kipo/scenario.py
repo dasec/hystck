@@ -172,8 +172,7 @@ sc.mail()
 
 # Cleanup
 guest.cleanUp("")
-time.sleep(300)
-#guest.shutdown('keep')
+guest.shutdown('keep')
 
 #md5 = "md5: " + hashlib.md5(file_as_bytes(open("/var/lib/libvirt/images/backing/" + imagename + ".qcow2", 'rb'))).hexdigest()
 sha256 = "sha256: " + generate_file_sh256("/var/lib/libvirt/images/backing/" + imagename + ".qcow2")

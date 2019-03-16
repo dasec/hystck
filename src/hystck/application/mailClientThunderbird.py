@@ -214,7 +214,7 @@ class MailClientThunderbirdVmmSide(ApplicationVmmSide):
         except Exception as e:
             raise Exception("error mailer::sendMail: " + str(e))
 
-    def loadMailboxData(self, type, from_name, from_ad, to_name, to_ad, user, server, timestamp, subject, message, attachment):
+    def loadMailboxData(self, type, from_name, from_ad, to_name, to_ad, user, server, timestamp, subject, message):
         try:
             m = {"type": type,
                  "from_name": from_name,
@@ -225,8 +225,7 @@ class MailClientThunderbirdVmmSide(ApplicationVmmSide):
                  "server": server,
                  "timestamp": timestamp,
                  "subject": subject,
-                 "message": message,
-                 "attachment": attachment
+                 "message": message
             }
             pcl_m = ph.base64pickle(m)
             load_mailbox_command = "application mailClientThunderbird " + str(self.window_id) + " loadMailboxData " + pcl_m
