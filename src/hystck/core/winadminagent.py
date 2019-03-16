@@ -57,6 +57,8 @@ class WinAdminAgent(object):
         :param cmd: command to handle
         :param param: list of parameters for command
         """
+        self.logger.debug("adminpipe command: " + cmd)
+
         if cmd == "setostime":
             ptime = param[0]
             local_time = param[1]
@@ -79,11 +81,22 @@ class WinAdminAgent(object):
                 self.logger.error("Setting system time failed due to exception!")
 
         elif cmd == "runelevated":
-            self.logger.debug("runelevated winadmitnagent")
+            self.logger.debug("runelevated winadminagent")
             run = param[0]
             try:
                 import subprocess
                 import os
                 subprocess.call(['runas', '/user:Administrator', os.system(run)])
+            except Exception as e:
+                self.logger.error(str(e))
+
+        elif cmd == "cleanup":
+            self.logger.debug("cleanup winadminagent")
+            script = param[0]
+            try:
+                import subprocess
+                import os
+                subprocess.call(['runas', '/user:Bill', os.system('reg delete \"HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ComDlg32\\OpenSavePidlMRU\\py\"  /f')])
+                subprocess.call(['runas', '/user:Bill', os.system('reg delete \"HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ComDlg32\\OpenSavePidlMRU\\pyc\"  /f')])
             except Exception as e:
                 self.logger.error(str(e))

@@ -980,6 +980,11 @@ class Guest(object):
         msg = "runElevated " + base64.b64encode(command)
         self.send(msg)
 
+    def cleanUp(self, command):
+        self.logger.debug("guest cleanUp")
+        msg = "cleanUp " + base64.b64encode(command)
+        self.send(msg)
+
     def wait_for_dhcp(self, poll_interval=1.0):
         """ Wait till dhcp server delivered ip address.
 
