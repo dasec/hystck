@@ -56,7 +56,7 @@ while mail.is_busy:
     time.sleep(1)
 time.sleep(10)
 
-tree = ET.parse('email.xml')
+tree = ET.parse('email_hay.xml')
 root = tree.getroot()
 
 for item in root:

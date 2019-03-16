@@ -24,12 +24,12 @@ guest.waitTillAgentIsConnected()
 # Create a mailer object
 mail = guest.application("mailClientThunderbird", {})
 # Important set a password used by the mail service, it will be saved inside thunderbird
-mail.set_session_password("password")
+mail.set_session_password("%NewPasswordForWeb.de%19")
 while mail.is_busy:
     time.sleep(1)
 # Prepare a new Profile; assume the profile folders don't exist; these options assume a insecure mail server without SSL/TLS using an unencrypted password exchange
 #theo.11111@web.de / hystckMail / Theo Tester
-mail.add_pop3_account("pop3.web.de", "smtp.web.de", "theo.11111@web.de", "theo.11111", "Theo Tester", "Example", 2, 3, 2, 3)
+mail.add_pop3_account("pop3.web.de", "smtp.web.de", "theo.test1@web.de", "theo.test1", "Theo Tester", "Example", 2, 3, 2, 3)
 while mail.is_busy:
     time.sleep(1)
 # Open thunderbird and check for mail

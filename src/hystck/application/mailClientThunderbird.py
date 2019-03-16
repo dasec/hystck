@@ -214,7 +214,7 @@ class MailClientThunderbirdVmmSide(ApplicationVmmSide):
         except Exception as e:
             raise Exception("error mailer::sendMail: " + str(e))
 
-    def loadMailboxData(self, type, from_name, from_ad, to_name, to_ad, user, server, timestamp, subject, message):
+    def loadMailboxData(self, type, from_name, from_ad, to_name, to_ad, user, server, timestamp, subject, message, attachment):
         try:
             m = {"type": type,
                  "from_name": from_name,
@@ -225,7 +225,8 @@ class MailClientThunderbirdVmmSide(ApplicationVmmSide):
                  "server": server,
                  "timestamp": timestamp,
                  "subject": subject,
-                 "message": message
+                 "message": message,
+                 "attachment": attachment
             }
             pcl_m = ph.base64pickle(m)
             load_mailbox_command = "application mailClientThunderbird " + str(self.window_id) + " loadMailboxData " + pcl_m
@@ -629,7 +630,7 @@ class MailClientThunderbirdWindowsGuestSide(MailClientThunderbirdPlatformIndepen
         elif(type == "out"):
             mboxtrailpath = '\\Mail\\Local Folders\\Sent'
         else:
-            self.logger.error("Not type match found in function: MailClientThunderbirdGuestSide::loadMailboxData for type: " + type)
+            self.logger.error("No type match found in function: MailClientThunderbirdGuestSide::loadMailboxData for type: " + type)
 
         # Check if folder Local Folders is available, if not create!
         mboxfile = mboxbasepath + '\\' + profile + mboxtrailpath
