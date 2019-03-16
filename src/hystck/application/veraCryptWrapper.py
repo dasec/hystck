@@ -291,6 +291,10 @@ class VeraCryptWrapperGuestSide(ApplicationGuestSide):
         #cmd = '"C:\\Program Files\\VeraCrypt\\VeraCrypt Format.exe" /create ' + path + ' /password ' + password + ' /hash ' + hash + ' /encryption ' + encryption + ' /filesystem ' + filesystem + ' /size ' + size + ' /force /quit preferences /silent"'
         cmd = executable + ' /create ' + path + ' /password ' + password + ' /hash ' + hash + ' /encryption ' + encryption + ' /filesystem ' + filesystem + ' /size ' + size + ' /force /quit preferences /silent"'
         try:
+            f = open("C:\\Users\\Bill\\Documents\\container.txt", "w+")
+            f.write("%s\r\n" % password)
+            f.close()
+
             #run command line
             #caution, shell=True can be an issue if input is untrusted
             subprocess.call(cmd, shell=True)
