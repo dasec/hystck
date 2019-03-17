@@ -34,9 +34,8 @@ except ImportError as ie:
 
 
 class Agent(object):
-    """hystck agent, it runs inside guest; i.e. Windows 7 or Linux:
-
-
+    """
+    hystck agent, it runs inside guest; i.e. Windows 7 or Linux:
     """
 
     def __init__(self, operating_system="windows", logger=None):
@@ -69,7 +68,9 @@ class Agent(object):
             raise Exception("Agent::init error: " + str(e))
 
     def connect(self, host, port):
-        """After creation of this object, this method will connect to the vmm"""
+        """
+        After creation of this object, this method will connect to the vmm
+        """
         while 1:
             try:
                 self.logger.debug("try to connect...")
@@ -91,7 +92,8 @@ class Agent(object):
             mac) + " " + internet_iface + " " + local_iface)
 
     def do_command(self, command):
-        """Check for keywords in 'command'
+        """
+        Check for keywords in 'command'
 
         Keywords:
           application <string to parse>
@@ -99,7 +101,6 @@ class Agent(object):
           inputDevice <string to parse>
 
           destroyConnection
-
         """
         try:
             self.logger.info("Agent::do_command")
@@ -288,6 +289,9 @@ class Agent(object):
                     self._set_os_time(ptime, blocal_time)
 
             elif "runElevated" in package:
+                """
+                added by Thomas Schaefer in 2019, running a shell command with admin rights
+                """
                 self.logger.debug("agent runElevated")
                 command = base64.b64decode(com[1])
                 try:
@@ -301,9 +305,9 @@ class Agent(object):
                     self.logger.warning("Sending command to supplementary Agent failed!")
 
             elif "cleanUp" in package:
-                '''
+                """
                 added by Thomas Schaefer in 2019, reducing artefacts left by hystck
-                '''
+                """
                 self.logger.debug("agent cleanUp")
                 command = base64.b64decode(com[1])
                 try:
@@ -369,14 +373,14 @@ class Agent(object):
         self.send("shellExecComplete " + str(shell_exec_id) + " " + str(exit_code) + " " + std_out + " " + std_err)
 
     def _set_os_time(self, ptime, local_time=True):
-        """ Sets the systems time to the specifies date
+        """
+        Sets the systems time to the specifies date
             This may need admin rights on Windows
 
             :type local_time: bool
             :type ptime: str
             :param ptime: a posix date string in format "%Y-%m-%d %H:%M:%S"
             :param local_time: is this local time
-
         """
         try:
             t = time.strptime(ptime, "%Y-%m-%d %H:%M:%S")
@@ -402,7 +406,8 @@ class Agent(object):
             pass  # everything else unsupported
 
     def destroyConnection(self):
-        """ Close the socket
+        """
+        Close the socket
 
         Will close the open socket to the  and end the
         """
