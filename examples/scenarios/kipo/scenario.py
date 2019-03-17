@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+# added by Thomas Schaefer in 2019
+# basic layout of a scenario implementation to generate an IT forensically interesting image.
+
 try:
     import sys
     import time

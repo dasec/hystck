@@ -341,7 +341,9 @@ class WebBrowserFirefoxGuestSide(ApplicationGuestSide):
         """
         This function will download something from url where selector will be the selector of the download button
         At the moment it will only work if the file type is set to automatic download in firefox on the base image.
-        :param args:
+        Added by Thomas Schaefer in 2019
+        :param url: website where we want to download from
+        :param selector: css selector of the download button
         :return:
         """
         try:

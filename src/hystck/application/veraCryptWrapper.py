@@ -1,6 +1,7 @@
 # Copyright (C) 2013-2014 Reinhard Stampp
 # This file is part of hystck - http://hystck.fbi.h-da.de
 # See the file 'docs/LICENSE' for copying permission.
+# Added by Thomas Schaefer in 2019
 
 try:
     import logging
@@ -55,7 +56,7 @@ class VeraCryptWrapperVmmSide(ApplicationVmmSide):
             raise Exception(lineno() + " Error: VeraCryptWrapperHostSide::__init__ " + self.guest_obj.guestname + " " + str(e))
 
     def open(self):
-        """Sends a command to open a Skeleton on the associated guest.
+        """Sends a command to open a VeraCryptWrapper on the associated guest.
         """
         try:
             self.logger.info("function: VeraCryptWrapperVmmSide::open")
@@ -68,7 +69,7 @@ class VeraCryptWrapperVmmSide(ApplicationVmmSide):
             raise Exception("error VeraCryptWrapperVmmSide::open: " + str(e))
 
     def close(self):
-        """Sends a command to close a <skeleton> on the associated guest.
+        """Sends a command to close a VeraCryptWrapper on the associated guest.
         """
         try:
             self.logger.info("function: VeraCryptWrapperVmmSide::close")
@@ -234,23 +235,8 @@ class VeraCryptWrapperGuestSide(ApplicationGuestSide):
         """
         try:
             arguments = args.split(" ")
-            var = arguments[0]
-            var2 = arguments[1]
 
             self.logger.info(self.module_name + "GuestSide::open")
-
-            #if var == "createContainer":
-            #    self.logger.debug("wait for start VeraCryptWrapper...")
-                # start application <skeletion>
-            #    self.logger.debug("started!")
-            #elif var == "type2":
-            #    self.logger.debug("wait for start VeraCryptWrapper...")
-                # start application <skeletion>
-            #    self.logger.debug("started!")
-            #else:
-            #    self.logger.error("VeraCryptWrapper type " + var +
-            #                      " not implemented")
-            #    return
 
             # send some information about the skeleton state
             self.agent_object.send("application " + self.module_name + " " + str(self.window_id) + " opened")
@@ -274,6 +260,11 @@ class VeraCryptWrapperGuestSide(ApplicationGuestSide):
         # self.seleniumDriver.quit()
 
     def createContainer(self, args):
+        '''
+        Create a VeraCrypt container with vairous parameters
+        :param args: contains the parameters for creating the container
+        :return:
+        '''
         # implementation
         self.logger.info("creating veracrypt container")
         ad = ph.base64unpickle(args)
@@ -303,7 +294,11 @@ class VeraCryptWrapperGuestSide(ApplicationGuestSide):
             self.logger.error("creating container failed: " + lineno() + ' ' + str(e))
 
     def mountContainer(self, args):
-
+        '''
+        Mounting a VeraCrypt container to a given moint point.
+        :param args: containing the parameters for mounting the container like the path to the container, password, veracrypt executable and mount point
+        :return:
+        '''
         self.logger.info("mounting veracrypt container")
         ad = ph.base64unpickle(args)
 
@@ -324,6 +319,11 @@ class VeraCryptWrapperGuestSide(ApplicationGuestSide):
             self.logger.error("mounting container failed: " + lineno() + ' ' + str(e))
 
     def copyToContainer(self, args):
+        '''
+        Copy a file from a specific path to a specific path
+        :param args: holding src as source path of file to be copied and dst as destination where file should be saved.
+        :return:
+        '''
         self.logger.info("copy to container")
         ad = ph.base64unpickle(args)
 
@@ -340,6 +340,11 @@ class VeraCryptWrapperGuestSide(ApplicationGuestSide):
             self.logger.error("copying to container failed: " + lineno() + ' ' + str(e))
 
     def dismountContainer(self, args):
+        '''
+        Dismounting a container to finish the operations of VeraCrypt
+        :param args: executable = path to veracrypt.exe; mount_point = drive letter of container to be dismounted.
+        :return:
+        '''
         self.logger.info("unmount container")
         ad = ph.base64unpickle(args)
 

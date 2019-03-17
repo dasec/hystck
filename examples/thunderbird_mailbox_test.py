@@ -1,3 +1,6 @@
+# added by Thomas Schaefer in 2019
+# testing basic mailbox manipulation functionality
+
 # this is a testscript for running the new-style thunderbird application plugin
 # the script assumes that no errors occur during runtime
 # note: always check the error state of the mailer application object while waiting

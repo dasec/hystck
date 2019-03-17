@@ -1,3 +1,6 @@
+# added by Thomas Schaefer in 2019
+# Testing the basic VeraCryptWrapper functionality
+
 import time
 import logging
 import subprocess

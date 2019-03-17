@@ -301,6 +301,9 @@ class Agent(object):
                     self.logger.warning("Sending command to supplementary Agent failed!")
 
             elif "cleanUp" in package:
+                '''
+                added by Thomas Schaefer in 2019, reducing artefacts left by hystck
+                '''
                 self.logger.debug("agent cleanUp")
                 command = base64.b64decode(com[1])
                 try:

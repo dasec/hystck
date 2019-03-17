@@ -599,6 +599,21 @@ class MailClientThunderbirdWindowsGuestSide(MailClientThunderbirdPlatformIndepen
         self.agent_object.send("application " + self.module_name + " " + str(self.imParent.window_id) + " ready")
 
     def loadMailboxData(self, args):
+        '''
+        Adding item to a mailbox file of Thunderbird.
+        Added by Thomas Schaefer in 2019
+        :param type: needle or hay
+        :param from_name: display name of the sender
+        :param from_ad: email address of the sender
+        :param to_name: display name of the receiver
+        :param to_ad: email address of recipient
+        :param user: username of the currently logged in OS user
+        :param server: pop3 or imap address for incoming emails, doesn't matter for outgoing ones
+        :param timestamp: time at which the email was received or sent
+        :param subject: topic of the mail
+        :param message: message body of the mail
+        :return:
+        '''
         self.logger.info("function: MailClientThunderbirdGuestSide::loadMailboxData")
 
         #implementation
@@ -837,6 +852,12 @@ class MailClientThunderbirdLinuxGuestSide(MailClientThunderbirdPlatformIndepende
         self.agent_object.send("application " + self.module_name + " " + str(self.imParent.window_id) + " ready")
 
     def loadMailboxData(self, args):
+        '''
+        stub implementation in order for the program to not crash when run on a linux machine
+        added by Thomas Schaefer in 2019
+        :param args:
+        :return:
+        '''
         self.logger.info("This functionality is not yet implemented for Linux!")
 
 

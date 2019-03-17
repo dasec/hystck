@@ -11,7 +11,7 @@ except Exception as e:
 
 class Reporter(object):
     """ This class is responsible for the creation of a report for a case
-
+    added by Thomas Schaefer in 2019
     """
     root = ""
     doc = ""
@@ -33,6 +33,12 @@ class Reporter(object):
         self.date = datetime.datetime.today().strftime('%m-%d-%Y %H:%M')
 
     def add(self, tag, text):
+        '''
+        Adding the given text to the tag-array in order to later add them to the ElementTree
+        :param tag: XML tag name
+        :param text: value to add to the XML file
+        :return:
+        '''
         if(tag == "mail"):
             self.mails.append(text)
         elif(tag == "download"):
@@ -55,6 +61,10 @@ class Reporter(object):
             print("unknown tag.")
 
     def generateTags(self):
+        '''
+        adding the needed tags and values to the ElementTree (ET) to write them to a file
+        :return:
+        '''
         self.doc = ET.SubElement(self.root, "general")
         ET.SubElement(self.doc, "imagename").text = self.imagename
         ET.SubElement(self.doc, "author").text = self.author
@@ -80,6 +90,10 @@ class Reporter(object):
             ET.SubElement(self.doc, "veracrypt").text = cont
 
     def generate(self):
+        '''
+        writing ET to an XML file and changing rights to the file.
+        :return:
+        '''
         self.generateTags()
         tree = ET.ElementTree(self.root)
         tree.write("reports/report_" + self.imagename + "_" + self.date + ".xml")
