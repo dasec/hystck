@@ -15,6 +15,8 @@ hystck core
     vmm
     guest
     agent
+    reporter
+    winAdminAgent
 
 hystck application
 ==================
@@ -28,8 +30,12 @@ hystck application
     application
     skeleton
     webBrowser
+    webBrowserFirefox
     mailClient
+    mailClientThunderbird
     instantMessenger
+    veraCryptWrapper
+    userManagement
 
 hystck inputDevice
 ==================

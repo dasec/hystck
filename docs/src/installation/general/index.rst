@@ -13,19 +13,36 @@ There are a few steps to be considered before starting with the installation pro
 1. Host System Operating System
 -------------------------------
 
-Hystck is a program written in python. As of this it should run on most operating systems but to this day was only tested on different flavours of Linux. Because of this the documentation will only cover host setups considering Linux.
+Hystck is a program written in python. As of this it should run on most operating systems but to this day was only tested on different flavours of Linux. Because of this the documentation will only cover host setups considering Linux. We especially encourage the use of Ubuntu as hystck was originally written and developed on an Ubuntu system.
 
-2. Host System Disk Space
+2. Host System Requirements
 -------------------------
 
-This document is written at a time where the largest disks widely available are 4TB HDD and 1TB SSD and virtualization becomes more and more practical. For the most parts there won't be a problem with disk space, but depending on what you are aiming to do the generated images might extend to a multiple hundred gigabytes.
-You may want to have at least 30GB for the base template image and an additional 20GB for the differential images.
+ - This document is written at a time where the largest disks widely available are 4TB HDD and 1TB SSD and virtualization becomes more and more practical. For the most parts there won't be a problem with disk space, but depending on what you are aiming to do the generated images might extend to a multiple hundred gigabytes. You may want to have at least 30GB for the base template image and an additional 20GB for the differential images and packages needed to be installed.
+
+ - There are also some requirements considering CPU and RAM requirements. There should be a multi-core processor to dedicate processor cores to the virtual machine of the guest system. In our tests we saw spikes in CPU usage of nearly 100% while hystck was running. Theses tests have been run on a system with an Intel© Core™ i5-7200U Dual-Core CPU with 2.5 GHz clock rate. There should be an equal processor installed on the host system. For the RAM we have found that it depends on the settings of the virtual machine. The more RAM is dedicated to it the more RAM needs to be installed on the physical system. In our tests we had a system with 8 GB of RAM with 2.5 GB dedicated to the virtual machine. This allowed for a smooth working process while allocating roughly 80% of the installed RAM. This means a setup for a good working environment should at least hit these requirements. 
+
+Requirements:
+
++---------+---------------------------------------------------+
+| Hardware| Requirement                                       |
++=========+===================================================+
+| RAM     | 8 GB                                              |
++---------+---------------------------------------------------+
+| CPU     | Intel© Core™ i5-7200U Dual-Core CPU or equivalent |
++---------+---------------------------------------------------+
+| DISK    | at least 50 GB                                    |
++---------+---------------------------------------------------+
 
 3. Host System Install
 ----------------------
 
 For this you should work your way through the requirements section of the host documentation.
-After that you need to obtain the sourcecode. When you have the sourcecode there should be a ``setup.py`` in the root folder of the repository. Execute this by running ``$ python setup.py install``. Bear in mind that you might have to setup a python alias as described in the requirements. After this step was successful your host installation is done. Maybe some additional troubleshooting is required depending on the used Linux distribution.
+After that you need to obtain the sourcecode. When you have the sourcecode there should be a ``setup.py`` in the root folder of the repository. Execute this by running ``$ python setup.py install``. Bear in mind that you might have to setup a python alias as described in the requirements. After this step was successful your host installation is done. Maybe some additional troubleshooting is required depending on the used Linux distribution. Bear in mind that the host system will be installed directly on the physical machine, not in a virtual machine.
+
+.. figure:: fig7.png
+   :scale: 30 %
+   :alt: General installation and communication of host and guest system.
 
 4. Guest System Operating System
 ---------------------------------

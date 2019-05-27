@@ -975,6 +975,26 @@ class Guest(object):
             msg += "False"
         self.send(msg)
 
+    def runElevated(self, command):
+        '''
+        This function calls the runElevated method on the guest system to run a shell/bash command with Administrator rights
+        :param command: shell/bash command that needs admin rights
+        :return:
+        '''
+        self.logger.debug("guest runElevated")
+        msg = "runElevated " + base64.b64encode(command)
+        self.send(msg)
+
+    def cleanUp(self, command):
+        '''
+        This function calls the clenaup method on the guest system to reduce artefacts.
+        :param command: addition to cleanup, not in use at the moment
+        :return:
+        '''
+        self.logger.debug("guest cleanUp")
+        msg = "cleanUp " + base64.b64encode(command)
+        self.send(msg)
+
     def wait_for_dhcp(self, poll_interval=1.0):
         """ Wait till dhcp server delivered ip address.
 
