@@ -26,7 +26,8 @@ from hystck.utility.logger_helper import create_logger
 import hystck.utility.clockmod as cm
 
 try:
-    from virtinst.util import randomMAC
+    #from virtinst.util import randomMAC
+    from hystck.utility.dummy_virtinst_util import randomMAC
 
     isnewvirtinst = False
 except ImportError:
