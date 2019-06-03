@@ -58,10 +58,7 @@ def main():
         time.sleep(5)
         guest.remove()
 
-
-
-
-######## CLEANUP ############# ERROR HANDLING
+    ######## CLEANUP ############# ERROR HANDLING
     except KeyboardInterrupt as k:
         logger.debug(k)
         logger.debug("KeyboardInterrupt")
