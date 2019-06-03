@@ -1,5 +1,8 @@
-# Gitlab readme file for further information
-This file will guide you to the documentation which will help you install hystck.
+# What is hystck
+Hystck is a tool that aims towards the automatic generation of traffic through multiple applications.
+It was first developed in 2013 and is continuing to evolve and expand. Supported applications
+include Firefox, Thunderbird, Pidgin and a variety of botnet attacks. There are further applications
+hystck can emulate user input for, but they are of little interest for the generation of network traffic.
 
 ## Where do I find the documentation?
 The documentation can be found in ```docs/src/```. As the folder name suggests this only contains the source 
