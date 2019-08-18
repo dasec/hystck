@@ -26,6 +26,20 @@ For Windows the following steps have to be done:
 	* Start the vm and install Windows with *hystck* as username
 
 
+ * Using the shell::
+
+    $virt-install --name windows-template \
+     --ram 4096 \
+     --vcpus sockets=1,cores=4,threads=4 \
+     --disk pool=hystck-pool,bus=sata,size=50,format=qcow2 \
+     --cdrom de_windows_7_professional_with_sp1_x64_dvd_u_676919.iso \
+     --network network=public \
+     --network network=private \
+     --graphics spice,listen=0.0.0.0 \
+     --noautoconsole \
+     -v
+
+
 Linux
 =====
 
