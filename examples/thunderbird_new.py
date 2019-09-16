@@ -23,13 +23,23 @@ guest.waitTillAgentIsConnected()
 
 # Create a mailer object
 mail = guest.application("mailClientThunderbird", {})
+
+mail.open()
+while mail.is_busy:
+    time.sleep(2)
+mail.close()
+while mail.is_busy:
+    time.sleep(2)
+
+time.sleep(20)
+
 # Important set a password used by the mail service, it will be saved inside thunderbird
 mail.set_session_password("newPass19")
 while mail.is_busy:
     time.sleep(1)
 # Prepare a new Profile; assume the profile folders don't exist; these options assume a insecure mail server without SSL/TLS using an unencrypted password exchange
 #theo.11111@web.de / hystckMail / Theo Tester
-mail.add_pop3_account("pop3.web.de", "smtp.web.de", "theo.test1@web.de", "theo.test1", "Theo Tester", "Example", 2, 3, 2, 3)
+mail.add_imap_account("imap.web.de", "smtp.web.de", "theo.test1@web.de", "theo.test1", "Theo Tester", "Example", 2, 3, 1, 3)
 while mail.is_busy:
     time.sleep(1)
 # Open thunderbird and check for mail
@@ -45,7 +55,7 @@ time.sleep(10)
 mail.send_mail(message="testmail", subject="testmail", receiver="thomas.schaefer91@gmx.de")
 while mail.is_busy:
     time.sleep(1)
-time.sleep(10)
+time.sleep(20)
 
 # We are done, shutdown and keep the VM on disk
 guest.shutdown("keep")

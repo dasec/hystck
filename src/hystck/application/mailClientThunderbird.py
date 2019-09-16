@@ -405,10 +405,10 @@ class MailClientThunderbirdWindowsGuestSide(MailClientThunderbirdPlatformIndepen
             # check for thunderbird exe and start it.
             if os.path.exists(r"c:\Program files (x86)\Mozilla Thunderbird\Thunderbird.exe"):
                 self.thunderbird_app = pywinauto.application.Application().start(
-                    r"c:\Program files (x86)\Mozilla " + r"Thunderbird\Thunderbird.exe")
+                    r"c:\Program files (x86)\Mozilla " + r"Thunderbird\Thunderbird.exe" + r" -new-instance -P default")
             elif os.path.exists(r"c:\Program Files\Mozilla Thunderbird\Thunderbird.exe"):
                 self.thunderbird_app = pywinauto.application.Application().start(
-                    r"c:\Program Files\Mozilla " + r"Thunderbird\Thunderbird.exe")
+                    r"c:\Program Files\Mozilla " + r"Thunderbird\Thunderbird.exe" + r" -new-instance -P default")
             else:
                 self.logger.error(
                     "Thundebird is not installed into the standard path c:\Program files (x86)\Mozilla " + "Thunderbird\Thunderbird.exe or c:\Program Files\Mozilla " + "Thunderbird\Thunderbird.exe")
@@ -518,9 +518,22 @@ class MailClientThunderbirdWindowsGuestSide(MailClientThunderbirdPlatformIndepen
             ################
             # to = receiver # search if to, cc, bcc is in reciever and split
             self.logger.debug("open email window")
-            self.thunderbird_app = pywinauto.application.Application().start(
-                r'c:\Program files (x86)\Mozilla Thunderbird\Thunderbird.exe -compose "to=%s,subject=%s,body=%s"' % (
-                    receiver, subject, message))
+
+            if os.path.exists(r"c:\Program files (x86)\Mozilla Thunderbird\Thunderbird.exe"):
+                self.thunderbird_app = pywinauto.application.Application().start(
+                    r'c:\Program files (x86)\Mozilla Thunderbird\Thunderbird.exe -compose "to=%s,subject=%s,body=%s"' % (
+                        receiver, subject, message))
+            elif os.path.exists(r"c:\Program Files\Mozilla Thunderbird\Thunderbird.exe"):
+                self.thunderbird_app = pywinauto.application.Application().start(
+                    r'c:\Program Files\Mozilla Thunderbird\Thunderbird.exe -compose "to=%s,subject=%s,body=%s"' % (
+                        receiver, subject, message))
+            else:
+                self.logger.error(
+                    "Thundebird is not installed into the standard path c:\Program files (x86)\Mozilla " + "Thunderbird\Thunderbird.exe or c:\Program Files\Mozilla " + "Thunderbird\Thunderbird.exe")
+                raise Exception(
+                    "Thundebird is not installed into the standard path c:\Program files (x86)\Mozilla " + "Thunderbird\Thunderbird.exe or c:\Program Files\Mozilla Thunderbird\Thunderbird.exe")
+
+
 
             self.logger.debug("email window is here")
             time.sleep(10)
