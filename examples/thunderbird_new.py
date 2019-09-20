@@ -34,7 +34,7 @@ while mail.is_busy:
 time.sleep(20)
 
 # Important set a password used by the mail service, it will be saved inside thunderbird
-mail.set_session_password("newPass19")
+mail.set_session_password("newPass2019")
 while mail.is_busy:
     time.sleep(1)
 # Prepare a new Profile; assume the profile folders don't exist; these options assume a insecure mail server without SSL/TLS using an unencrypted password exchange

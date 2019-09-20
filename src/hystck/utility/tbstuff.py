@@ -225,6 +225,7 @@ def gen_imap_account(account_number, server_number, smtp_number, imap_server, sm
         "mail.server.server" + str(serverno) + ".authMethod": auth_method,
         "mail.server.server" + str(serverno) + ".check_new_mail": True,
         "mail.server.server" + str(serverno) + ".directory": tb_imap_mail_server_folder,
+        "mail.server.server" + str(smtpno) + ".port": 993,
         # probably not needed and will be auto generated
         "mail.server.server" + str(serverno) + ".directory-rel": "[ProfD]ImapMail/" + imap_server,
         "mail.server.server" + str(serverno) + ".hostname": imap_server,
