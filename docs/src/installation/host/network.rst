@@ -4,27 +4,54 @@ Creation of the Networks
 
 Hystck relies on two types of networks. The local network will be used for framework configuration traffic, which should not be part of the sniffed traffic. Therefor the monitored traffic will be transfered through a second interface from now on called internet network.
 
-Network Local
-=============
+Network Local and Network Internet
+==================================
 
 The hystck-framework has to do some management stuff and therefor uses this network. All server with a hypervisor, which should be used by hystck have to be reachable through this network. One possibility is to create one bridge on every server with an interface eth0 attached to it. Where eth0 is the interface which is connected to all other servers.
 
-::
-	$ sudo brctl addbr br0
-	$ sudo brctl addif br0 eth0
+The public network interface will only be used for the "real" traffic and has to have a internet-connection. This could also be done by a second bridge with an attached interface eth1. The interface eth1 is internet-ready.
 
 
-Network Internet
-================
-
-This network will only be used for the "real" traffic and has to have a internet-connection. This could also be done by a second bridge with an attached interface eth1. The interface eth1 is internet-ready.
+Use the following command from the hystck base directory to create the network interface from the template:
 
 ::
-	$ sudo brctl addbr br1
-	$ sudo brctl addif br1 eth1
 
-These kind of configuration is only non-permanent, for a permanent solution read the documentation about linux bridges for example from Ubuntu.
+$ virsh net-define public.xml
+$ virsh net-define private.xml
 
+Start the newly created network with:
+
+::
+
+$ virsh net-start public
+$ virsh net-start private
+
+Mark both network as autostart, to ensure they restart after a reboot of the physical host.
+
+::
+
+$ virsh net-autostart public
+$ virsh net-autostart private
+
+Check for correctness:
+
+::
+
+$ virsh net-list
+$ virsh net-dumpxml NETWORK_NAME
+
+You can use the following command to edit a network via command line. You need to specify an editor on first use.
+
+::
+
+$ virsh net-edit NETWORK_NAME
+
+
+Alternatively use the following command to update a network definition with an XMl file:
+
+::
+
+$ virsh net-update NETWORK_NAME
 
 DHCP
 ====

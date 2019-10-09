@@ -267,6 +267,9 @@ class Guest(object):
                                                  "--mac", self.mac1,
                                                  "--mac", self.mac2,
                                                  "--file", local_image_file_path], stderr=subprocess.STDOUT)
+
+                        #subprocess.check_output(["define", join(constants.FILEPATH_LOCAL_IMAGES, self.guestname + ".xml")])
+                        #subprocess.check_output(["rm", join(constants.FILEPATH_LOCAL_IMAGES, self.guestname + ".xml")])
                     except subprocess.CalledProcessError as grepexc:
                         raise Exception(lineno() + " " + self.guestname + " clone error: -" + grepexc.output)
 
@@ -360,6 +363,10 @@ class Guest(object):
             self.logger.error("guest:start ->" + self.guestname + " failed:" + str(e))
 
     def extractInternetNetworkInterface(self, remote=False):
+        """Checks for the network interface to listen on, based on NETWORK_INTERNET_BRIDGE_INTERFACE entry in constants.py
+        :param remote:
+        :return:
+        """
         bridgeInterface = constants.NETWORK_INTERNET_BRIDGE_INTERFACE
         if remote:
             cmd = ['ssh', self.hypervisor_userAtHost, 'virsh', 'domiflist', self.guestname]

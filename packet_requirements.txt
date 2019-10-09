@@ -1,0 +1,7 @@
+python
+python-pip
+qemu-kvm
+libvirt-bin
+virt-manager
+libcap2-bin
+tcpdump

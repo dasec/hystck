@@ -56,12 +56,9 @@ def main():
         browser_obj.close()
 
         time.sleep(5)
-        guest.remove()
+        guest.remove("keep")
 
-
-
-
-######## CLEANUP ############# ERROR HANDLING
+    ######## CLEANUP ############# ERROR HANDLING
     except KeyboardInterrupt as k:
         logger.debug(k)
         logger.debug("KeyboardInterrupt")

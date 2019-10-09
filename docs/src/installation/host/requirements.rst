@@ -11,59 +11,36 @@ Installing Python libraries
 hystck host components are completely written in Python, therefore make sure to
 have an appropriate version installed. For the current release **Python 2.7** is preferred.
 
-Install Python on Ubuntu::
+Run the ``pre_setup.py`` as admin with the following command to install the system dependencies and python dependencies:
+    $ sudo python pre_setup.py
 
-    $ sudo apt-get install python
+``pre_setup.py`` will install the following dependencies.
 
-Additionally you need the hypervisor.
+``packet_requirements.txt``:
 
-If want to use KVM it's packaged too and you can install it with the following command::
+ * python (should be present on the system. Required to use the pre_setup script.): Required to run hystck framework
+ * python-pip: required to manage python packages
+ * qemu-kvm: used for various management tasks regarding VMs.
+ * libvirt-bin: basic library used to manage virtual environments.
+ * virt-manager: used to manage VMs.
+ * libcap2-bin: used to modify the user permissions for tcpdump. Otherwise no non-root user could not use tcpdump.
+ * tcpdump: used to capture the network traffic
 
-    $ sudo apt-get install qemu-kvm libvirt-bin bridge-utils virt-manager
+``PIP_requirements.txt``
+ * pywinauto: used by email plugins in Windows
+ * pywin32: base plugin for Windows
+ * setuptools: a pip dependency (old name: pypa-setuptools)
+ * selenium: legacy - meant for old browser plugin, not needed by new browser plugin (instead use marionette-driver)
+ * marionette_driver: user by new browser plugin, mozrunner and mozprofile should be part of this installation
+ * netifaces: network stuff, this module requires the installation of Windows Visual C++. `Download here`_.
+ * psutil: used for task management (kill, etc.)
+ * netaddr: network stuff
+ * enum34: required for the bot network
+ * protobuf: required for the bot network
 
-.. CloneManager is no longer used, ergo comment it out
-.. Replace CloneManager::
-..
-..    $ mv $hystck/templates/CloneManager.py /usr/lib/python2.7/dist-packages/virtinst/CloneManager.py
+.. _Download here: http://aka.ms/vcpython27
 
-Virt-Install modules seem no longer to be in python default module path in some major distributions.
-If hystck tells you that dummy modules were imported you may be affected or missed to install virt-install or it's containing package.
-
-You can fix this issue by adding the path by hand for example via an alias::
-
-    $ alias python="PYTHONPATH=/usr/share/virt-manager/ python"
-
-The following module install steps are also needed:
-
-Install psutil::
-
-    $ pip install psutil
-
-Install marionette_driver::
-    
-    $ pip install -U marionette_driver
-
-Install mozprofile::
-
-    $ pip install -U mozprofile
-
-Install mozrunner::
-
-    $ pip install -U mozrunner
-
-
-The Bot-Framework needs the following additional Python modules:
-
-Install module enum34::
-
-	$ pip install enum34
-
-Install module protobuf-2.5.0::
-
-	$ pip install protobuf==2.5.0
-
-    
-Installing Tcpdump (optional)
+Installing Tcpdump
 =============================
 
 In order to dump the network activity performed by the application during
@@ -72,9 +49,7 @@ the traffic and dump it to a file.
 
 By default hystck adopts `tcpdump`_, the prominent open source solution.
 
-Install it on Ubuntu::
-
-    $ sudo apt-get install tcpdump
+It will be installed by the pre_setup script.
 
 Tcpdump requires root privileges, but since you don't want hystck to run as root
 you'll have to set specific Linux capabilities to the binary::
@@ -86,9 +61,6 @@ You can verify the results of last command with::
     $ getcap /usr/sbin/tcpdump
     /usr/sbin/tcpdump = cap_net_admin,cap_net_raw+eip
 
-If you don't have `setcap` installed you can get it with::
-
-    $ sudo apt-get install libcap2-bin
 
 Or otherwise (**not recommended**) do::
 

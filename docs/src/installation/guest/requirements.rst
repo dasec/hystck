@@ -21,13 +21,6 @@ hystck Agent
 
 Next step will download the hystck-framework and install required python-moduls.
 
-Install TortoiseSVN
-^^^^^^^^^^^^^^^^^^^
-
-At this time hystck is only avaibable through its svn. To be able to download all files from its repository install a SVN-Client like `TortoiseSVN`_.
-
-.. _TortoiseSVN: http://tortoisesvn.net/downloads.html
-
 
 Install Python
 ^^^^^^^^^^^^^^
@@ -90,15 +83,6 @@ Download `Selenium`_ and install with::
     > python.exe setup.py install
 
 .. _`Selenium`: https://pypi.python.org/pypi/selenium
-
-virtinst
-^^^^^^^^
-
-virtinst or at least it's python modules are required for mac-address-generation.
-
-Install virtinst::
-
-	> apt-get install virtinst
 
 netifaces
 ^^^^^^^^^
@@ -192,7 +176,7 @@ Shutdown and power your vm on again (do not restart!), to get the features enabl
 General
 -------
 
-Install svn to checkout hystck-repository and pip to install python modules::
+Install pip to install python modules::
 
 	$ sudo apt-get install subversion python-pip
 
