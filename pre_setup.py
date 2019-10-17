@@ -35,7 +35,7 @@ def main():
     # stop script if you are no admin
     if not isAdmin():
         logger.critical("You are not an admin. Run the installation as admin.")
-		sys.exit(1)
+        sys.exit(1)
         
     # Install required packages
     aptCmd = "apt-get --yes install {}"
