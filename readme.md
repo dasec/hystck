@@ -11,7 +11,3 @@ run the command ```make html```. After this you will find the newest documentati
 ```_build/html```. Just open the index.html with the browser of your choosing.
 
 ## General Information describing hystck
-* Client-Server architecture.
-* Python 2.7 Codebase
-* network traffic generator
-* user simulation framework
