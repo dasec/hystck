@@ -13,3 +13,4 @@ run the command ```make html```. After this you will find the newest documentati
 ## General Information describing hystck
 * Client-Server architecture.
 * Python 2.7 Codebase
+* network traffic generator
