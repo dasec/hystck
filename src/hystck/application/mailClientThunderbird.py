@@ -191,7 +191,7 @@ class MailClientThunderbirdVmmSide(ApplicationVmmSide):
         except Exception as e:
             raise Exception("error mailer::add_imap_account: " + str(e))
 
-    def send_mail(self, receiver, subject, message):
+    def send_mail(self, receiver, subject, message, attachment_path=None):
         """Send an email via the mailClient.
 
            Note: A bug prevents this from working inside an open thunderbird application.
@@ -200,6 +200,8 @@ class MailClientThunderbirdVmmSide(ApplicationVmmSide):
         @param receiver: Receiver for this email.
         @param subject: Subject for this email.
         @param message: Message for this email.
+        @param attachment_path: (Optional) path to an attachment for this email.
+
 
         @return: No return value.
         """
@@ -207,6 +209,9 @@ class MailClientThunderbirdVmmSide(ApplicationVmmSide):
             m = {"receiver": receiver,
                  "subject": subject,
                  "message": message}
+            # check if attachment_path is added
+            if attachment_path is not None:
+                m["attachment_path"] = attachment_path
             pcl_m = ph.base64pickle(m)
             send_mail_command = "application mailClientThunderbird " + str(self.window_id) + " send_mail " + pcl_m
             self.is_busy = True
@@ -215,6 +220,7 @@ class MailClientThunderbirdVmmSide(ApplicationVmmSide):
             raise Exception("error mailer::sendMail: " + str(e))
 
     def loadMailboxData(self, type, from_name, from_ad, to_name, to_ad, user, server, timestamp, subject, message):
+        # TODO attachment
         try:
             m = {"type": type,
                  "from_name": from_name,
@@ -498,6 +504,8 @@ class MailClientThunderbirdWindowsGuestSide(MailClientThunderbirdPlatformIndepen
         @param receiver - Email address.
         @param subject - Subject of the email.
         @param message - Message of the email.
+        @param attachment_path: (Optional) path to an attachment for this email.
+
         """
         try:
             self.logger.info("function: MailClientThunderbirdGuestSide::send_mail")
@@ -515,18 +523,38 @@ class MailClientThunderbirdWindowsGuestSide(MailClientThunderbirdPlatformIndepen
             message = ad["message"]
             self.logger.debug("message " + message)
 
+            attachment_path = None
+            if 'attachment_path' in ad:
+                attachment_path = ad["attachment_path"]
+                self.logger.debug("attachment_path " + attachment_path)
+
+
             ################
             # to = receiver # search if to, cc, bcc is in reciever and split
             self.logger.debug("open email window")
 
-            if os.path.exists(r"c:\Program files (x86)\Mozilla Thunderbird\Thunderbird.exe"):
-                self.thunderbird_app = pywinauto.application.Application().start(
-                    r'c:\Program files (x86)\Mozilla Thunderbird\Thunderbird.exe -compose "to=%s,subject=%s,body=%s"' % (
-                        receiver, subject, message))
-            elif os.path.exists(r"c:\Program Files\Mozilla Thunderbird\Thunderbird.exe"):
-                self.thunderbird_app = pywinauto.application.Application().start(
-                    r'c:\Program Files\Mozilla Thunderbird\Thunderbird.exe -compose "to=%s,subject=%s,body=%s"' % (
-                        receiver, subject, message))
+            thunderbird_x86_path = r"c:\Program files (x86)\Mozilla Thunderbird\Thunderbird.exe"
+            thunderbird_path = r"c:\Program Files\Mozilla Thunderbird\Thunderbird.exe"
+
+            if os.path.exists(thunderbird_x86_path):
+                if attachment_path is None:
+                    self.thunderbird_app = pywinauto.application.Application().start(
+                        thunderbird_x86_path + r' -compose "to=%s,subject=%s,body=%s"' % (
+                            receiver, subject, message))
+                else:
+                    self.thunderbird_app = pywinauto.application.Application().start(
+                        thunderbird_x86_path + r' -compose "to=%s,subject=%s,body=%s, attachment=%s"' % (
+                            receiver, subject, message, attachment_path))
+
+            elif os.path.exists(thunderbird_path):
+                if attachment_path is None:
+                    self.thunderbird_app = pywinauto.application.Application().start(
+                        thunderbird_path + r' -compose "to=%s,subject=%s,body=%s"' % (
+                            receiver, subject, message))
+                else:
+                    self.thunderbird_app = pywinauto.application.Application().start(
+                        thunderbird_path + r' -compose "to=%s,subject=%s,body=%s, attachment=%s"' % (
+                            receiver, subject, message, attachment_path))
             else:
                 self.logger.error(
                     "Thundebird is not installed into the standard path c:\Program files (x86)\Mozilla " + "Thunderbird\Thunderbird.exe or c:\Program Files\Mozilla " + "Thunderbird\Thunderbird.exe")
@@ -674,6 +702,7 @@ class MailClientThunderbirdWindowsGuestSide(MailClientThunderbirdPlatformIndepen
         mbox.lock()
         self.logger.debug("testing mail manipulation on " + mboxfile)
         try:
+            # TODO Proof if attachment is also 'submittable' here
             msg = mailbox.mboxMessage()
             msg.set_unixfrom(timestamp)
             msg['From'] = from_addr
@@ -793,6 +822,8 @@ class MailClientThunderbirdLinuxGuestSide(MailClientThunderbirdPlatformIndepende
         @param receiver - Email address.
         @param subject - Subject of the email.
         @param message - Message of the email.
+        @param attachment_path: (Optional) path to an attachment for this email.
+
         """
         try:
             self.logger.info("function: MailClientThunderbirdGuestSide::send_mail")
@@ -810,12 +841,24 @@ class MailClientThunderbirdLinuxGuestSide(MailClientThunderbirdPlatformIndepende
             message = ad["message"]
             self.logger.debug("message " + message)
 
+            attachment_path = None
+            if 'attachment_path' in ad:
+                attachment_path = ad["attachment_path"]
+                self.logger.debug("attachment_path " + attachment_path)
+
             ################
             # to = receiver # search if to, cc, bcc is in reciever and split
             self.logger.debug("open email window")
-            self.window_manager.start(
-                'thunderbird', args=['-compose', 'to=%s,subject=%s,body=%s"' % (receiver, subject, message)]
-            )
+
+            if attachment_path is None:
+                self.window_manager.start(
+                    'thunderbird', args=['-compose', 'to=%s,subject=%s,body=%s"' % (receiver, subject, message)]
+                )
+            else:
+                self.window_manager.start(
+                    'thunderbird', args=['-compose', 'to=%s,subject=%s,body=%s, attachment=%s"' %
+                                         (receiver, subject, message, attachment_path)]
+                )
 
             self.logger.debug("email window is here")
 
@@ -937,6 +980,8 @@ class MailClientThunderbirdGuestSide(ApplicationGuestSide):
         @param receiver - Email address.
         @param subject - Subject of the email.
         @param message - Message of the email.
+        @param attachment_path: (Optional) path to an attachment for this email.
+
         """
         self.mailClientApp.send_mail(args)
 
