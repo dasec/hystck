@@ -1012,6 +1012,8 @@ class MailClientLinuxGuestSide(MailClientPlatformIndependentGuestSide):
         @param receiver - Email address.
         @param subject - Subject of the email.
         @param message - Message of the email.
+        @param attachment_path: (Optional) path to an attachment for this email.
+
         """
         try:
             self.logger.info("function: MailClientGuestSide::send_mail")
@@ -1196,6 +1198,8 @@ class MailClientGuestSide(ApplicationGuestSide):
         @param receiver - Email address.
         @param subject - Subject of the email.
         @param message - Message of the email.
+        @param attachment_path: (Optional) path to an attachment for this email.
+
         """
         self.mailClientApp.send_mail(args)
 
