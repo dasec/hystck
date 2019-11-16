@@ -107,12 +107,13 @@ class MailClientVmmSide(ApplicationVmmSide):
         except Exception as e:
             raise Exception(lineno() + " error MailClientVmmSide:setConfig()" + str(e))
 
-    def send_mail(self, receiver, subject, message):
+    def send_mail(self, receiver, subject, message, attachment_path=None):
         """Send an email via the mailClient.
 
         @param receiver: Receiver for this email.
         @param subject: Subject for this email.
         @param message: Message for this email.
+        @param attachment_path: (Optional) path to an attachment for this email.
 
         @return: No return value.
         """
@@ -122,6 +123,9 @@ class MailClientVmmSide(ApplicationVmmSide):
                                 "%.8x" % len(receiver) + receiver + \
                                 "%.8x" % len(subject) + subject + \
                                 "%.8x" % len(message) + message
+            if attachment_path is not None:
+                send_mail_command += "%.8x" % len(attachment_path) + attachment_path
+
             self.is_busy = True
             self.guest_obj.send(send_mail_command)
         except Exception as e:
@@ -547,6 +551,8 @@ class MailClientWindowsGuestSide(MailClientPlatformIndependentGuestSide):
         @param receiver - Email address.
         @param subject - Subject of the email.
         @param message - Message of the email.
+        @param attachment_path: (Optional) path to an attachment for this email.
+
         """
         try:
             self.logger.info("function: MailClientGuestSide::send_mail")
@@ -590,12 +596,31 @@ class MailClientWindowsGuestSide(MailClientPlatformIndependentGuestSide):
             message = receiver_subject_message[start_pointer:end_pointer]
             self.logger.debug("message " + message)
 
+            attachment_path = None
+            # check if attachment_path is added
+            if end_pointer < len(receiver_subject_message):
+                start_pointer = end_pointer  # new start is old end
+                end_pointer += 8  # end set to end plus 8
+
+                attachment_path_length = int(receiver_subject_message[start_pointer:end_pointer], 16)
+
+                start_pointer = end_pointer  # new start is old end
+                end_pointer += attachment_path_length  # end set to end plus length
+
+                attachment_path = receiver_subject_message[start_pointer:end_pointer]
+                self.logger.debug("attachment_path " + attachment_path)
+
             ################
             # to = receiver # search if to, cc, bcc is in reciever and split
             self.logger.debug("open email window")
-            self.thunderbird_app = pywinauto.application.Application().start(
-                r'c:\Program files (x86)\Mozilla Thunderbird\Thunderbird.exe -compose "to=%s,subject=%s,body=%s"' % (
-                receiver, subject, message))
+            if attachment_path is None:
+                self.thunderbird_app = pywinauto.application.Application().start(
+                    r'c:\Program files (x86)\Mozilla Thunderbird\Thunderbird.exe -compose "to=%s,subject=%s,body=%s"'% (
+                        receiver, subject, message))
+            else:
+                self.thunderbird_app = pywinauto.application.Application().start(
+                    r'c:\Program files (x86)\Mozilla Thunderbird\Thunderbird.exe ' +
+                    '-compose "to=%s,subject=%s,body=%s,attachment=%s"' % (receiver, subject, message, attachment_path))
 
             self.logger.debug("email window is here")
             time.sleep(10)
@@ -1030,12 +1055,32 @@ class MailClientLinuxGuestSide(MailClientPlatformIndependentGuestSide):
             message = receiver_subject_message[start_pointer:end_pointer]
             self.logger.debug("message " + message)
 
+            attachment_path = None
+            # check if attachment_path is added
+            if end_pointer < len(receiver_subject_message):
+                start_pointer = end_pointer  # new start is old end
+                end_pointer += 8  # end set to end plus 8
+
+                attachment_path_length = int(receiver_subject_message[start_pointer:end_pointer], 16)
+
+                start_pointer = end_pointer  # new start is old end
+                end_pointer += attachment_path_length  # end set to end plus length
+
+                attachment_path = receiver_subject_message[start_pointer:end_pointer]
+                self.logger.debug("attachment_path " + attachment_path)
+
             ################
             # to = receiver # search if to, cc, bcc is in reciever and split
             self.logger.debug("open email window")
-            self.window_manager.start(
-                'thunderbird', args=['-compose', 'to=%s,subject=%s,body=%s"' % (receiver, subject, message)]
-            )
+            if attachment_path is None:
+                self.window_manager.start(
+                    'thunderbird', args=['-compose', 'to=%s,subject=%s,body=%s"' % (receiver, subject, message)]
+                )
+            else:
+                self.window_manager.start(
+                    'thunderbird', args=['-compose', 'to=%s,subject=%s,body=%s, attachment=%s"' %
+                                         (receiver, subject, message, attachment_path)]
+                )
 
             self.logger.debug("email window is here")
 
