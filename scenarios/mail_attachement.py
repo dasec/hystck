@@ -33,7 +33,7 @@ while mail.is_busy:
 
 # Load new mails
 # Create a new profile to be used by thunderbird
-mail.add_pop3_account("pop3.web.de", "smtp.web.de", "theo.11111@web.de", "theo.11111", "Theo Tester", "Example", 2, 3, 2, 3)
+mail.add_imap_account("imap.googlemail.com", "smtp.googlemail.com", "hystck007@gmail.com", "f!8Uq6b7hKMJX9vz", "Mail Attachement", "Example", 2, 3, 2, 3)
 while mail.is_busy:
     time.sleep(1)
 # Open thunderbird and check for mail
