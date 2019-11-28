@@ -19,7 +19,7 @@ GUEST_RUNNING = 0x002
 GUEST_COMPLETED = 0x003
 GUEST_FAILED = 0x004
 
-NETWORK_INTERNET_BRIDGE_INTERFACE = 'brinternet'                  # hypervisor bridge interface for internet traffic
+NETWORK_INTERNET_BRIDGE_INTERFACE = 'virbr1'                  # hypervisor bridge interface for internet traffic
 INET_GLOBAL_ADDR = "192.168.103.0"
 INET_GLOBAL_MASK = "255.255.255.0"
 INET_LOCAL_ADDR = "192.168.102.0"
