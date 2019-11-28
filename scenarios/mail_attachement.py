@@ -18,7 +18,7 @@ nfs_path = "/data/hystck_data/"
 filename = "attachement.txt"
 path = "C:\Users\hystck\Documents\document.txt"
 
-path_to_file = os.path(path)
+path_to_file = os.path.normpath(path)
 
 # Wait for the VM to become ready and connect to the VMM
 client.waitTillAgentIsConnected()
