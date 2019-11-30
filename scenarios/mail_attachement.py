@@ -48,7 +48,7 @@ while mail.is_busy:
 time.sleep(10)
 
 # Send a new mail by invoking thunderbird with special command line options
-mail.send_mail(message="testmail", subject="testmail", receiver="martin-thissen97@web.de", attachement=path_to_file)
+mail.send_mail(message="testmail", subject="testmail", receiver="martin-thissen97@web.de", attachment_path=path_to_file)
 while mail.is_busy:
     time.sleep(1)
 time.sleep(10)

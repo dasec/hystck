@@ -1075,12 +1075,14 @@ class MailClientLinuxGuestSide(MailClientPlatformIndependentGuestSide):
             # to = receiver # search if to, cc, bcc is in reciever and split
             self.logger.debug("open email window")
             if attachment_path is None:
+                self.logger.debug('No attachment specified')
                 self.window_manager.start(
                     'thunderbird', args=['-compose', 'to=%s,subject=%s,body=%s"' % (receiver, subject, message)]
                 )
             else:
+                self.logger.debug('Attachment found')
                 self.window_manager.start(
-                    'thunderbird', args=['-compose', 'to=%s,subject=%s,body=%s, attachment=%s"' %
+                    'thunderbird', args=['-compose', 'to=%s,subject=%s,body=%s, attachment=file://%s"' %
                                          (receiver, subject, message, attachment_path)]
                 )
 
