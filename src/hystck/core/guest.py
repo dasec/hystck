@@ -403,6 +403,11 @@ class Guest(object):
                     os.mkdir(network_dump_guest_path)
 
                 # start tcpdump
+                print(internetInterface)
+                print(type(internetInterface))
+                print(network_dump_file_path)
+                print(type(network_dump_file_path))
+
                 subprocess.Popen([self.sniffer, "-i", internetInterface, "-w", network_dump_file_path, "-s0"])
                 self.logger.info("sniffer started")
 
