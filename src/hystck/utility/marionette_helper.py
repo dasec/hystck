@@ -56,9 +56,10 @@ class MarionetteHelper:
 
     def quit_firefox(self):
         """ Close the firefox process and close marionette session"""
-        self.logger.debug("Closing firefox")
-        self.client._send_message("quitApplication", {"flags": ["eForceQuit"]})  # force quit here
+        #self.logger.debug("Closing firefox")
+        #self.client._send_message("quitApplication", {"flags": ["eForceQuit"]})  # force quit here
         try:
+            self.client._request_in_app_shutdown()
             self.client.close()  # try to close the window anyway
         except InvalidSessionIdException:
             pass
