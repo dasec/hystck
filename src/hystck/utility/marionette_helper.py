@@ -70,7 +70,7 @@ class MarionetteHelper:
         finally:
             try:
                 self.logger.debug("Closing marionette session")
-                self.client.delete_session(self, False)  # close client session
+                self.client.delete_session(False)  # close client session
             except InvalidSessionIdException:
                 pass
             except socket.error:
