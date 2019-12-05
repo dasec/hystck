@@ -56,37 +56,35 @@ class MarionetteHelper:
 
     def quit_firefox(self):
         """ Close the firefox process and close marionette session"""
-        #self.logger.debug("Closing firefox")
-        #self.client._send_message("quitApplication", {"flags": ["eForceQuit"]})  # force quit here
+        self.logger.debug("Closing firefox")
+        self.client._send_message("Marionette:Quit")
         try:
-            self.client._send_message("Marionette:Quit")
-            #self.client._request_in_app_shutdown()
-            #self.client.close()  # try to close the window anyway
+            self.client.close()  # try to close the window anyway
         except InvalidSessionIdException:
             pass
         except socket.error:
             pass
-        #finally:
-        #    try:
-        #        self.logger.debug("Closing marionette session")
-        #        self.client.delete_session(False)  # close client session
-        #    except InvalidSessionIdException:
-        #        pass
-        #    except socket.error:
-        #        pass
-        #    self.client = None  # reset client state
-        #self.logger.debug("Waiting for firefox to close")
-        #for _ in range(3):  # give the process 3 seconds to terminate
-        #    time.sleep(1)
-        #    self.ffpopen.poll()
-        #    if self.ffpopen.returncode is not None:
-        #        break
-        #self.ffpopen.poll()
-        #if self.ffpopen.returncode is None:
-        #    self.logger.warning("Firefox not closed in time, killing it!")
-        #    self.ffpopen.kill()  # process was not quit in time, kill it
-        #self.ffpopen = None  # reset popen state
-        #self.logger.debug("Firefox is closed")
+        finally:
+            try:
+                self.logger.debug("Closing marionette session")
+                self.client.delete_session(False)  # close client session
+            except InvalidSessionIdException:
+                pass
+            except socket.error:
+                pass
+            self.client = None  # reset client state
+        self.logger.debug("Waiting for firefox to close")
+        for _ in range(3):  # give the process 3 seconds to terminate
+            time.sleep(1)
+            self.ffpopen.poll()
+            if self.ffpopen.returncode is not None:
+                break
+        self.ffpopen.poll()
+        if self.ffpopen.returncode is None:
+            self.logger.warning("Firefox not closed in time, killing it!")
+            self.ffpopen.kill()  # process was not quit in time, kill it
+        self.ffpopen = None  # reset popen state
+        self.logger.debug("Firefox is closed")
 
     def ___get_client(self):
         """ Returns the internal marionette client object"""
