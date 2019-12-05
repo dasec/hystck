@@ -59,6 +59,7 @@ class MarionetteHelper:
         #self.logger.debug("Closing firefox")
         #self.client._send_message("Marionette:Quit")
         self.client._request_in_app_shutdown("eForceQuit")
+        self.client.delete_session(False)
         self.client._handle_socket_failure()
         self.client.cleanup()
         self.client = None # reset client state
