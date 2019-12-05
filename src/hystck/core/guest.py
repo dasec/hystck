@@ -743,7 +743,7 @@ class Guest(object):
                 self.state = 'disconnected'
             else:
                 raise Exception(lineno() + " " + self.hypervisor_ip + " " + "guest::startrecv ->" + self.guestname +
-                                " failed:" + str(e))
+                                " failed:" + str(e) + " code: " + str(e.errno))
         except Exception as e:
             raise Exception(lineno() + " " + self.hypervisor_ip + " " + "guest::startrecv ->" + self.guestname +
                             " failed:" + str(e))
