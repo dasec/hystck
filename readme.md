@@ -11,3 +11,7 @@ run the command ```make html```. After this you will find the newest documentati
 ```_build/html```. Just open the index.html with the browser of your choosing.
 
 ## General Information describing hystck
+
+## Windows automated installation
+
+https://www.dropbox.com/s/bc5iqp2aieb3fly/Installfiles-batchscript.zip?dl=0 - batchscript, pre setup python script and .msi files. (Temporary solution!)
