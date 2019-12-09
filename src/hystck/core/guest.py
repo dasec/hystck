@@ -394,6 +394,7 @@ class Guest(object):
             ############################################################################################################
             if self.hypervisor_ip == "127.0.0.1":
                 internetInterface = self.extractInternetNetworkInterface()
+                print("interface: " + internetInterface)
 
                 # setup dump directory structure
                 if not os.path.exists(network_dump_hypervisor_path):
@@ -435,7 +436,8 @@ class Guest(object):
         'clean' - (default, set by remove) will halt the guest by sending a signal to shutdown the guest.
         'force' - will power off the guest (without waiting for shutting down the guest).
         """
-        self.socket = None  # this socket wont be usable anyway since we are shuting it down
+        self.logger.debug("unsetting socket")
+        self.socket = None  # this socket wont be usable anyway since we are shutting it down
         try:
             if self.hypervisor_ip == "127.0.0.1":
                 ############################################################################################################
@@ -562,6 +564,7 @@ class Guest(object):
 
             self.logger.debug("disconnect")
             self.disconnect()
+            self.logger.debug("disconnected")
             self.logger.debug("shutdown")
             self.shutdown(option)
             if option != "keep":
@@ -702,12 +705,14 @@ class Guest(object):
             msg = ""
             # try long as there are unfinished received commands
             while 1:
+                self.logger.debug("socket: " + str(self.socket))
                 if self.socket is None:  # if socket is down do nothing at all
                     time.sleep(1)
                     continue
                 chunk = self.socket.recv(1024)
                 if chunk == '':
-                    raise RuntimeError("socket connection broken")
+                    #raise RuntimeError("socket connection broken")
+                    break
                 # get length of the message
                 msg = msg + chunk
                 # if msg do not contain the message length
