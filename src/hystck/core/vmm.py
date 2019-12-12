@@ -19,7 +19,7 @@ class Vmm(object):
     """hystck virtual machine monitor, setup environment to create guests and control them."""
 
     def __init__(self, macsInUse, guests, logger=None, windows_template="windows-template",
-                 linux_template="ubuntu-template",
+                 linux_template="linux-template",
                  macosx_template="mac-template", hypervisor="kvm", hypervisor_ip="127.0.0.1", hypervisor_user="root",
                  tcpdump="/usr/sbin/tcpdump"):
         """Set default guest values (ip, mac, listen socket, templates ... ) and create a listen socket on all
@@ -39,10 +39,10 @@ class Vmm(object):
             if self.logger is None:
                 self.logger = create_logger('virtual machine monitor', logging.INFO)
 
-            self.logger.info("method Vmm::__init__")
+            self.logger.info("method Vmm::__init__ repoDec19")
             self.guest_template = {
                 "windows": windows_template,
-                "ubuntu": linux_template,
+                "linux": linux_template,
                 "macosx": macosx_template
             }
             self.hypervisor = hypervisor
