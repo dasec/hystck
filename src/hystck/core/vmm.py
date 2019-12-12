@@ -42,7 +42,7 @@ class Vmm(object):
             self.logger.info("method Vmm::__init__")
             self.guest_template = {
                 "windows": windows_template,
-                "linux": linux_template,
+                "ubuntu": linux_template,
                 "macosx": macosx_template
             }
             self.hypervisor = hypervisor

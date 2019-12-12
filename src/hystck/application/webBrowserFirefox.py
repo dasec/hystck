@@ -10,6 +10,7 @@ try:
     import subprocess
     import inspect  # for listing all method of a class
     import os
+    import time
 
     # base class VMM side
     from hystck.application.application import ApplicationVmmSide
@@ -26,6 +27,9 @@ try:
     from hystck.utility.marionette_helper import DEFAULT_FF_PATH_WIN64
     from hystck.utility.marionette_helper import DEFAULT_FF64_PATH_WIN
     from hystck.utility.marionette_helper import DEFAULT_FF_PATH_LINUX
+
+    #pywinauto enter button
+    from pywinauto import keyboard
 
 except ImportError as ie:
     print("Import error! in webBrowserFirefox.py " + str(ie))
@@ -144,7 +148,32 @@ class WebBrowserFirefoxVmmSide(ApplicationVmmSide):
         except Exception as e:
             raise Exception("error WebBrowserFirefoxVmmSide::send_keys_to_browser_element: " + str(e))
 
-    def facebook_login(self, username, password):
+    def click_element_test(self, id):
+        #experimental
+        try:
+             self.guest_obj.send("application " + "webBrowserFirefox " + str(
+	         self.window_id) + " click_element_test" + " " + id)
+        except Exception as e:
+            raise Exception("error WebBrowserFirefoxVmmSide::click_element_test: " + str(e))
+
+    def click_xpath_test(self, xpath):
+	#experimental
+	try:
+	     self.guest_obj.send("application " + "webBrowserFirefox " + str(
+		 self.window_id) + " click_xpath_test" + " " + xpath)
+	except Exception as e:
+	    raise Exception("error WebBrowserFirefoxVmmSide::click_xpath_test: " + str(e))
+
+    def press_enter_test(self):
+	#experimental
+	try:
+	    self.guest_obj.send("application " + "webBrowserFirefox " + str(
+		self.window_id) + " press_enter_test ")
+	except Exception as e:
+	    raise Exception("error WebBrowserFirefoxVmmSide::press_enter_test: " + str(e))
+
+
+    def facebook_login(self, username, password, id):
         """Sends a command to call facebook.com and login.
         @param username: facebook username.
         @param password: facebook password.
@@ -155,7 +184,10 @@ class WebBrowserFirefoxVmmSide(ApplicationVmmSide):
             self.browse_to("www.facebook.com")
             self.send_keys_to_browser_element("email", username)
             self.send_keys_to_browser_element("pass", password)
-            self.send_keys_to_browser_element("pass", "{ENTER}")
+	    time.sleep(20)
+	    self.click_element_test(id)
+
+           # self.send_keys_to_browser_element(" pass", "{ENTER}")
         except Exception as e:
             raise Exception("error WebBrowserFirefoxVmmSide::facebook_login: " + str(e))
 
@@ -416,8 +448,8 @@ class WebBrowserFirefoxGuestSide(ApplicationGuestSide):
         """
         try:
             arguments = args.split(" ")
-            element = arguments[1]
-            keys = arguments[2]
+            element = arguments[0]
+            keys = arguments[1]
 
             self.agent_object.send("application " + self.module_name + " " + str(self.window_id) + " busy")
             #elem = self.seleniumDriver.find_element_by_name(element)
@@ -428,6 +460,20 @@ class WebBrowserFirefoxGuestSide(ApplicationGuestSide):
         except Exception as e:
             self.logger.error(self.module_name + " error " + str(self.window_id) + str(e))
             self.agent_object.send("application " + self.module_name + " " + str(self.window_id) + " error")
+
+    def click_element_test(self, id):
+	#experimental
+        element = id
+        self.helper.click_element_by_id(element)
+
+    def click_xpath_test(self, xpath):
+	#experimental
+	xelement = xpath
+	self.helper.click_element_by_xpath(xelement)
+
+    def press_enter_test(self, args):
+	#experimental
+	keyboard.SendKeys('{ENTER 2}')
 
     def find_firefox_path(self):
         if platform.system() == "Windows":
