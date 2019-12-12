@@ -70,19 +70,20 @@ Here comes a quick introduction to create a linux based dhcp server using dnsmas
 	--graphics vnc,listen=0.0.0.0
 	--noautoconsole -v
 
-2. Configure dnsmasq
+2. Configure dnsmasq:
 
 Edit the configuration file accordingly:
 
 ::
+
 	$ cat /etc/dnsmasq.conf
 
 	...
 	interface=eth0
 	interface=eth1
 	...
-	dhcp-range=eth0,192.168.2.10-192.168.2.254,12h
-	dhcp-range=eth1,192.168.3.10-192.168.3.254,12h
+	dhcp-range=eth0,192.168.2.10,192.168.2.254,12h
+	dhcp-range=eth1,192.168.3.10,192.168.3.254,12h
 	...
 
 	$ sudo ifconfig eth0 192.168.2.2
