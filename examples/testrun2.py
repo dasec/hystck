@@ -111,6 +111,7 @@ def test_thunderbird(guest, logger):
     mail.open()
     while mail.is_busy:
         time.sleep(2)
+    time.sleep(20)
     mail.close()
     while mail.is_busy:
         time.sleep(2)
@@ -121,16 +122,20 @@ def test_thunderbird(guest, logger):
     mail.set_session_password("newPass2019")
     while mail.is_busy:
         time.sleep(1)
+
+    time.sleep(20)
     # Prepare a new Profile; assume the profile folders don't exist; these options assume a insecure mail server without SSL/TLS using an unencrypted password exchange
     # theo.11111@web.de / hystckMail / Theo Tester
     mail.add_imap_account("imap.web.de", "smtp.web.de", "theo.test1@web.de", "theo.test1", "Theo Tester", "Example", 2,
                           3, 1, 3)
     while mail.is_busy:
         time.sleep(1)
+    time.sleep(20)
     # Open thunderbird and check for mail
     mail.open()
     while mail.is_busy:
         time.sleep(1)
+    time.sleep(20)
     # We are done close the application
     mail.close()
     while mail.is_busy:
