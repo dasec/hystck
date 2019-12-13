@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import platform
 import time
 import logging
 import subprocess
@@ -108,16 +109,15 @@ def test_thunderbird(guest, logger):
     logger.debug("test_thunderbird() started.")
     mail = guest.application("mailClientThunderbird", {})
 
-
-    mail.open()
-    while mail.is_busy:
-        time.sleep(2)
-    time.sleep(60)
-    mail.close()
-    while mail.is_busy:
-        time.sleep(2)
-
-    time.sleep(20)
+    if platform.system() == "Windows": # need to open once before in Windows to work properly, but in Linux this produces an error.
+        mail.open()
+        while mail.is_busy:
+            time.sleep(2)
+        time.sleep(60)
+        mail.close()
+        while mail.is_busy:
+            time.sleep(2)
+        time.sleep(20)
 
     # Important set a password used by the mail service, it will be saved inside thunderbird
     mail.set_session_password("newPass2019")
