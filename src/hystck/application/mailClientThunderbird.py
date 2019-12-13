@@ -734,7 +734,7 @@ class MailClientThunderbirdLinuxGuestSide(MailClientThunderbirdPlatformIndepende
                 raise Exception("MailClientThunderbirdGuestSide::open: no Thunderbird profile are deposited")
 
             # check for thunderbird exe and start it.
-            self.window_manager.start('thunderbird', '*Thunderbird', ['-P default'])
+            self.window_manager.start('thunderbird', '*Thunderbird', ['-P', 'default'])
 
             self.logger.debug("Window should now be opened")
 
