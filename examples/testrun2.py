@@ -109,15 +109,15 @@ def test_thunderbird(guest, logger):
     mail = guest.application("mailClientThunderbird", {})
 
 
-    #mail.open()
-    #while mail.is_busy:
-    #    time.sleep(2)
-    #time.sleep(20)
-    #mail.close()
-    #while mail.is_busy:
-    #    time.sleep(2)
+    mail.open()
+    while mail.is_busy:
+        time.sleep(2)
+    time.sleep(60)
+    mail.close()
+    while mail.is_busy:
+        time.sleep(2)
 
-    #time.sleep(20)
+    time.sleep(20)
 
     # Important set a password used by the mail service, it will be saved inside thunderbird
     mail.set_session_password("newPass2019")
@@ -136,7 +136,7 @@ def test_thunderbird(guest, logger):
     mail.open()
     while mail.is_busy:
         time.sleep(1)
-    time.sleep(20)
+    time.sleep(60)
     # We are done close the application
     mail.close()
     while mail.is_busy:
