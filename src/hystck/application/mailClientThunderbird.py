@@ -830,6 +830,7 @@ class MailClientThunderbirdLinuxGuestSide(MailClientThunderbirdPlatformIndepende
 
         try:
             self.window_manager.waitforwindow('Send Message')
+            time.sleep(10)
             self.logger.debug("Press enter to send the message")
             self.window_manager.sendkeys('<enter>')
 
@@ -840,6 +841,7 @@ class MailClientThunderbirdLinuxGuestSide(MailClientThunderbirdPlatformIndepende
 
         # - Wait for password window
         tbPasswordWindowTitle = 'SMTP Server Password Required'
+        time.sleep(10)
         isWindowOpen = self.window_manager.waitforwindow(tbPasswordWindowTitle)
         if not isWindowOpen:
             self.logger.error("MailClientThunderbird::open No window named '%s'" % tbPasswordWindowTitle)
