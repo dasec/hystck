@@ -705,7 +705,7 @@ class Guest(object):
             msg = ""
             # try long as there are unfinished received commands
             while 1:
-                self.logger.debug("socket: " + str(self.socket))
+                #self.logger.debug("socket: " + str(self.socket))
                 if self.socket is None:  # if socket is down do nothing at all
                     time.sleep(1)
                     continue
