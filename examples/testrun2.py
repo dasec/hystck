@@ -23,8 +23,8 @@ def create_vm(logger):
     guests = []
     guestListener = GuestListener(guests, logger)
     virtual_machine_monitor1 = Vmm(macsInUse, guests, logger)
-    guest = virtual_machine_monitor1.create_guest(guest_name="l-guest01", platform="linux", boottime=None)
-    #guest = virtual_machine_monitor1.create_guest(guest_name="w-guest01", platform="windows", boottime=None)
+    #guest = virtual_machine_monitor1.create_guest(guest_name="l-guest01", platform="linux", boottime=None)
+    guest = virtual_machine_monitor1.create_guest(guest_name="w-guest01", platform="windows", boottime=None)
     logger.debug("Try connecting to guest")
 
     while guest.state != "connected":
