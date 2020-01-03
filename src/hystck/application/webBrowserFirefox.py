@@ -26,7 +26,7 @@ try:
         from hystck.utility.marionette_helper import MarionetteHelper
         from hystck.utility.marionette_helper import DEFAULT_FF_PATH_WIN32
         from hystck.utility.marionette_helper import DEFAULT_FF_PATH_WIN64
-        from hystck.utility.marionette_helper import DEFAULT_FF64_PATH_LINUX
+        from hystck.utility.marionette_helper import DEFAULT_FF64_PATH_WIN
         from hystck.utility.marionette_helper import DEFAULT_FF_PATH_LINUX
     except ImportError as ie1:
         print("Import error in webBrowserFirefox.py for marionette helper classes.")
