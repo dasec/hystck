@@ -59,7 +59,7 @@ def main():
                 print("argument unknown: " + str(e))
 
         time.sleep(5)
-        guest.remove("keep")
+        guest.remove()
 
     ######## CLEANUP ############# ERROR HANDLING
     except KeyboardInterrupt as k:
@@ -93,13 +93,27 @@ def test_firefox(guest, logger):
     logger.debug("test_firefox() started.")
     browser_obj = None
     browser_obj = guest.application("webBrowserFirefox", {'webBrowser': "firefox"})
-    browser_obj.open(url="faz.net")
+    # open browser with blank page
+    browser_obj.open(url="about:blank")
     while browser_obj.is_busy:
         time.sleep(2)
+    # browse sites
     browser_obj.browse_to("heise.de")
     while browser_obj.is_busy:
         time.sleep(5)
     time.sleep(10)
+
+    # facebook login
+    browser_obj.facebook_login("tom-g1@gmx.de", "FBgoeshystck", "u_0_2")
+    time.sleep(20)
+
+    # download file
+    #browser_obj.download_from("https://dasec.h-da.de/offerings/completed-thesis/", "")
+    #while browser_obj.is_busy:
+    #    time.sleep(5)
+    #time.sleep(10)
+
+    # close browser
     browser_obj.close()
     while browser_obj.is_busy:
         time.sleep(5)
