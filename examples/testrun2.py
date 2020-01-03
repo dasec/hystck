@@ -94,7 +94,7 @@ def test_firefox(guest, logger):
     browser_obj = None
     browser_obj = guest.application("webBrowserFirefox", {'webBrowser': "firefox"})
     # open browser with blank page
-    browser_obj.open(url="about:blank")
+    browser_obj.open(url="dasec.fbi.h-da.de")
     while browser_obj.is_busy:
         time.sleep(2)
     # browse sites
@@ -104,8 +104,8 @@ def test_firefox(guest, logger):
     time.sleep(10)
 
     # facebook login
-    browser_obj.facebook_login("tom-g1@gmx.de", "FBgoeshystck", "u_0_2")
-    time.sleep(20)
+    #browser_obj.facebook_login("tom-g1@gmx.de", "FBgoeshystck", "u_0_2")
+    #time.sleep(20)
 
     # download file
     #browser_obj.download_from("https://dasec.h-da.de/offerings/completed-thesis/", "")
