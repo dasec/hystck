@@ -106,7 +106,7 @@ def test_firefox(guest, logger):
     browser_obj.browse_to("facebook.com")
     while browser_obj.is_busy:
         time.sleep(5)
-    browser_obj.facebook_login("tom-g1@gmx.de", "FBgoeshystck", "u_0_b")
+    browser_obj.facebook_login("tom-g1@gmx.de", "FBgoeshystck", "loginbutton")
     time.sleep(25)
 
     # download file
