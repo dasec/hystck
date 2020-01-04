@@ -108,12 +108,14 @@ def test_firefox(guest, logger):
         time.sleep(5)
     browser_obj.facebook_login("tom-g1@gmx.de", "FBgoeshystck", "loginbutton")
     time.sleep(25)
-
     # download file
-    #browser_obj.download_from("https://dasec.h-da.de/offerings/completed-thesis/", "")
-    #while browser_obj.is_busy:
-    #    time.sleep(5)
-    #time.sleep(10)
+    browser_obj.browse_to("python.org/downloads")
+    while browser_obj.is_busy:
+        time.sleep(15)
+    browser_obj.click_xpath_test('/html/body/div/div[3]/div/section/div[1]/ol/li[1]/span[3]/a')
+    time.sleep(25)
+    browser_obj.click_xpath_test('/html/body/div/div[3]/div/section/article/table/tbody/tr[1]/td[1]/a')
+    time.sleep(60)
 
     # close browser
     browser_obj.close()
