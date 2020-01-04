@@ -59,7 +59,7 @@ def main():
                 print("argument unknown: " + str(e))
 
         time.sleep(5)
-        guest.remove()
+        guest.remove("keep")
 
     ######## CLEANUP ############# ERROR HANDLING
     except KeyboardInterrupt as k:
@@ -115,7 +115,9 @@ def test_firefox(guest, logger):
     browser_obj.click_xpath_test('/html/body/div/div[3]/div/section/div[1]/ol/li[1]/span[3]/a')
     time.sleep(25)
     browser_obj.click_xpath_test('/html/body/div/div[3]/div/section/article/table/tbody/tr[1]/td[1]/a')
-    time.sleep(60)
+    time.sleep(25)
+    browser_obj.press_enter_test()
+    time.sleep(25)
 
     # close browser
     browser_obj.close()
