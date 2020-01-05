@@ -1,5 +1,3 @@
-pywinauto
-pywin32
 setuptools
 selenium
 marionette_driver
@@ -8,3 +6,4 @@ psutil
 netaddr
 enum34
 protobuf==2.5.0
+urllib3==1.23
