@@ -242,8 +242,9 @@ class Guest(object):
                     try:
                         # - Delete old disk-image
                         if os.path.exists(local_image_file_path):
-                            self.logger.error("File already exists, delete it")
+                            self.logger.info("File already exists, delete it")
                             os.remove(local_image_file_path)
+                            self.logger.info("File deleted")
                     except OSError as ose:
                         if os.path.exists(local_image_file_path):
                             raise Exception(lineno() + " Could not delete old image file: %s" % str(ose))

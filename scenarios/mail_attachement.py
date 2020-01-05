@@ -12,6 +12,8 @@ macsInUse = []
 guests = []
 guest_listener = GuestListener(guests, logger)
 vmm = Vmm(macsInUse, guests, logger)
+
+# add a check to see if the vm already exists
 client = vmm.create_guest(guest_name='mail_attachement_vm')
 
 # path to the nfs mount point

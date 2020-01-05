@@ -599,14 +599,18 @@ class MailClientThunderbirdWindowsGuestSide(MailClientThunderbirdPlatformIndepen
             #  - connect to it
             # todo: reevaluate these statements, it will throw an error, but will send mail anyway if open was not used before
             if self.thunderbird_app.windows_():
-                self.thunderbird_window = self.thunderbird_app.window_(title_re=".*Mozilla Thunderbird")
+                #self.thunderbird_window = self.thunderbird_app.window_(title_re=".*Mozilla Thunderbird")
+                self.thunderbird_window = self.thunderbird_app.window_(title_re=".*Thunderbird")
 
             else:
-                self.thunderbird_app = pywinauto.application.Application().connect_(title_re=".*Mozilla Thunderbird")
-                self.thunderbird_window = self.thunderbird_app.window_(title_re=".*Mozilla Thunderbird")
+                #self.thunderbird_app = pywinauto.application.Application().connect_(title_re=".*Mozilla Thunderbird")
+                self.thunderbird_app = pywinauto.application.Application().connect_(title_re=".*Thunderbird")
+                #self.thunderbird_window = self.thunderbird_app.window_(title_re=".*Mozilla Thunderbird")
+                self.thunderbird_window = self.thunderbird_app.window_(title_re=".*Thunderbird")
 
         except Exception as e:
-            self.logger.error("MailClientThunderbird::open No window named '.*Mozilla Thunderbird'")
+            #self.logger.error("MailClientThunderbird::open No window named '.*Mozilla Thunderbird'")
+            self.logger.error("MailClientThunderbird::open No window named '.*Thunderbird'")
             self.agent_object.send("application " + self.module_name + " " + str(self.imParent.window_id) + " error")
             return
 
