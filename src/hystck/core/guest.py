@@ -242,8 +242,9 @@ class Guest(object):
                     try:
                         # - Delete old disk-image
                         if os.path.exists(local_image_file_path):
-                            self.logger.error("File already exists, delete it")
+                            self.logger.info("File already exists, delete it")
                             os.remove(local_image_file_path)
+                            self.logger.info("File deleted")
                     except OSError as ose:
                         if os.path.exists(local_image_file_path):
                             raise Exception(lineno() + " Could not delete old image file: %s" % str(ose))
@@ -403,6 +404,11 @@ class Guest(object):
                     os.mkdir(network_dump_guest_path)
 
                 # start tcpdump
+                self.logger.info(internetInterface)
+                self.logger.info(type(internetInterface))
+                self.logger.info(network_dump_file_path)
+                self.logger.info(type(network_dump_file_path))
+
                 subprocess.Popen([self.sniffer, "-i", internetInterface, "-w", network_dump_file_path, "-s0"])
                 self.logger.info("sniffer started")
 
@@ -411,6 +417,14 @@ class Guest(object):
             ############################################################################################################
             else:
                 internetInterface = self.extractInternetNetworkInterface(remote=True)
+
+                # start tcpdump
+                self.logger.info(self.hypervisor_userAtHost)
+                self.logger.info(type(self.hypervisor_userAtHost))
+                self.logger.info(network_dump_hypervisor_path)
+                self.logger.info(type(network_dump_hypervisor_path))
+                self.logger.info(network_dump_guest_path)
+                self.logger.info(type(network_dump_guest_path))
 
                 # setup dump directory structure
                 if subprocess.call(['ssh', self.hypervisor_userAtHost, 'test', '-d', network_dump_hypervisor_path]):
