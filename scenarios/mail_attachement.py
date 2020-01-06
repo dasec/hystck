@@ -36,18 +36,18 @@ while mail.is_busy:
 
 # Load new mails
 # Create a new profile to be used by thunderbird
-#mail.add_imap_account("imap.googlemail.com", "smtp.googlemail.com", "hystck007@gmail.com", "f!8Uq6b7hKMJX9vz", "Mail Attachement", "Example", 2, 3, 2, 3)
-#while mail.is_busy:
-#    time.sleep(1)
+mail.add_imap_account("imap.googlemail.com", "smtp.googlemail.com", "hystck007@gmail.com", "f!8Uq6b7hKMJX9vz", "Mail Attachement", "Example", 2, 3, 2, 3)
+while mail.is_busy:
+   time.sleep(1)
 # Open thunderbird and check for mail
-#mail.open()
-#while mail.is_busy:
-#    time.sleep(1)
+mail.open()
+while mail.is_busy:
+   time.sleep(1)
 # We are done close the application
-#mail.close()
-#while mail.is_busy:
-#    time.sleep(1)
-#time.sleep(10)
+mail.close()
+while mail.is_busy:
+   time.sleep(1)
+time.sleep(10)
 
 # Send a new mail by invoking thunderbird with special command line options
 mail.send_mail(message="testmail", subject="testmail", receiver="martin-thissen97@web.de")
