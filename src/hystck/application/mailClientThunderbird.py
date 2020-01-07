@@ -160,7 +160,7 @@ class MailClientThunderbirdVmmSide(ApplicationVmmSide):
             raise Exception("error mailer::add_pop3_account: " + str(e))
 
     def add_imap_account(self, imap_server, smtp_server, email_address, username, full_name, smtp_description,
-                         socket_type=3, auth_method=3, socket_type_smtp=3, auth_method_smtp=3):
+                         socket_type=3, auth_method=3, socket_type_smtp=2, auth_method_smtp=3):
         """ Adds a imap account to the profile.
 
             :param imap_server: address of the pop3 mailserver
