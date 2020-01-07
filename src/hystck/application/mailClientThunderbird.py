@@ -436,14 +436,18 @@ class MailClientThunderbirdWindowsGuestSide(MailClientThunderbirdPlatformIndepen
             #  - find the actual process
             #  - connect to it
             if self.thunderbird_app.windows_():
-                self.thunderbird_window = self.thunderbird_app.window_(title_re=".*Mozilla Thunderbird")
+                #self.thunderbird_window = self.thunderbird_app.window_(title_re=".*Mozilla Thunderbird")
+                self.thunderbird_window = self.thunderbird_app.window_(title_re=".*Thunderbird")
 
             else:
-                self.thunderbird_app = pywinauto.application.Application().connect_(title_re=".*Mozilla Thunderbird")
-                self.thunderbird_window = self.thunderbird_app.window_(title_re=".*Mozilla Thunderbird")
+                #self.thunderbird_app = pywinauto.application.Application().connect_(title_re=".*Mozilla Thunderbird")
+                self.thunderbird_app = pywinauto.application.Application().connect_(title_re=".*Thunderbird")
+                #self.thunderbird_window = self.thunderbird_app.window_(title_re=".*Mozilla Thunderbird")
+                self.thunderbird_window = self.thunderbird_app.window_(title_re=".*Thunderbird")
 
         except Exception as e:
-            self.logger.error("MailClientThunderbirdGuestSide::open No window named '.*Mozilla Thunderbird'")
+            #self.logger.error("MailClientThunderbirdGuestSide::open No window named '.*Mozilla Thunderbird'")
+            self.logger.error("MailClientThunderbirdGuestSide::open No window named '.*Thunderbird'")
             self.agent_object.send("application " + self.module_name + " " + str(self.imParent.window_id) + " error")
             return
 
