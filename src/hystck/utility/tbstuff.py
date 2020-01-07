@@ -241,10 +241,12 @@ def gen_imap_account(account_number, server_number, smtp_number, imap_server, sm
         "mail.smtpserver.smtp" + str(smtpno) + ".authMethod": auth_method_smtp,
         "mail.smtpserver.smtp" + str(smtpno) + ".description": smtp_description,
         "mail.smtpserver.smtp" + str(smtpno) + ".hostname": smtp_server,
-        "mail.smtpserver.smtp" + str(smtpno) + ".port": 587, # smtp port for web de
+        "mail.smtpserver.smtp" + str(smtpno) + ".port": "587",    # smtp port for web de
         "mail.smtpserver.smtp" + str(smtpno) + ".try_ssl": socket_type_smtp,
         "mail.smtpserver.smtp" + str(smtpno) + ".username": username,
         "mail.smtpservers": "smtp" + str(smtpno),
+        # disable startup integration popup
+        "mail.winsearch.firstRunDone": True,
         # "mail.winsearch.firstRunDone": True,
         # "mail.shell.checkDefaultClient": False,
     }
