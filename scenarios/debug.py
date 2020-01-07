@@ -13,6 +13,11 @@ guests = []
 guest_listener = GuestListener(guests, logger)
 vmm = Vmm(macsInUse, guests, logger)
 
+client = guest_listener.findGuestForMac()
+
+#mail = client.application("mailClientThunderbird", {})
+
+
 # add a check to see if the vm already exists
 #client = vmm.create_guest(guest_name='mail_attachement_vm')
 
@@ -56,4 +61,4 @@ vmm = Vmm(macsInUse, guests, logger)
 #time.sleep(10)
 
 # We are done, shutdown and keep the VM on disk
-#guest.shutdown("keep")
+#guest.shutdown("keep")r

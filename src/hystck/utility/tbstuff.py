@@ -153,7 +153,7 @@ def gen_common():
 
 def gen_imap_account(account_number, server_number, smtp_number, imap_server, smtp_server, email_address, username,
                      full_name="John Doe",
-                     smtp_description="Google Mail", socket_type=3, auth_method=3, socket_type_smtp=3, auth_method_smtp=3):
+                     smtp_description="Google Mail", socket_type=3, auth_method=3, socket_type_smtp=2, auth_method_smtp=3):
     """ Generates entries for an imap account.
 
     :param account_number: refers to the id section
@@ -180,16 +180,18 @@ def gen_imap_account(account_number, server_number, smtp_number, imap_server, sm
     # imap_server = imap_server
     # smtp_server = smtp_server
     email = email_address
+    emailBefore = email.split('@')[0] # split the mail to construct the imap base folder
+
     # username = email_address
     tb_imap_mail_server_folder = os.path.join(profiledir, "ImapMail", imap_server)
-    imap_base_folder = "imap://" + email
+    imap_base_folder = "imap://" + emailBefore + "@" + imap_server
     # smtp_description = smtp_description
     # full_name = full_name
     account = {
         # "calendar.integration.notify": False,
         "mail.account.account" + str(no) + ".identities": "id" + str(no),  # should probably contain multiple identities
         "mail.account.account" + str(no) + ".server": "server" + str(serverno),
-        "mail.accountmanager.accounts": "account" + str(no),  # should probably contain multiple accounts
+        "mail.accountmanager.accounts": "account" + str(no) + ",account" + str(no+1),  # add two accounts, one for imap and one for smtp
         "mail.accountmanager.defaultaccount": "account" + str(no),
         # "mail.append_preconfig_smtpservers.version": 2,
         # "mail.identity.id" + str(no) + ".full_name": full_name,
@@ -201,15 +203,15 @@ def gen_imap_account(account_number, server_number, smtp_number, imap_server, sm
         # "mail.root.imap-rel": "[ProfD]ImapMail",
         # "mail.root.none": tbMailFolder,
         # "mail.root.none-rel": "[ProfD]Mail",
-        "mail.identity.id" + str(no) + ".archive_folder": imap_base_folder + "Archives",
-        "mail.identity.id" + str(no) + ".doBcc": False,
-        "mail.identity.id" + str(no) + ".doBccList": "",
-        "mail.identity.id" + str(no) + ".draft_folder": imap_base_folder + "Drafts",
+        "mail.identity.id" + str(no) + ".archive_folder": imap_base_folder + "/Archives",
+        #"mail.identity.id" + str(no) + ".doBcc": False,
+        #"mail.identity.id" + str(no) + ".doBccList": "",
+        "mail.identity.id" + str(no) + ".draft_folder": imap_base_folder + "/Entwurf",
         "mail.identity.id" + str(no) + ".drafts_folder_picker_mode": "0",
         "mail.identity.id" + str(no) + ".encryption_cert_name": "",
         "mail.identity.id" + str(no) + ".encryptionpolicy": 0,
         "mail.identity.id" + str(no) + ".escapedVCard": "",
-        "mail.identity.id" + str(no) + ".fcc_folder": imap_base_folder + "/Sent",
+        "mail.identity.id" + str(no) + ".fcc_folder": imap_base_folder + "/Gesendet",
         "mail.identity.id" + str(no) + ".fcc_folder_picker_mode": "0",
         "mail.identity.id" + str(no) + ".fullName": full_name,
         "mail.identity.id" + str(no) + ".organization": "",
@@ -239,7 +241,7 @@ def gen_imap_account(account_number, server_number, smtp_number, imap_server, sm
         "mail.smtpserver.smtp" + str(smtpno) + ".authMethod": auth_method_smtp,
         "mail.smtpserver.smtp" + str(smtpno) + ".description": smtp_description,
         "mail.smtpserver.smtp" + str(smtpno) + ".hostname": smtp_server,
-        #"mail.smtpserver.smtp" + str(smtpno) + ".port": 465,
+        "mail.smtpserver.smtp" + str(smtpno) + ".port": 587, # smtp port for web de
         "mail.smtpserver.smtp" + str(smtpno) + ".try_ssl": socket_type_smtp,
         "mail.smtpserver.smtp" + str(smtpno) + ".username": username,
         "mail.smtpservers": "smtp" + str(smtpno),
@@ -248,13 +250,19 @@ def gen_imap_account(account_number, server_number, smtp_number, imap_server, sm
     }
     if socket_type == 0:
         account["mail.server.server" + str(serverno) + ".port"] = 143
-        account["mail.smtpserver.smtp" + str(smtpno) + ".port"] = 587
     elif socket_type == 2:
         account["mail.server.server" + str(serverno) + ".port"] = 143
-        account["mail.smtpserver.smtp" + str(smtpno) + ".port"] = 587
     elif socket_type == 3:
         account["mail.server.server" + str(serverno) + ".port"] = 993
-        account["mail.smtpserver.smtp" + str(smtpno) + ".port"] = 465
+
+    # todo: prove the different cases
+    #if socket_type_smtp == 0:
+    #    account["mail.smtpserver.smtp" + str(smtpno) + ".port"] = 587
+    #if socket_type_smtp == 1:
+    #    account["mail.smtpserver.smtp" + str(smtpno) + ".port"] = 587
+    #if socket_type_smtp == 2:
+    #    account["mail.smtpserver.smtp" + str(smtpno) + ".port"] = 465
+
     return account
 
 
