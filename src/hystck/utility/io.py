@@ -5,18 +5,24 @@ def file_exists(path):
     return os.path.isfile(path)
 
 
-def is_valid_attached_path_string(attached_path):
-    # Gänsefüßchen handlen
-    file_path_list = attached_path.split(',')
+def parse_attachment_string(attachment_path_list):
+    if attachment_path_list is None:
+        return None
 
-    if len(file_path_list) == 0:
-        return False
+    if len(attachment_path_list) > 1:
+        return create_comma_separated_string_for_multiple_paths(attachment_path_list)
 
-    for file_path in file_path_list:
-        if file_exists(file_path) is False:
-            return False
+    elif len(attachment_path_list) == 1:
+        return attachment_path_list[0]
 
-    return True
+    return None
+
+
+def create_comma_separated_string_for_multiple_paths(attachment_path_list):
+    attachment_string = ""
+    for path in attachment_path_list[:-1]:
+        attachment_string += path + ','
+    return attachment_string + attachment_path_list[-1]
 
 
 def copy_file_to_shared_file_system(path):
