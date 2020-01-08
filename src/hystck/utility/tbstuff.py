@@ -182,9 +182,14 @@ def gen_imap_account(account_number, server_number, smtp_number, imap_server, sm
     email = email_address
     emailBefore = email.split('@')[0] # split the mail to construct the imap base folder
 
+    alias_of_email_address = username.split('@')[0]
+
     # username = email_address
     tb_imap_mail_server_folder = os.path.join(profiledir, "ImapMail", imap_server)
     imap_base_folder = "imap://" + emailBefore + "@" + imap_server
+    print(emailBefore)
+    print(imap_base_folder)
+    print(alias_of_email_address)
     # smtp_description = smtp_description
     # full_name = full_name
     account = {
@@ -203,7 +208,7 @@ def gen_imap_account(account_number, server_number, smtp_number, imap_server, sm
         # "mail.root.imap-rel": "[ProfD]ImapMail",
         # "mail.root.none": tbMailFolder,
         # "mail.root.none-rel": "[ProfD]Mail",
-        "mail.identity.id" + str(no) + ".archive_folder": imap_base_folder + "/Archives",
+        "mail.identity.id" + str(no) + ".archive_folder": "imap://hystck@imap.web.de/Archives",
         #"mail.identity.id" + str(no) + ".doBcc": False,
         #"mail.identity.id" + str(no) + ".doBccList": "",
         "mail.identity.id" + str(no) + ".draft_folder": imap_base_folder + "/Entwurf",
@@ -224,7 +229,7 @@ def gen_imap_account(account_number, server_number, smtp_number, imap_server, sm
         "mail.identity.id" + str(no) + ".tmpl_folder_picker_mode": "0",
         "mail.identity.id" + str(no) + ".useremail": email,
         "mail.identity.id" + str(no) + ".valid": True,
-        "mail.server.server" + str(serverno) + ".authMethod": auth_method,
+        # "mail.server.server" + str(serverno) + ".authMethod": auth_method,
         "mail.server.server" + str(serverno) + ".check_new_mail": True,
         "mail.server.server" + str(serverno) + ".directory": tb_imap_mail_server_folder,
         # probably not needed and will be auto generated
@@ -237,16 +242,17 @@ def gen_imap_account(account_number, server_number, smtp_number, imap_server, sm
         "mail.server.server" + str(serverno) + ".spamActionTargetAccount": imap_base_folder,
         "mail.server.server" + str(serverno) + ".storeContractID": "@mozilla.org/msgstore/berkeleystore;1",
         "mail.server.server" + str(serverno) + ".type": "imap",
-        "mail.server.server" + str(serverno) + ".userName": username,
+        "mail.server.server" + str(serverno) + ".userName": alias_of_email_address,
         "mail.smtpserver.smtp" + str(smtpno) + ".authMethod": auth_method_smtp,
-        "mail.smtpserver.smtp" + str(smtpno) + ".description": smtp_description,
+        # "mail.smtpserver.smtp" + str(smtpno) + ".description": smtp_description,
         "mail.smtpserver.smtp" + str(smtpno) + ".hostname": smtp_server,
         "mail.smtpserver.smtp" + str(smtpno) + ".port": "587",    # smtp port for web de
         "mail.smtpserver.smtp" + str(smtpno) + ".try_ssl": socket_type_smtp,
-        "mail.smtpserver.smtp" + str(smtpno) + ".username": username,
+        "mail.smtpserver.smtp" + str(smtpno) + ".username": alias_of_email_address,
         "mail.smtpservers": "smtp" + str(smtpno),
         # disable startup integration popup
         "mail.winsearch.firstRunDone": True,
+        "mail.startup.enabledMailCheckOnce": True
         # "mail.winsearch.firstRunDone": True,
         # "mail.shell.checkDefaultClient": False,
     }
