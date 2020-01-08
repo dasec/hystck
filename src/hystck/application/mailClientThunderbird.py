@@ -346,10 +346,26 @@ class MailClientThunderbirdPlatformIndependentGuestSide(object):
         acno = tbs.find_next_free_profile_id()
         serno = tbs.find_next_free_server_id()
         smtpno = tbs.find_next_free_smtp_id()
+        self.logger.info("########")
+        self.logger.info(acno)
+        self.logger.info(serno)
+        self.logger.info(smtpno)
+        self.logger.info(ai["imap_server"])
+        self.logger.info(ai["smtp_server"])
+        self.logger.info(ai["email_address"])
+        self.logger.info(ai["username"])
+        self.logger.info(ai["full_name"])
+        self.logger.info(ai["smtp_description"])
+        self.logger.info(ai["socket_type"])
+        self.logger.info(ai["auth_method"])
+        self.logger.info(ai["socket_type_smtp"])
+        self.logger.info(ai["auth_method_smtp"])
+
         acd = tbs.gen_imap_account(acno, serno, smtpno, ai["imap_server"], ai["smtp_server"], ai["email_address"],
                                    ai["username"], ai["full_name"], ai["smtp_description"], ai["socket_type"],
                                    ai["auth_method"], ai["socket_type_smtp"], ai["auth_method_smtp"])
         tbs.add_account_config_to_profile(acd)
+        self.logger.info(acd)
         self.logger.debug("Done creating Imap account")
         self.agent_object.send("application " + self.module_name + " " + str(self.imParent.window_id) + " ready")
 
