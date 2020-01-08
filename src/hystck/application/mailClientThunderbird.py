@@ -338,6 +338,7 @@ class MailClientThunderbirdPlatformIndependentGuestSide(object):
 
     def add_imap_account(self, args):
         self.logger.debug("Creating Imap account")
+        self.logger.debug("Test Test Test - Works!")
         ai = ph.base64unpickle(args)
         if not tbs.has_profile():
             tbs.create_profile_folder_if_non_existent()
@@ -346,20 +347,20 @@ class MailClientThunderbirdPlatformIndependentGuestSide(object):
         acno = tbs.find_next_free_profile_id()
         serno = tbs.find_next_free_server_id()
         smtpno = tbs.find_next_free_smtp_id()
-        self.logger.info("########")
-        self.logger.info(acno)
-        self.logger.info(serno)
-        self.logger.info(smtpno)
-        self.logger.info(ai["imap_server"])
-        self.logger.info(ai["smtp_server"])
-        self.logger.info(ai["email_address"])
-        self.logger.info(ai["username"])
-        self.logger.info(ai["full_name"])
-        self.logger.info(ai["smtp_description"])
-        self.logger.info(ai["socket_type"])
-        self.logger.info(ai["auth_method"])
-        self.logger.info(ai["socket_type_smtp"])
-        self.logger.info(ai["auth_method_smtp"])
+        self.logger.debug("########")
+        self.logger.debug(acno)
+        self.logger.debug(serno)
+        self.logger.debug(smtpno)
+        self.logger.debug(ai["imap_server"])
+        self.logger.debug(ai["smtp_server"])
+        self.logger.debug(ai["email_address"])
+        self.logger.debug(ai["username"])
+        self.logger.debug(ai["full_name"])
+        self.logger.debug(ai["smtp_description"])
+        self.logger.debug(ai["socket_type"])
+        self.logger.debug(ai["auth_method"])
+        self.logger.debug(ai["socket_type_smtp"])
+        self.logger.debug(ai["auth_method_smtp"])
 
         acd = tbs.gen_imap_account(acno, serno, smtpno, ai["imap_server"], ai["smtp_server"], ai["email_address"],
                                    ai["username"], ai["full_name"], ai["smtp_description"], ai["socket_type"],
