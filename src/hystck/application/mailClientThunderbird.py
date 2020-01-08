@@ -183,6 +183,7 @@ class MailClientThunderbirdVmmSide(ApplicationVmmSide):
                   "auth_method": auth_method,
                   "socket_type_smtp": socket_type_smtp,
                   "auth_method_smtp": auth_method_smtp}
+            self.logger.info(ac)
             pcl_ac = ph.base64pickle(ac)
             pw_cmd = "application mailClientThunderbird " + str(self.window_id) + " add_imap_account " + pcl_ac
             self.is_busy = True
