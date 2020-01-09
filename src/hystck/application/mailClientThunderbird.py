@@ -183,7 +183,6 @@ class MailClientThunderbirdVmmSide(ApplicationVmmSide):
                   "auth_method": auth_method,
                   "socket_type_smtp": socket_type_smtp,
                   "auth_method_smtp": auth_method_smtp}
-            self.logger.info(ac)
             pcl_ac = ph.base64pickle(ac)
             pw_cmd = "application mailClientThunderbird " + str(self.window_id) + " add_imap_account " + pcl_ac
             self.is_busy = True
@@ -339,7 +338,6 @@ class MailClientThunderbirdPlatformIndependentGuestSide(object):
 
     def add_imap_account(self, args):
         self.logger.debug("Creating Imap account")
-        self.logger.debug("Test Test Test - Works!")
         ai = ph.base64unpickle(args)
         if not tbs.has_profile():
             tbs.create_profile_folder_if_non_existent()
@@ -348,26 +346,10 @@ class MailClientThunderbirdPlatformIndependentGuestSide(object):
         acno = tbs.find_next_free_profile_id()
         serno = tbs.find_next_free_server_id()
         smtpno = tbs.find_next_free_smtp_id()
-        self.logger.debug("########")
-        self.logger.debug(acno)
-        self.logger.debug(serno)
-        self.logger.debug(smtpno)
-        self.logger.debug(ai["imap_server"])
-        self.logger.debug(ai["smtp_server"])
-        self.logger.debug(ai["email_address"])
-        self.logger.debug(ai["username"])
-        self.logger.debug(ai["full_name"])
-        self.logger.debug(ai["smtp_description"])
-        self.logger.debug(ai["socket_type"])
-        self.logger.debug(ai["auth_method"])
-        self.logger.debug(ai["socket_type_smtp"])
-        self.logger.debug(ai["auth_method_smtp"])
-
         acd = tbs.gen_imap_account(acno, serno, smtpno, ai["imap_server"], ai["smtp_server"], ai["email_address"],
                                    ai["username"], ai["full_name"], ai["smtp_description"], ai["socket_type"],
                                    ai["auth_method"], ai["socket_type_smtp"], ai["auth_method_smtp"])
         tbs.add_account_config_to_profile(acd)
-        self.logger.info(acd)
         self.logger.debug("Done creating Imap account")
         self.agent_object.send("application " + self.module_name + " " + str(self.imParent.window_id) + " ready")
 
@@ -454,32 +436,33 @@ class MailClientThunderbirdWindowsGuestSide(MailClientThunderbirdPlatformIndepen
             #  - find the actual process
             #  - connect to it
             if self.thunderbird_app.windows_():
-                #self.thunderbird_window = self.thunderbird_app.window_(title_re=".*Mozilla Thunderbird")
-                self.thunderbird_window = self.thunderbird_app.window_(title_re=".*Thunderbird")
+                self.thunderbird_window = self.thunderbird_app.window_(title_re=".*Mozilla Thunderbird")
 
             else:
-                #self.thunderbird_app = pywinauto.application.Application().connect_(title_re=".*Mozilla Thunderbird")
-                self.thunderbird_app = pywinauto.application.Application().connect_(title_re=".*Thunderbird")
-                #self.thunderbird_window = self.thunderbird_app.window_(title_re=".*Mozilla Thunderbird")
-                self.thunderbird_window = self.thunderbird_app.window_(title_re=".*Thunderbird")
+                self.thunderbird_app = pywinauto.application.Application().connect_(title_re=".*Mozilla Thunderbird")
+                self.thunderbird_window = self.thunderbird_app.window_(title_re=".*Mozilla Thunderbird")
 
         except Exception as e:
-            #self.logger.error("MailClientThunderbirdGuestSide::open No window named '.*Mozilla Thunderbird'")
-            self.logger.error("MailClientThunderbirdGuestSide::open No window named '.*Thunderbird'")
+            self.logger.error("MailClientThunderbirdGuestSide::open No window named '.*Mozilla Thunderbird'")
             self.agent_object.send("application " + self.module_name + " " + str(self.imParent.window_id) + " error")
             return
 
             # some information about the mailClient state
-        time.sleep(9)
+        time.sleep(20)
         try:
             # app = application.Application()
             password_window = None
-            for r in [".*Passwort", ".*password", ".*[sS]erver"]: # possible names for the password window, try them all
-                try:
-                    password_window = self.thunderbird_app.window_(title_re=r)
-                    break
-                except:
-                    pass
+            #TODO Needs to be refactored
+            try:
+                password_window = self.thunderbird_app.window_(title_re='Mail Server Password Required')
+            except:
+                pass
+            #for r in [".*Passwort", ".*password", ".*[sS]erver"]: # possible names for the password window, try them all
+            #    try:
+            #        password_window = self.thunderbird_app.window_(title_re=r)
+            #        break
+            #    except:
+            #        pass
             if password_window is None:
                 raise Exception("Tried all combinations for password window, giving up")
             self.logger.debug("password window = ")
@@ -487,7 +470,9 @@ class MailClientThunderbirdWindowsGuestSide(MailClientThunderbirdPlatformIndepen
             self.logger.debug("password window appeared")
             time.sleep(1)
             self.logger.debug("self.password: " + str(self.password))
-            send_key_string = self.password + "{TAB}" + "{SPACE}" + "{ENTER}"
+            #TODO Escape all special characters
+            escaped_password = self.password.replace("@", "{@}").replace("%", "{%}")
+            send_key_string = escaped_password + "{TAB}" + "{SPACE}" + "{ENTER}"
             password_window.TypeKeys(send_key_string)
             self.logger.debug("the password should now be inserted")
             time.sleep(2)
@@ -589,11 +574,12 @@ class MailClientThunderbirdWindowsGuestSide(MailClientThunderbirdPlatformIndepen
             time.sleep(10)
             if self.thunderbird_app.windows_():
                 self.logger.debug("if case")
-                self.thunderbird_window = self.thunderbird_app.window_(title_re=".*%s" % subject)
+                self.thunderbird_window = self.thunderbird_app.window_(title_re=".*%s.*" % subject)
             else:
+                # TODO Code is always failing, needs to be investigated
                 self.logger.debug("else case")
-                app = pywinauto.application.Application().connect_(title_re=".*%s" % subject)
-                self.thunderbird_window = app.window_(title_re=".*%s" % subject)
+                app = pywinauto.application.Application().connect_(title_re=".*%s.*" % subject)
+                self.thunderbird_window = app.window_(title_re=".*%s.*" % subject)
 
             self.thunderbird_window.TypeKeys("^{ENTER}") # bug: for some reason this does not work, probably the wrong base window is used
         except Exception as e:
@@ -604,14 +590,14 @@ class MailClientThunderbirdWindowsGuestSide(MailClientThunderbirdPlatformIndepen
         try:
             time.sleep(3)
             self.logger.debug("Press enter to send the message")
-            SendKeys("{ENTER}")
+            SendKeys("^{ENTER}")
             pass
 
         except Exception as e:
             self.logger.error(lineno() + "MailClientThunderbird::sendMail: " + str(e))
 
         self.logger.info("wait 10 second for the smtp pasword window to appear")
-        time.sleep(2)
+        time.sleep(10)
         # Enter password into window
         try:  # check for thunderbird window
             # mozilla is one of those applications that use existing windows
@@ -621,29 +607,26 @@ class MailClientThunderbirdWindowsGuestSide(MailClientThunderbirdPlatformIndepen
             #  - connect to it
             # todo: reevaluate these statements, it will throw an error, but will send mail anyway if open was not used before
             if self.thunderbird_app.windows_():
-                #self.thunderbird_window = self.thunderbird_app.window_(title_re=".*Mozilla Thunderbird")
-                self.thunderbird_window = self.thunderbird_app.window_(title_re=".*Thunderbird")
+                self.thunderbird_window = self.thunderbird_app.window_(title_re=".*Mozilla Thunderbird")
 
             else:
-                #self.thunderbird_app = pywinauto.application.Application().connect_(title_re=".*Mozilla Thunderbird")
-                self.thunderbird_app = pywinauto.application.Application().connect_(title_re=".*Thunderbird")
-                #self.thunderbird_window = self.thunderbird_app.window_(title_re=".*Mozilla Thunderbird")
-                self.thunderbird_window = self.thunderbird_app.window_(title_re=".*Thunderbird")
+                self.thunderbird_app = pywinauto.application.Application().connect_(title_re=".*Mozilla Thunderbird")
+                self.thunderbird_window = self.thunderbird_app.window_(title_re=".*Mozilla Thunderbird")
 
         except Exception as e:
-            #self.logger.error("MailClientThunderbird::open No window named '.*Mozilla Thunderbird'")
-            self.logger.error("MailClientThunderbird::open No window named '.*Thunderbird'")
+            self.logger.error("MailClientThunderbird::open No window named '.*Mozilla Thunderbird'")
             self.agent_object.send("application " + self.module_name + " " + str(self.imParent.window_id) + " error")
             return
 
         # if window appears
         try:
             password_window = None
-            for r in [".*Passwort", ".*password", ".*[sS]erver"]: # possible names for the password window, try them all
+            for r in [".*Password.*", ".*Passwort.*", ".*[sS]erver"]: # possible names for the password window, try them all
                 try:
                     password_window = self.thunderbird_app.window_(title_re=r)
                     break
                 except:
+                    self.logger.error("Password window not found!")
                     pass
             if password_window is None:
                 raise Exception("Tried all combinations for password window, giving up")
@@ -653,7 +636,8 @@ class MailClientThunderbirdWindowsGuestSide(MailClientThunderbirdPlatformIndepen
             time.sleep(1)
             print "self password"
             print self.password
-            sendkeystring = self.password + "{TAB}" + "{SPACE}" + "{ENTER}"
+            escaped_password = self.password.replace("@", "{@}").replace("%", "{%}")
+            sendkeystring = escaped_password + "{TAB}" + "{SPACE}" + "{ENTER}"
             password_window.TypeKeys(sendkeystring)
             self.logger.info("the password should now be inserted")
             time.sleep(2)
