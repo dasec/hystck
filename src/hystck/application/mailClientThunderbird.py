@@ -211,10 +211,8 @@ class MailClientThunderbirdVmmSide(ApplicationVmmSide):
                  "message": message}
             # check if attachment_path is added
             if attachment_path is not None:
-                self.logger.debug(attachment_path)
                 m["attachment_path"] = attachment_path
             pcl_m = ph.base64pickle(m)
-            self.logger.debug(m)
             send_mail_command = "application mailClientThunderbird " + str(self.window_id) + " send_mail " + pcl_m
             self.is_busy = True
             self.guest_obj.send(send_mail_command)
@@ -519,7 +517,6 @@ class MailClientThunderbirdWindowsGuestSide(MailClientThunderbirdPlatformIndepen
         try:
             self.logger.info("function: MailClientThunderbirdGuestSide::send_mail")
             ad = ph.base64unpickle(args)
-            self.logger.debug(ad)
 
             ################
             receiver = ad["receiver"]
@@ -553,7 +550,7 @@ class MailClientThunderbirdWindowsGuestSide(MailClientThunderbirdPlatformIndepen
                             receiver, subject, message))
                 else:
                     self.thunderbird_app = pywinauto.application.Application().start(
-                        thunderbird_x86_path + r' -p default -compose "to=%s,subject=%s,body=%s, attachment=%s"' % (
+                        thunderbird_x86_path + r' -p default -compose "to=%s,subject=%s,body=%s,attachment=%s"' % (
                             receiver, subject, message, attachment_path))
 
             elif os.path.exists(thunderbird_path):
@@ -563,7 +560,7 @@ class MailClientThunderbirdWindowsGuestSide(MailClientThunderbirdPlatformIndepen
                             receiver, subject, message))
                 else:
                     self.thunderbird_app = pywinauto.application.Application().start(
-                        thunderbird_path + r' -p default -compose "to=%s,subject=%s,body=%s, attachment=%s"' % (
+                        thunderbird_path + r' -p default -compose "to=%s,subject=%s,body=%s,attachment=%s"' % (
                             receiver, subject, message, attachment_path))
             else:
                 self.logger.error(
