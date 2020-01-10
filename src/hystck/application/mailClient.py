@@ -114,7 +114,7 @@ class MailClientVmmSide(ApplicationVmmSide):
         @param receiver: Receiver for this email.
         @param subject: Subject for this email.
         @param message: Message for this email.
-        @param attachment_string: (Optional) path to an attachment for this email.
+        @param attachment_path_list: (Optional) list of paths for files to attach to the mail.
 
         @return: No return value.
         """
