@@ -546,21 +546,21 @@ class MailClientThunderbirdWindowsGuestSide(MailClientThunderbirdPlatformIndepen
             if os.path.exists(thunderbird_x86_path):
                 if attachment_path is None:
                     self.thunderbird_app = pywinauto.application.Application().start(
-                        thunderbird_x86_path + r' -compose "to=%s,subject=%s,body=%s"' % (
+                        thunderbird_x86_path + r' -p default -compose "to=%s,subject=%s,body=%s"' % (
                             receiver, subject, message))
                 else:
                     self.thunderbird_app = pywinauto.application.Application().start(
-                        thunderbird_x86_path + r' -compose "to=%s,subject=%s,body=%s, attachment=%s"' % (
+                        thunderbird_x86_path + r' -p default -compose "to=%s,subject=%s,body=%s, attachment=%s"' % (
                             receiver, subject, message, attachment_path))
 
             elif os.path.exists(thunderbird_path):
                 if attachment_path is None:
                     self.thunderbird_app = pywinauto.application.Application().start(
-                        thunderbird_path + r' -compose "to=%s,subject=%s,body=%s"' % (
+                        thunderbird_path + r' -p default -compose "to=%s,subject=%s,body=%s"' % (
                             receiver, subject, message))
                 else:
                     self.thunderbird_app = pywinauto.application.Application().start(
-                        thunderbird_path + r' -compose "to=%s,subject=%s,body=%s, attachment=%s"' % (
+                        thunderbird_path + r' -p default -compose "to=%s,subject=%s,body=%s, attachment=%s"' % (
                             receiver, subject, message, attachment_path))
             else:
                 self.logger.error(
