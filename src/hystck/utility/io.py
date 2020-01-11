@@ -19,10 +19,10 @@ def parse_attachment_string(attachment_path_list):
 
 
 def create_comma_separated_string_for_multiple_paths(attachment_path_list):
-    attachment_string = "'"
+    attachment_string = ""
     for path in attachment_path_list[:-1]:
         attachment_string += path + ','
-    return attachment_string + attachment_path_list[-1] + "'"
+    return attachment_string + attachment_path_list[-1]
 
 
 def copy_file_to_shared_file_system(path):
