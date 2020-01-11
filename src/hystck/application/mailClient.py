@@ -618,11 +618,11 @@ class MailClientWindowsGuestSide(MailClientPlatformIndependentGuestSide):
             self.logger.debug("open email window")
             if attachment_string is None:
                 self.thunderbird_app = pywinauto.application.Application().start(
-                    r'c:\Program files (x86)\Mozilla Thunderbird\Thunderbird.exe -compose "to=%s,subject=%s,body=%s"'% (
+                    'c:\Program files (x86)\Mozilla Thunderbird\Thunderbird.exe -compose "to=%s,subject=%s,body=%s"'% (
                         receiver, subject, message))
             else:
                 self.thunderbird_app = pywinauto.application.Application().start(
-                    r'c:\Program files (x86)\Mozilla Thunderbird\Thunderbird.exe ' +
+                    'c:\Program files (x86)\Mozilla Thunderbird\Thunderbird.exe ' +
                     '-compose "to=%s,subject=%s,body=%s,attachment=%s"' % (receiver, subject, message, attachment_string))
 
             self.logger.debug("email window is here")
