@@ -175,6 +175,13 @@ class WebBrowserFirefoxVmmSide(ApplicationVmmSide):
 	except Exception as e:
 	    raise Exception("error WebBrowserFirefoxVmmSide::press_enter_test: " + str(e))
 
+    def save_as(self):
+        #experimental
+        try:
+            self.guest_obj.send("application " + "webBrowserFirefox " + str(
+                self.window_id) + " save_as ")
+        except Exception as e:
+            raise Exception("error WebBrowserFirefoxVmmSide::save_as: " + str(e))
 
     def facebook_login(self, username, password, id):
         """Sends a command to call facebook.com and login.
@@ -477,6 +484,10 @@ class WebBrowserFirefoxGuestSide(ApplicationGuestSide):
     def press_enter_test(self, args):
 	#experimental
 	keyboard.SendKeys('{ENTER 2}')
+
+    def save_as(self, args):
+        #experimental
+        keyboard.SendKeys('%s')
 
     def find_firefox_path(self):
         if platform.system() == "Windows":
