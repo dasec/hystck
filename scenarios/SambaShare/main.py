@@ -12,7 +12,7 @@ author = cfg.author
 hostplatform = cfg.hostplatform
 
 sourcePath = "C:\Users\hystck\Desktop\TestFile.txt"
-targetPath = "Z:\TestFile.txt"
+targetPath = r"\\192.168.103.102"
 
 # Instanciate VMM and a VM
 logger = create_logger('hystckManager', logging.DEBUG)
@@ -24,17 +24,13 @@ guests = []
 guestListener = GuestListener(guests, logger)
 virtual_machine_monitor1 = Vmm(macsInUse, guests, logger)
 guest = virtual_machine_monitor1.create_guest(guest_name=imagename, platform=hostplatform)
-# TODO: Start smb-server
-# smbServer = virtual_machine_monitor1.create_guest(guest_name=cfg.smbname, platform=cfg.smbplatform)
 
 # Wait for the VM to connect to the VMM
 guest.waitTillAgentIsConnected()
 # smbServer.waitTillAgentIsConnected()
 
-# TODO: reconnect SMB share in windows
-time.sleep(120)
 # copy files to smb Share
-guest.guestCopy(os.path.normpath(sourcePath), os.path.normpath(targetPath))
+guest.smbCopy(sourcePath, targetPath)
 
 
 # Cleanup

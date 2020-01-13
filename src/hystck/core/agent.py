@@ -20,6 +20,10 @@ import psutil
 
 import StringIO
 
+from smbclient import (
+    shutil
+)
+
 if platform.system() == "Windows":
     import win32api
     import pywintypes
@@ -267,6 +271,11 @@ class Agent(object):
                 elif "guestchdir" in fcmd:
                     cpath = base64.b64decode(com[2])
                     self._guestchdir(cpath)
+
+                elif "smbcopy" in fcmd:
+                    sfile = base64.b64decode(com[2])
+                    tfile = base64.b64decode(com[3])
+                    self._guestcopy(sfile, tfile)
                 else:
                     self.logger.warning("Unrecognized file command: " + fcmd)
 
@@ -550,6 +559,14 @@ class Agent(object):
             shutil.rmtree(target_path, True)
         else:
             os.remove(target_path)
+
+    def _smbcopy(self, source_file, target_file):
+        """ Copies file to smbshare.
+           :param source_file: source file
+           :param target_file: target file
+       """
+
+        shutil.copy(source_file, target_file)
 
     def _guestchdir(self, new_path):
         """ Changes the current working directory.
