@@ -191,11 +191,16 @@ class WebBrowserFirefoxVmmSide(ApplicationVmmSide):
         """
         try:
             self.logger.info("function: WebBrowserFirefoxVmmSide::facebook_login")
-            self.browse_to("www.facebook.com")
-            self.send_keys_to_browser_element("email", username)
-            self.send_keys_to_browser_element("pass", password)
-	    time.sleep(20)
-	    self.click_element_test(id)
+            ##### deprecated code section: calls other hostside functions
+            #self.browse_to("www.facebook.com")
+            #self.send_keys_to_browser_element("email", username)
+            #self.send_keys_to_browser_element("pass", password)
+	    #time.sleep(20)
+	    #self.click_element_test(id)
+
+            #new hostside implementation
+            self.guest_obj.send("application " + "webBrowserFirefox " + str(
+                self.windows_id) + " facebook_login" + " " + username + " " + password + " " + id)
 
            # self.send_keys_to_browser_element(" pass", "{ENTER}")
         except Exception as e:
@@ -471,6 +476,24 @@ class WebBrowserFirefoxGuestSide(ApplicationGuestSide):
             self.logger.error(self.module_name + " error " + str(self.window_id) + str(e))
             self.agent_object.send("application " + self.module_name + " " + str(self.window_id) + " error")
 
+    def facebook_login(self, args):
+        #experimental, todo: include "busy" and "ready" states and to be tested
+        try:
+            arguments = args.split(" ")
+            username = "email" + " " + arguments[0]
+            password = "pass" + " " + arguments[1]
+            id = arguments[2]
+            url = "facebook.com"
+            #todo include busy and ready states from here
+            self.browse_to(url)
+            self.send_keys_to_browser_element(username)
+            self.send_keys_to_browser_element(password)
+            self.click_element_test(id)
+
+        except Exception as e:
+            self.logger.error(self.module_name + " error " + str(self.window_id) + str(e))
+            self.agent_object.send("application " + self.module_name + " " + str(self.window_id) + " error")
+
     def click_element_test(self, id):
 	#experimental
         element = id
@@ -486,7 +509,7 @@ class WebBrowserFirefoxGuestSide(ApplicationGuestSide):
 	keyboard.SendKeys('{ENTER 2}')
 
     def save_as(self, args):
-        #experimental
+        #experimental, to be tested
         keyboard.SendKeys('%s')
 
     def find_firefox_path(self):
