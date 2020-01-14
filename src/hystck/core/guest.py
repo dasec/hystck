@@ -938,13 +938,15 @@ class Guest(object):
         msg += base64.b64encode(guest_source_path) + " " + base64.b64encode(guest_target_path)
         self.send(msg)
 
-    def smbCopy(self, guest_source_path, smb_target_path):
+    def smbCopy(self, guest_source_path, smb_target_path, user, passw):
         """ Copies file from guest to smb share.
                 :param guest_source_path: source path on guest
                 :param smb_target_path: target path on smb
+                :param user: smb user
+                :param passw: pass
         """
         msg = "file smbcopy "
-        msg += base64.b64encode(guest_source_path) + " " + base64.b64encode(smb_target_path)
+        msg += base64.b64encode(guest_source_path) + " " + base64.b64encode(smb_target_path) + " " + base64.b64encode(user) + " " + base64.b64encode(passw)
         self.send(msg)
 
     def guestMove(self, guest_source_path, guest_target_path):

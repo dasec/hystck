@@ -275,7 +275,9 @@ class Agent(object):
                 elif "smbcopy" in fcmd:
                     sfile = base64.b64decode(com[2])
                     tfile = base64.b64decode(com[3])
-                    self._smbcopy(sfile, tfile)
+                    user = base64.b64decode(com[4])
+                    passwd = base64.b64decode(com[5])
+                    self._smbcopy(sfile, tfile, user, passwd)
                 else:
                     self.logger.warning("Unrecognized file command: " + fcmd)
 
@@ -560,13 +562,15 @@ class Agent(object):
         else:
             os.remove(target_path)
 
-    def _smbcopy(self, source_file, target_file):
+    def _smbcopy(self, source_file, target_file, user, passwd):
         """ Copies file to smbshare.
            :param source_file: source file
            :param target_file: target file
+           :param user: SMB User
+           :param passwd: SMB Password
        """
 
-        shutil.copy(source_file, target_file, True, username="bla", password="test")
+        shutil.copy(source_file, target_file, True, username=user, password=passwd)
 
     def _guestchdir(self, new_path):
         """ Changes the current working directory.
