@@ -1,3 +1,4 @@
+import atexit
 import logging
 import os
 import subprocess
@@ -17,6 +18,7 @@ class Sniffer:
         self.logger = logger
         if logger is None:
             self.logger = create_logger(name, logging.INFO)
+        atexit.register(self.stop)
 
     def start(self):
         try:
@@ -34,3 +36,4 @@ class Sniffer:
             # TODO probably sending a sigint is better
             self.process.kill()
             self.logger.info("sniffer {} stopped".format(self.name))
+            self.process = None
