@@ -26,7 +26,6 @@ guest = virtual_machine_monitor1.create_guest(guest_name=imagename, platform=hos
 
 # Wait for the VM to connect to the VMM
 guest.waitTillAgentIsConnected()
-# smbServer.waitTillAgentIsConnected()
 
 # copy files to smb Share
 guest.smbCopy(cfg.sourcePath, cfg.targetPath)

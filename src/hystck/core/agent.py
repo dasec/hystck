@@ -21,8 +21,7 @@ import psutil
 import StringIO
 
 from smbclient import (
-    shutil,
-    register_session
+    shutil
 )
 
 if platform.system() == "Windows":
@@ -276,7 +275,7 @@ class Agent(object):
                 elif "smbcopy" in fcmd:
                     sfile = base64.b64decode(com[2])
                     tfile = base64.b64decode(com[3])
-                    self._guestcopy(sfile, tfile)
+                    self._smbcopy(sfile, tfile)
                 else:
                     self.logger.warning("Unrecognized file command: " + fcmd)
 
@@ -567,8 +566,7 @@ class Agent(object):
            :param target_file: target file
        """
 
-        register_session("192.168.103.102", username="bla", password="test")
-        shutil.copy(source_file, target_file)
+        shutil.copy(source_file, target_file, True, username="bla", password="test")
 
     def _guestchdir(self, new_path):
         """ Changes the current working directory.
