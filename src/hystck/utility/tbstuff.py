@@ -251,7 +251,7 @@ def gen_imap_account(account_number, server_number, smtp_number, imap_server, sm
     }
     if socket_type == 0:
         account["mail.server.server" + str(serverno) + ".port"] = 143
-        account["mail.smtpserver.smtp" + str(smtpno) + ".port"] = 587
+        account["mail.smtpserver.smtp" + str(smtpno) + ".port"] = 25
     elif socket_type == 2:
         account["mail.server.server" + str(serverno) + ".port"] = 143
         account["mail.smtpserver.smtp" + str(smtpno) + ".port"] = 587
