@@ -21,7 +21,8 @@ import psutil
 import StringIO
 
 from smbclient import (
-    shutil
+    shutil,
+    register_session
 )
 
 if platform.system() == "Windows":
@@ -566,6 +567,7 @@ class Agent(object):
            :param target_file: target file
        """
 
+        register_session("192.168.103.102", username="bla", password="test")
         shutil.copy(source_file, target_file)
 
     def _guestchdir(self, new_path):

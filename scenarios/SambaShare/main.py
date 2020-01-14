@@ -11,8 +11,7 @@ imagename = cfg.imagename
 author = cfg.author
 hostplatform = cfg.hostplatform
 
-sourcePath = "C:\Users\hystck\Desktop\TestFile.txt"
-targetPath = r"\\192.168.103.102"
+
 
 # Instanciate VMM and a VM
 logger = create_logger('hystckManager', logging.DEBUG)
@@ -30,7 +29,7 @@ guest.waitTillAgentIsConnected()
 # smbServer.waitTillAgentIsConnected()
 
 # copy files to smb Share
-guest.smbCopy(sourcePath, targetPath)
+guest.smbCopy(cfg.sourcePath, cfg.targetPath)
 
 
 # Cleanup

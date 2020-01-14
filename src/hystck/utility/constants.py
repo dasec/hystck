@@ -6,8 +6,8 @@ import os
 
 ROOT = os.path.normpath(os.path.join(os.path.abspath(os.path.dirname(__file__)), ".."))
 
-FILEPATH_TEMPLATE_IMAGES = "/var/lib/libvirt/images/"       # where are the template images stored
-FILEPATH_LOCAL_IMAGES = "/data/images/backing/"          # where will the differential images be placed
+FILEPATH_TEMPLATE_IMAGES = "/home/wurstfingersalat/Downloads/hystckpool/"       # where are the template images stored
+FILEPATH_LOCAL_IMAGES = "/home/wurstfingersalat/Downloads/hystckpool/backing/"          # where will the differential images be placed
 FILEPATH_NETWORK_DUMPS = "/tmp/"                # location for pcap-files from tcpdump
 FILEPATH_NETWORK_CONFIG = "/etc/libvirt/qemu/networks/"
 FILEPATH_TMP = "/tmp/"
