@@ -87,7 +87,7 @@ def send_mail(guest_vm, mail_account, mail):
 
     # Load new mails
     # Create a new profile to be used by thunderbird
-    guest_vm.add_imap_account(mail_account.imap_server, mail_account.smtp_server, mail_account.email_address, mail_account.user_name, mail_account.socket_type, mail_account.socket_type_smtp, mail_account.auth_method_smtp)
+    guest_vm.add_imap_account(mail_account.imap_server, mail_account.smtp_server, mail_account.email_address, mail_account.user_name, socket_type=mail_account.socket_type, auth_method=mail_account.auth_method, socket_type_smtp=mail_account.socket_type_smtp, auth_method_smtp=mail_account.auth_method_smtp)
 
     while guest_vm.is_busy:
         time.sleep(1)
