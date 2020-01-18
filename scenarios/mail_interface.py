@@ -32,7 +32,7 @@ path_to_pdf = os.path.normpath(path_pdf)
 client.waitTillAgentIsConnected()
 
 # Create the mailer object
-mail = client.application("mailClientThunderbird", {})
+thunderbird_guest_vm = client.application("mailClientThunderbird", {})
 
 class Color(Enum):
     red = 1
@@ -138,6 +138,6 @@ second_mail = Mail(recipient="martin-thissen97@web.de", subject="testmail", body
 third_mail = Mail(recipient="sk@hystck.local", subject="testmail", body="testmail", attachment_path_list=[path_to_file, path_to_pdf])
 
 # send mails
-send_mail(guest_vm=client, mail_account=web_mail_account, mail=first_mail)
-send_mail(guest_vm=client, mail_account=web_mail_account, mail=second_mail)
-send_mail(guest_vm=client, mail_account=local_mail_account, mail=third_mail)
+send_mail(guest_vm=thunderbird_guest_vm, mail_account=web_mail_account, mail=first_mail)
+send_mail(guest_vm=thunderbird_guest_vm, mail_account=web_mail_account, mail=second_mail)
+send_mail(guest_vm=thunderbird_guest_vm, mail_account=local_mail_account, mail=third_mail)
