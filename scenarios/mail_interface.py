@@ -129,8 +129,8 @@ def generate_nfs_path_for_file_on_guest_vm(file_path, guest_vm_nfs_path):
     return os.path.normpath(guest_vm_nfs_path + os.path.basename(file_path))
 
 
-web_mail_account = MailAccount("imap.web.de", "smtp.web.de", "hystck@web.de", "password", "hystck", 3, 3, 2, 3)
-local_mail_account = MailAccount("192.168.103.123", "192.168.103.123", "sk@hystck.local", "password", "sk", 0, 3, 0, 3)
+web_mail_account = MailAccount("imap.web.de", "smtp.web.de", "hystck@web.de", "Vo@iLmx48Qv8m%y", "hystck", 3, 3, 2, 3)
+local_mail_account = MailAccount("192.168.103.123", "192.168.103.123", "sk@hystck.local", "hystck", "sk", 0, 3, 0, 3)
 
 
 first_mail = Mail(recipient="martin-thissen97@web.de", subject="testmail", body="testmail", attachment_path_list=[path_to_file, path_to_pdf])
