@@ -620,8 +620,9 @@ class MailClientThunderbirdWindowsGuestSide(MailClientThunderbirdPlatformIndepen
 
         except Exception as e:
             self.logger.error("MailClientThunderbird::open No window named '.*Mozilla Thunderbird'")
-            self.agent_object.send("application " + self.module_name + " " + str(self.imParent.window_id) + " error")
-            return
+            self.logger.error("MailClientThunderbird::open SMTP password may have been entered previously")
+            #self.agent_object.send("application " + self.module_name + " " + str(self.imParent.window_id) + " error")
+            #return
 
         # if window appears
         try:
