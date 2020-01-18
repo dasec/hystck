@@ -160,8 +160,8 @@ class MailClientThunderbirdVmmSide(ApplicationVmmSide):
         except Exception as e:
             raise Exception("error mailer::add_pop3_account: " + str(e))
 
-    def add_imap_account(self, imap_server, smtp_server, email_address, username, full_name, smtp_description,
-                         socket_type=3, auth_method=3, socket_type_smtp=2, auth_method_smtp=3):
+    def add_imap_account(self, imap_server, smtp_server, email_address, username, full_name,
+                         socket_type=3, socket_type_smtp=2, auth_method_smtp=3):
         """ Adds a imap account to the profile.
 
             :param imap_server: address of the pop3 mailserver
@@ -169,7 +169,6 @@ class MailClientThunderbirdVmmSide(ApplicationVmmSide):
             :param email_address: the accounts email address
             :param username: username of the mail server, usually the email address
             :param full_name: the account owners full name
-            :param smtp_description: desription for the smpt server
             :param socket_type: 0 No SSL, 1 StartTLS, 2 SSL/TLS
             :param auth_method: corresponds to the password exchange method, has the same methods for smtp
         """
@@ -179,7 +178,6 @@ class MailClientThunderbirdVmmSide(ApplicationVmmSide):
                   "email_address": email_address,
                   "username": username,
                   "full_name": full_name,
-                  "smtp_description": smtp_description,
                   "socket_type": socket_type,
                   "auth_method": auth_method,
                   "socket_type_smtp": socket_type_smtp,
@@ -352,8 +350,8 @@ class MailClientThunderbirdPlatformIndependentGuestSide(object):
         serno = tbs.find_next_free_server_id()
         smtpno = tbs.find_next_free_smtp_id()
         acd = tbs.gen_imap_account(acno, serno, smtpno, ai["imap_server"], ai["smtp_server"], ai["email_address"],
-                                   ai["username"], ai["full_name"], ai["smtp_description"], ai["socket_type"],
-                                   ai["auth_method"], ai["socket_type_smtp"], ai["auth_method_smtp"])
+                                   ai["username"], ai["full_name"], ai["socket_type"], ai["socket_type_smtp"],
+                                   ai["auth_method_smtp"])
         tbs.add_account_config_to_profile(acd)
         self.logger.debug("Done creating Imap account")
         self.agent_object.send("application " + self.module_name + " " + str(self.imParent.window_id) + " ready")

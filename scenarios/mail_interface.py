@@ -43,14 +43,14 @@ class Color(Enum):
 
 class MailAccount:
     # TODO ENUM Socket types
-    def __init__(self, imap_server, smtp_server, email_address, password, user_name, socket_type, auth_method, socket_type_smtp, auth_method_smtp):
+    def __init__(self, imap_server, smtp_server, email_address, password, user_name, full_name, socket_type, socket_type_smtp, auth_method_smtp):
         self.imap_server = imap_server
         self.smtp_server = smtp_server
         self.email_address = email_address
         self.password = password
         self.user_name = user_name
+        self.full_name = full_name
         self.socket_type = socket_type
-        self.auth_method = auth_method
         self.socket_type_smtp = socket_type_smtp
         self.auth_method_smtp = auth_method_smtp
 
@@ -87,7 +87,9 @@ def send_mail(guest_vm, mail_account, mail):
 
     # Load new mails
     # Create a new profile to be used by thunderbird
-    guest_vm.add_imap_account(mail_account.imap_server, mail_account.smtp_server, mail_account.email_address, mail_account.user_name, socket_type=mail_account.socket_type, auth_method=mail_account.auth_method, socket_type_smtp=mail_account.socket_type_smtp, auth_method_smtp=mail_account.auth_method_smtp)
+    guest_vm.add_imap_account(mail_account.imap_server, mail_account.smtp_server, mail_account.email_address,
+                              mail_account.user_name, mail_account.full_name, socket_type=mail_account.socket_type,
+                              socket_type_smtp=mail_account.socket_type_smtp, auth_method_smtp=mail_account.auth_method_smtp)
 
     while guest_vm.is_busy:
         time.sleep(1)
@@ -132,8 +134,8 @@ def generate_nfs_path_for_file_on_guest_vm(file_path, guest_vm_nfs_path):
     return os.path.normpath(guest_vm_nfs_path + os.path.basename(file_path))
 
 
-web_mail_account = MailAccount("imap.web.de", "smtp.web.de", "hystck@web.de", "Vo@iLmx48Qv8m%y", "hystck", 3, 3, 2, 3)
-local_mail_account = MailAccount("192.168.103.123", "192.168.103.123", "sk@hystck.local", "hystck", "sk", 0, 3, 0, 3)
+web_mail_account = MailAccount("imap.web.de", "smtp.web.de", "hystck@web.de", "Vo@iLmx48Qv8m%y", "hystck", "Heinz Hystck", 3, 2, 3)
+local_mail_account = MailAccount("192.168.103.123", "192.168.103.123", "sk@hystck.local", "hystck", "sk", "Test User", 0, 0, 3)
 
 
 first_mail = Mail(recipient="martin-thissen97@web.de", subject="testmail", body="testmail", attachment_path_list=[path_to_file, path_to_pdf])

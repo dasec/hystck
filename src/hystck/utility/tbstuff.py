@@ -152,8 +152,7 @@ def gen_common():
 
 
 def gen_imap_account(account_number, server_number, smtp_number, imap_server, smtp_server, email_address, username,
-                     full_name="John Doe",
-                     smtp_description="Google Mail", socket_type=3, auth_method=3, socket_type_smtp=2, auth_method_smtp=3):
+                     full_name="John Doe", socket_type=3, socket_type_smtp=2, auth_method_smtp=3):
     """ Generates entries for an imap account.
 
     :param account_number: refers to the id section
@@ -167,7 +166,6 @@ def gen_imap_account(account_number, server_number, smtp_number, imap_server, sm
     :param smtp_description: description for the smtp server
     :param socket_type: 0 No SSL, 1 StartTLS, 2 SSL/TLS
     :param socket_type_smtp: same as socket_type
-    :param auth_method: corresponds to the password exchange method
     :param auth_method_smtp: corresponds to the password exchange method for smtp
     :return: dictionary containing the config
     """
