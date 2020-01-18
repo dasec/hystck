@@ -213,7 +213,10 @@ class MailClientThunderbirdVmmSide(ApplicationVmmSide):
                  "message": message}
             # check if attachment_string is added
             if attachment_path_list is not None:
-                m["attachment_string"] = parse_attachment_string(attachment_path_list)
+                attachment_string = parse_attachment_string(attachment_path_list)
+                print(attachment_string)
+                if attachment_string is not None:
+                    m["attachment_string"] = attachment_string
             pcl_m = ph.base64pickle(m)
             send_mail_command = "application mailClientThunderbird " + str(self.window_id) + " send_mail " + pcl_m
             self.is_busy = True
