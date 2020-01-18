@@ -20,7 +20,7 @@ client = vmm.create_guest(guest_name='mail_attachement_vm')
 
 # path to the nfs mount point
 _guest_vm_nfs_path = 'Z:\\'
-nfs_path = "/data/hystck_data/"
+nfs_directory_path = "/data/hystck_data"
 
 # path = 'C:\Users\hystck\Documents\document.txt'
 # path_pdf = 'C:\Users\hystck\Documents\hda_master.pdf'
@@ -75,7 +75,7 @@ def send_mail(guest_vm, mail_account, mail):
         raise IllegalArgumentError("Wrong object type. Please pass for the argument mail_account an instance of type MailAccount.")
 
     if mail.attachment_path_list is not None:
-        mail.attachment_path_list = generate_path_list_for_guest_vm(mail.attachment_path_list, _guest_vm_nfs_path, nfs_path)
+        mail.attachment_path_list = generate_path_list_for_guest_vm(mail.attachment_path_list, _guest_vm_nfs_path, nfs_directory_path)
     print(mail.attachment_path_list)
 
 
