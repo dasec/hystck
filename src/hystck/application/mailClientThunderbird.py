@@ -179,7 +179,6 @@ class MailClientThunderbirdVmmSide(ApplicationVmmSide):
                   "username": username,
                   "full_name": full_name,
                   "socket_type": socket_type,
-                  "auth_method": auth_method,
                   "socket_type_smtp": socket_type_smtp,
                   "auth_method_smtp": auth_method_smtp}
             pcl_ac = ph.base64pickle(ac)
