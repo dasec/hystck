@@ -235,7 +235,6 @@ def gen_imap_account(account_number, server_number, smtp_number, imap_server, sm
         "mail.server.server" + str(serverno) + ".type": "imap",
         "mail.server.server" + str(serverno) + ".userName": username,
         "mail.smtpserver.smtp" + str(smtpno) + ".authMethod": auth_method_smtp,
-        "mail.smtpserver.smtp" + str(smtpno) + ".description": smtp_description,
         "mail.smtpserver.smtp" + str(smtpno) + ".hostname": smtp_server,
         #"mail.smtpserver.smtp" + str(smtpno) + ".port": 465,
         "mail.smtpserver.smtp" + str(smtpno) + ".try_ssl": socket_type_smtp,
