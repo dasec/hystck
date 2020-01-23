@@ -2,8 +2,6 @@
 Creation of the Service VM
 ========================
 
-Mail server, dhcp server, print server, samba
-
 We decided to use a debian image for the service vm, but feel free to choose your favorite linux distribution. In case you choose a lnux distribution other than debian be aware that some commands of this instruction won't work on your vm. Nevertheless, the changes for the config files will stay the same for each linux distribution.
 
 Create Service-VM:
@@ -21,7 +19,10 @@ Create Service-VM:
 
 After installing the service vm, switch to your service vm and open a cli.
 
-**Setting up the mail server**
+
+
+Setting up the mail server
+========================
 
 First we will start with the SMTP server which is primarily responsible for forwarding and storing of mails.
 
@@ -64,7 +65,7 @@ Now, create a test user called "hystck":
 $ /usr/sbin/adduser hystck
 $ passwd <type_a_password_of_your_choice>
 
-Now we will install the IMAP/POP3 server
+Now we will install the IMAP/POP3 server:
 ::
 
 $ sudo apt-get install dovecot
@@ -90,12 +91,12 @@ Restart dovecot to apply the changes:
 
 $ systemctl restart postfix
 
-====================================
+
 Setting up a nfs directory
 ====================================
 **Host side**
 
-Installing
+Installation of the nfs server:
 ::
 
 $ sudo apt-get install nfs-kernel-server
@@ -114,6 +115,8 @@ $ sudo systemctl restart nfs-server
 
 **Client side**
 
+(**Windows**)
+
 Mounting the nfs directory on a client vm (Windows)
 ::
 
@@ -122,7 +125,7 @@ $ mount -o nolock <ip_host_vm>:/<mnt_path_host_vm> z:
 (Optional) Enable write permission on windows client:
 
 - Open "regedit".
-- Browse to "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\ClientForNFS\CurrentVersion\Default".
+- Browse to "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\ClientForNFS\\CurrentVersion\\Default".
 - Create a new "New DWORD (32-bit) Value" inside the "Default" folder named "AnonymousUid" and assign the value 0.
 - Create a new "New DWORD (32-bit) Value" inside the "Default" folder named "AnonymousGid" and assign the value 0.
 - Reboot the machine.
@@ -137,6 +140,7 @@ Auto startup on windows
 $ @echo off
 $ net use z:  \\<ip_host_vm>\<mnt_path_host_vm>
 
+(**Linux**)
 
 Mounting the nfs directory on a client vm (Linux)
 ::
