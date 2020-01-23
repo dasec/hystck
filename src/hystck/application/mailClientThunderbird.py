@@ -32,6 +32,7 @@ try:
     from hystck.application.application import ApplicationGuestSide
     from hystck.application.application import ApplicationGuestSideCommands
     from hystck.utility.line import lineno
+    from hystck.utility.io import parse_attachment_string
 
     if platform.system() == "Windows":
         import pywinauto
@@ -159,8 +160,8 @@ class MailClientThunderbirdVmmSide(ApplicationVmmSide):
         except Exception as e:
             raise Exception("error mailer::add_pop3_account: " + str(e))
 
-    def add_imap_account(self, imap_server, smtp_server, email_address, username, full_name, smtp_description,
-                         socket_type=3, auth_method=3, socket_type_smtp=3, auth_method_smtp=3):
+    def add_imap_account(self, imap_server, smtp_server, email_address, username, full_name,
+                         socket_type=3, socket_type_smtp=2, auth_method_smtp=3):
         """ Adds a imap account to the profile.
 
             :param imap_server: address of the pop3 mailserver
@@ -168,7 +169,6 @@ class MailClientThunderbirdVmmSide(ApplicationVmmSide):
             :param email_address: the accounts email address
             :param username: username of the mail server, usually the email address
             :param full_name: the account owners full name
-            :param smtp_description: desription for the smpt server
             :param socket_type: 0 No SSL, 1 StartTLS, 2 SSL/TLS
             :param auth_method: corresponds to the password exchange method, has the same methods for smtp
         """
@@ -178,9 +178,7 @@ class MailClientThunderbirdVmmSide(ApplicationVmmSide):
                   "email_address": email_address,
                   "username": username,
                   "full_name": full_name,
-                  "smtp_description": smtp_description,
                   "socket_type": socket_type,
-                  "auth_method": auth_method,
                   "socket_type_smtp": socket_type_smtp,
                   "auth_method_smtp": auth_method_smtp}
             pcl_ac = ph.base64pickle(ac)
@@ -191,7 +189,7 @@ class MailClientThunderbirdVmmSide(ApplicationVmmSide):
         except Exception as e:
             raise Exception("error mailer::add_imap_account: " + str(e))
 
-    def send_mail(self, receiver, subject, message):
+    def send_mail(self, receiver, subject, message, attachment_path_list=None):
         """Send an email via the mailClient.
 
            Note: A bug prevents this from working inside an open thunderbird application.
@@ -200,6 +198,9 @@ class MailClientThunderbirdVmmSide(ApplicationVmmSide):
         @param receiver: Receiver for this email.
         @param subject: Subject for this email.
         @param message: Message for this email.
+        TODO Proof correctness
+        TODO Proof naming, attachment, attachments?
+        @param attachment_path_list: (Optional) list of paths for files to attach to the mail.
 
         @return: No return value.
         """
@@ -207,6 +208,12 @@ class MailClientThunderbirdVmmSide(ApplicationVmmSide):
             m = {"receiver": receiver,
                  "subject": subject,
                  "message": message}
+            # check if attachment_string is added
+            if attachment_path_list is not None:
+                attachment_string = parse_attachment_string(attachment_path_list)
+                print(attachment_string)
+                if attachment_string is not None:
+                    m["attachment_string"] = attachment_string
             pcl_m = ph.base64pickle(m)
             send_mail_command = "application mailClientThunderbird " + str(self.window_id) + " send_mail " + pcl_m
             self.is_busy = True
@@ -215,6 +222,7 @@ class MailClientThunderbirdVmmSide(ApplicationVmmSide):
             raise Exception("error mailer::sendMail: " + str(e))
 
     def loadMailboxData(self, type, from_name, from_ad, to_name, to_ad, user, server, timestamp, subject, message):
+        # TODO attachment
         try:
             m = {"type": type,
                  "from_name": from_name,
@@ -341,8 +349,8 @@ class MailClientThunderbirdPlatformIndependentGuestSide(object):
         serno = tbs.find_next_free_server_id()
         smtpno = tbs.find_next_free_smtp_id()
         acd = tbs.gen_imap_account(acno, serno, smtpno, ai["imap_server"], ai["smtp_server"], ai["email_address"],
-                                   ai["username"], ai["full_name"], ai["smtp_description"], ai["socket_type"],
-                                   ai["auth_method"], ai["socket_type_smtp"], ai["auth_method_smtp"])
+                                   ai["username"], ai["full_name"], ai["socket_type"], ai["socket_type_smtp"],
+                                   ai["auth_method_smtp"])
         tbs.add_account_config_to_profile(acd)
         self.logger.debug("Done creating Imap account")
         self.agent_object.send("application " + self.module_name + " " + str(self.imParent.window_id) + " ready")
@@ -442,16 +450,21 @@ class MailClientThunderbirdWindowsGuestSide(MailClientThunderbirdPlatformIndepen
             return
 
             # some information about the mailClient state
-        time.sleep(9)
+        time.sleep(20)
         try:
             # app = application.Application()
             password_window = None
-            for r in [".*Passwort", ".*password", ".*[sS]erver"]: # possible names for the password window, try them all
-                try:
-                    password_window = self.thunderbird_app.window_(title_re=r)
-                    break
-                except:
-                    pass
+            #TODO Needs to be refactored
+            try:
+                password_window = self.thunderbird_app.window_(title_re='Mail Server Password Required')
+            except:
+                pass
+            #for r in [".*Passwort", ".*password", ".*[sS]erver"]: # possible names for the password window, try them all
+            #    try:
+            #        password_window = self.thunderbird_app.window_(title_re=r)
+            #        break
+            #    except:
+            #        pass
             if password_window is None:
                 raise Exception("Tried all combinations for password window, giving up")
             self.logger.debug("password window = ")
@@ -459,7 +472,9 @@ class MailClientThunderbirdWindowsGuestSide(MailClientThunderbirdPlatformIndepen
             self.logger.debug("password window appeared")
             time.sleep(1)
             self.logger.debug("self.password: " + str(self.password))
-            send_key_string = self.password + "{TAB}" + "{SPACE}" + "{ENTER}"
+            #TODO Escape all special characters
+            escaped_password = self.password.replace("@", "{@}").replace("%", "{%}")
+            send_key_string = escaped_password + "{TAB}" + "{SPACE}" + "{ENTER}"
             password_window.TypeKeys(send_key_string)
             self.logger.debug("the password should now be inserted")
             time.sleep(2)
@@ -498,6 +513,8 @@ class MailClientThunderbirdWindowsGuestSide(MailClientThunderbirdPlatformIndepen
         @param receiver - Email address.
         @param subject - Subject of the email.
         @param message - Message of the email.
+        @param attachment_path_list: (Optional) list of paths for files to attach to the mail.
+
         """
         try:
             self.logger.info("function: MailClientThunderbirdGuestSide::send_mail")
@@ -515,18 +532,38 @@ class MailClientThunderbirdWindowsGuestSide(MailClientThunderbirdPlatformIndepen
             message = ad["message"]
             self.logger.debug("message " + message)
 
+            attachment_string = None
+            if 'attachment_string' in ad:
+                attachment_string = ad["attachment_string"]
+                self.logger.debug("attachment_string " + attachment_string)
+
+
             ################
             # to = receiver # search if to, cc, bcc is in reciever and split
             self.logger.debug("open email window")
 
-            if os.path.exists(r"c:\Program files (x86)\Mozilla Thunderbird\Thunderbird.exe"):
-                self.thunderbird_app = pywinauto.application.Application().start(
-                    r'c:\Program files (x86)\Mozilla Thunderbird\Thunderbird.exe -compose "to=%s,subject=%s,body=%s"' % (
-                        receiver, subject, message))
-            elif os.path.exists(r"c:\Program Files\Mozilla Thunderbird\Thunderbird.exe"):
-                self.thunderbird_app = pywinauto.application.Application().start(
-                    r'c:\Program Files\Mozilla Thunderbird\Thunderbird.exe -compose "to=%s,subject=%s,body=%s"' % (
-                        receiver, subject, message))
+            thunderbird_x86_path = r"c:\Program files (x86)\Mozilla Thunderbird\Thunderbird.exe"
+            thunderbird_path = r"c:\Program Files\Mozilla Thunderbird\Thunderbird.exe"
+
+            if os.path.exists(thunderbird_x86_path):
+                if attachment_string is None:
+                    self.thunderbird_app = pywinauto.application.Application().start(
+                        thunderbird_x86_path + ' -p default -compose "to=%s,subject=%s,body=%s"' % (
+                            receiver, subject, message))
+                else:
+                    self.thunderbird_app = pywinauto.application.Application().start(
+                        thunderbird_x86_path + ' -p default -compose "to=%s,subject=%s,body=%s,attachment=\'%s\'"' % (
+                            receiver, subject, message, attachment_string))
+
+            elif os.path.exists(thunderbird_path):
+                if attachment_string is None:
+                    self.thunderbird_app = pywinauto.application.Application().start(
+                        thunderbird_path + ' -p default -compose "to=%s,subject=%s,body=%s"' % (
+                            receiver, subject, message))
+                else:
+                    self.thunderbird_app = pywinauto.application.Application().start(
+                        thunderbird_path + ' -p default -compose "to=%s,subject=%s,body=%s,attachment=\'%s\'"' % (
+                            receiver, subject, message, attachment_string))
             else:
                 self.logger.error(
                     "Thundebird is not installed into the standard path c:\Program files (x86)\Mozilla " + "Thunderbird\Thunderbird.exe or c:\Program Files\Mozilla " + "Thunderbird\Thunderbird.exe")
@@ -539,11 +576,12 @@ class MailClientThunderbirdWindowsGuestSide(MailClientThunderbirdPlatformIndepen
             time.sleep(10)
             if self.thunderbird_app.windows_():
                 self.logger.debug("if case")
-                self.thunderbird_window = self.thunderbird_app.window_(title_re=".*%s" % subject)
+                self.thunderbird_window = self.thunderbird_app.window_(title_re=".*%s.*" % subject)
             else:
+                # TODO Code is always failing, needs to be investigated
                 self.logger.debug("else case")
-                app = pywinauto.application.Application().connect_(title_re=".*%s" % subject)
-                self.thunderbird_window = app.window_(title_re=".*%s" % subject)
+                app = pywinauto.application.Application().connect_(title_re=".*%s.*" % subject)
+                self.thunderbird_window = app.window_(title_re=".*%s.*" % subject)
 
             self.thunderbird_window.TypeKeys("^{ENTER}") # bug: for some reason this does not work, probably the wrong base window is used
         except Exception as e:
@@ -554,14 +592,14 @@ class MailClientThunderbirdWindowsGuestSide(MailClientThunderbirdPlatformIndepen
         try:
             time.sleep(3)
             self.logger.debug("Press enter to send the message")
-            SendKeys("{ENTER}")
+            SendKeys("^{ENTER}")
             pass
 
         except Exception as e:
             self.logger.error(lineno() + "MailClientThunderbird::sendMail: " + str(e))
 
         self.logger.info("wait 10 second for the smtp pasword window to appear")
-        time.sleep(2)
+        time.sleep(10)
         # Enter password into window
         try:  # check for thunderbird window
             # mozilla is one of those applications that use existing windows
@@ -579,17 +617,19 @@ class MailClientThunderbirdWindowsGuestSide(MailClientThunderbirdPlatformIndepen
 
         except Exception as e:
             self.logger.error("MailClientThunderbird::open No window named '.*Mozilla Thunderbird'")
-            self.agent_object.send("application " + self.module_name + " " + str(self.imParent.window_id) + " error")
-            return
+            self.logger.error("MailClientThunderbird::open SMTP password may have been entered previously")
+            #self.agent_object.send("application " + self.module_name + " " + str(self.imParent.window_id) + " error")
+            #return
 
         # if window appears
         try:
             password_window = None
-            for r in [".*Passwort", ".*password", ".*[sS]erver"]: # possible names for the password window, try them all
+            for r in [".*Password.*", ".*Passwort.*", ".*[sS]erver"]: # possible names for the password window, try them all
                 try:
                     password_window = self.thunderbird_app.window_(title_re=r)
                     break
                 except:
+                    self.logger.error("Password window not found!")
                     pass
             if password_window is None:
                 raise Exception("Tried all combinations for password window, giving up")
@@ -599,7 +639,8 @@ class MailClientThunderbirdWindowsGuestSide(MailClientThunderbirdPlatformIndepen
             time.sleep(1)
             print "self password"
             print self.password
-            sendkeystring = self.password + "{TAB}" + "{SPACE}" + "{ENTER}"
+            escaped_password = self.password.replace("@", "{@}").replace("%", "{%}")
+            sendkeystring = escaped_password + "{TAB}" + "{SPACE}" + "{ENTER}"
             password_window.TypeKeys(sendkeystring)
             self.logger.info("the password should now be inserted")
             time.sleep(2)
@@ -674,6 +715,7 @@ class MailClientThunderbirdWindowsGuestSide(MailClientThunderbirdPlatformIndepen
         mbox.lock()
         self.logger.debug("testing mail manipulation on " + mboxfile)
         try:
+            # TODO Proof if attachment is also 'submittable' here
             msg = mailbox.mboxMessage()
             msg.set_unixfrom(timestamp)
             msg['From'] = from_addr
@@ -793,6 +835,7 @@ class MailClientThunderbirdLinuxGuestSide(MailClientThunderbirdPlatformIndepende
         @param receiver - Email address.
         @param subject - Subject of the email.
         @param message - Message of the email.
+        @param attachment_path_list: (Optional) list of paths for files to attach to the mail.
         """
         try:
             self.logger.info("function: MailClientThunderbirdGuestSide::send_mail")
@@ -810,12 +853,24 @@ class MailClientThunderbirdLinuxGuestSide(MailClientThunderbirdPlatformIndepende
             message = ad["message"]
             self.logger.debug("message " + message)
 
+            attachment_string = None
+            if 'attachment_string' in ad:
+                attachment_string = ad["attachment_string"]
+                self.logger.debug("attachment_string " + attachment_string)
+
             ################
             # to = receiver # search if to, cc, bcc is in reciever and split
             self.logger.debug("open email window")
-            self.window_manager.start(
-                'thunderbird', args=['-compose', 'to=%s,subject=%s,body=%s"' % (receiver, subject, message)]
-            )
+
+            if attachment_string is None:
+                self.window_manager.start(
+                    'thunderbird', args=['-compose', 'to=%s,subject=%s,body=%s"' % (receiver, subject, message)]
+                )
+            else:
+                self.window_manager.start(
+                    'thunderbird', args=['-compose', 'to=%s,subject=%s,body=%s,attachment=%s"' %
+                                         (receiver, subject, message, attachment_string)]
+                )
 
             self.logger.debug("email window is here")
 
@@ -937,6 +992,8 @@ class MailClientThunderbirdGuestSide(ApplicationGuestSide):
         @param receiver - Email address.
         @param subject - Subject of the email.
         @param message - Message of the email.
+        @param attachment_path_list: (Optional) list of paths for files to attach to the mail.
+
         """
         self.mailClientApp.send_mail(args)
 

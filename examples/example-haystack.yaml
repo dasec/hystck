@@ -1,0 +1,53 @@
+name: haystack-example
+description: A example action suite to generate a haystack (traffic)
+author: MPSE Group
+services:
+  mail:
+    imap_hostname: imap.googlemail.com
+    smtp_hostname: smtp.googlemail.com
+    email: hystck007@gmail.com
+    password: f!8Uq6b7hKMJX9vz
+hay:
+  http-0:
+    service: http
+    url: http://google.de
+    amount: 4
+  http-1:
+      service: http
+      amount: 25
+      randomize: true
+  mail-0:
+      service: mail
+      recipient: friend@gmx.de
+      subject: a random mail
+      content: I'm sending you this mail because of X.
+      attachments:
+          - picture.jpeg
+          - song.mp3
+      amount: 4
+  mail-1:
+      service: mail
+      amount: 20
+      randomize: true
+  chat-0:
+      service: chat
+      recipient: test@jabber.de
+      message: Hello my friend.
+      attachments:
+        - picture.jpeg
+        - song.mp3
+      amount: 1
+needles:
+  printer-0:
+      service: printer
+      printer: 127.0.0.1:9100
+      file: file_on_blacklist.pdf
+      amount: 1
+  mail-2:
+    service: mail
+    recipient: criminal@gmx.de
+    subject: a suspicious mail
+    content: I've attached said document.
+    attachments:
+      - file_on_blacklist.pdf
+    amount: 1
