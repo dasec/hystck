@@ -25,6 +25,8 @@ class Generator(object):
         self.collections = {'mail': {'default': {}}, 'chat': {'default': {}},
                             'http': {'default': []}, 'printer': {'default': {}}}
 
+        self.browser = None
+
         if self.logger is None:
             self.logger = create_logger('generator', logging.DEBUG)
 
@@ -60,6 +62,13 @@ class Generator(object):
         # Generate action suite from config.
         self.logger.info('[~] Generated randomized action suite.')
 
+    def shutdown(self):
+        """
+
+        :return:
+        """
+        self._shutdown_browser()
+
     def execute(self):
         """
 
@@ -91,8 +100,7 @@ class Generator(object):
         :param entry:
         :return:
         """
-        # Create a new browser application.
-        browser = self.guest.application("webBrowserFirefox", {'webBrowser': "firefox"})
+        browser = self._get_browser()
 
         # Open URL.
         browser.open(url=entry['url'])
@@ -100,11 +108,6 @@ class Generator(object):
         while browser.is_busy is True:
             self.logger.debug("[~] Firefox is busy.")
             time.sleep(1)
-
-        time.sleep(5)
-
-        # Close the browser.
-        browser.close()
 
         time.sleep(5)
 
@@ -428,3 +431,28 @@ class Generator(object):
         # Load default fallback collections for printer.
         with open('./generator/printer_default_documents.txt', 'r') as f:
             self.collections['printer']['default']['documents'] = f.read().splitlines()
+
+    def _get_browser(self):
+        """
+
+        :return:
+        """
+        if not self.browser:
+            # Create a new Firefox application.
+            self.browser = self.guest.application("webBrowserFirefox", {'webBrowser': "firefox"})
+
+            # Wait for Firefox to start.
+            while self.browser.is_busy is True:
+                self.logger.debug("[~] Firefox is starting. Waiting.")
+                time.sleep(1)
+
+        # Return the browser.
+        return self.browser
+
+    def _shutdown_browser(self):
+        """
+
+        :return:
+        """
+        if self.browser:
+            self.browser.close()

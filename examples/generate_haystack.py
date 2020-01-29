@@ -43,6 +43,9 @@ def main():
     # Execute action suite.
     generator.execute()
 
+    # Shutdown the generator before closing the VM.
+    generator.shutdown()
+
     # Shutdown virtual machine but keep the disk.
     guest.shutdown('keep')
 
