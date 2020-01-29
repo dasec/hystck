@@ -15,7 +15,7 @@ def main():
     parser.add_argument('guest_name', type=str, help='name of the guest virtual machine', nargs='?',
                         default='guest')
     parser.add_argument('config_file', type=str, help='path to the config file', nargs='?',
-                        default='example-haystack.yaml')
+                        default='example-haystack-v2.yaml')
 
     args = parser.parse_args()
 
