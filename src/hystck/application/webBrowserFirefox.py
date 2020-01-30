@@ -476,7 +476,7 @@ class WebBrowserFirefoxGuestSide(ApplicationGuestSide):
 
     def press_enter_test(self, args):
 	#experimental
-	keyboard.SendKeys('{ENTER 2}')
+	keyboard.SendKeys('{ENTER}')
 
     def find_firefox_path(self):
         if platform.system() == "Windows":

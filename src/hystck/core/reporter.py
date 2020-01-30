@@ -34,7 +34,7 @@ class Reporter(object):
 
     def add(self, tag, text):
         '''
-        Adding the given text to the tag-array in order to later add them to the ElementTree
+        Adding the given text to the tag-array in order to later add them to the ElementTree.
         :param tag: XML tag name
         :param text: value to add to the XML file
         :return:
@@ -62,7 +62,7 @@ class Reporter(object):
 
     def generateTags(self):
         '''
-        adding the needed tags and values to the ElementTree (ET) to write them to a file
+        Adding the needed tags and values to the ElementTree (ET) to write them to a file.
         :return:
         '''
         self.doc = ET.SubElement(self.root, "general")
@@ -91,7 +91,8 @@ class Reporter(object):
 
     def generate(self):
         '''
-        writing ET to an XML file and changing rights to the file.
+        Writing ElementTree (ET) to an XML file and changing rights to the file. This file can then be viewed
+        with report.html.
         :return:
         '''
         self.generateTags()
