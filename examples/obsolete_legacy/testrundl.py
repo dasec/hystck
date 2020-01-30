@@ -23,7 +23,7 @@ def create_vm(logger):
     guestListener = GuestListener(guests, logger)
     virtual_machine_monitor1 = Vmm(macsInUse, guests, logger)
     guest = virtual_machine_monitor1.create_guest(guest_name="w-guest01", platform="windows", boottime=None)
-    # guest = virtual_machine_monitor1.create_guest(guest_name="w-guest01", platform="windows", boottime=None)
+    #guest = virtual_machine_monitor1.create_guest(guest_name="l-guest01", platform="linux", boottime=None)
     logger.debug("Try connecting to guest")
 
     while guest.state != "connected":
@@ -61,6 +61,8 @@ def main():
 	time.sleep(25)
 	browser_obj.click_xpath_test('/html/body/div/div[3]/div/section/article/table/tbody/tr[1]/td[1]/a')
 	time.sleep(25)
+        browser_obj.save_as()
+        time.sleep(25)
         browser_obj.press_enter_test()
         time.sleep(25)
         browser_obj.close()

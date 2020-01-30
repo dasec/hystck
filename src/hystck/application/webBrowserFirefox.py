@@ -175,6 +175,13 @@ class WebBrowserFirefoxVmmSide(ApplicationVmmSide):
 	except Exception as e:
 	    raise Exception("error WebBrowserFirefoxVmmSide::press_enter_test: " + str(e))
 
+    def save_as(self):
+        #experimental
+        try:
+            self.guest_obj.send("application " + "webBrowserFirefox " + str(
+                self.window_id) + " save_as ")
+        except Exception as e:
+            raise Exception("error WebBrowserFirefoxVmmSide::save_as: " + str(e))
 
     def facebook_login(self, username, password, id):
         """Sends a command to call facebook.com and login.
@@ -184,11 +191,16 @@ class WebBrowserFirefoxVmmSide(ApplicationVmmSide):
         """
         try:
             self.logger.info("function: WebBrowserFirefoxVmmSide::facebook_login")
-            self.browse_to("www.facebook.com")
-            self.send_keys_to_browser_element("email", username)
-            self.send_keys_to_browser_element("pass", password)
-	    time.sleep(20)
-	    self.click_element_test(id)
+            ##### deprecated code section: calls other hostside functions
+            #self.browse_to("www.facebook.com")
+            #self.send_keys_to_browser_element("email", username)
+            #self.send_keys_to_browser_element("pass", password)
+	    #time.sleep(20)
+	    #self.click_element_test(id)
+
+            #new hostside implementation
+            self.guest_obj.send("application " + "webBrowserFirefox " + str(
+                self.windows_id) + " facebook_login" + " " + username + " " + password + " " + id)
 
            # self.send_keys_to_browser_element(" pass", "{ENTER}")
         except Exception as e:
@@ -464,19 +476,49 @@ class WebBrowserFirefoxGuestSide(ApplicationGuestSide):
             self.logger.error(self.module_name + " error " + str(self.window_id) + str(e))
             self.agent_object.send("application " + self.module_name + " " + str(self.window_id) + " error")
 
+    def facebook_login(self, args):
+        #experimental, todo: include "busy" and "ready" states and to be tested
+        try:
+            arguments = args.split(" ")
+            #username = "email" + " " + arguments[0]
+            #password = "pass" + " " + arguments[1]
+            username = arguments[0]
+            password = arguments[1]
+            id = arguments[2]
+            url = "facebook.com"
+            #todo include busy and ready states from here
+            self.browse_to(url)
+            #self.send_keys_to_browser_element(username)
+            self.agent_object.send("application " + self.module_name + " " + str(self.window_id) + " busy")
+            self.helper.send_keys_to_element_by_name("email", username)
+            self.agent_object.send("application " + self.module_name + " " + str(self.window_id) + " ready")
+            #self.send_keys_to_browser_element(password)
+            self.agent_object.send("application " + self.module_name + " " + str(self.window_id) + " busy")
+            self.helper.send_keys_to_element_by_name("pass", password)
+            self.agent_object.send("application " + self.module_name + " " + str(self.window_id) + " ready")
+            self.click_element_test(id)
+
+        except Exception as e:
+            self.logger.error(self.module_name + " error " + str(self.window_id) + str(e))
+            self.agent_object.send("application " + self.module_name + " " + str(self.window_id) + " error")
+
     def click_element_test(self, id):
-	#experimental
+	#experimental; rename + busy/ready states
         element = id
         self.helper.click_element_by_id(element)
 
     def click_xpath_test(self, xpath):
-	#experimental
+	#experimental; rename + busy/ready states
 	xelement = xpath
 	self.helper.click_element_by_xpath(xelement)
 
     def press_enter_test(self, args):
-	#experimental
-	keyboard.SendKeys('{ENTER}')
+	#experimental; rename + busy/ready states
+	keyboard.SendKeys('{ENTER 2}')
+
+    def save_as(self, args):
+        #experimental, to be tested; busy/ready states
+        keyboard.SendKeys('%s')
 
     def find_firefox_path(self):
         if platform.system() == "Windows":

@@ -53,7 +53,7 @@ def create_vm(logger):
     guests = []
     guestListener = GuestListener(guests, logger)
     virtual_machine_monitor1 = Vmm(macsInUse, guests, logger)
-    # guest = virtual_machine_monitor1.create_guest(guest_name="l-guest01", platform="linux", boottime=None)
+    #guest = virtual_machine_monitor1.create_guest(guest_name="l-guest01", platform="linux", boottime=None)
     guest = virtual_machine_monitor1.create_guest(guest_name="w-guest01", platform="windows", boottime=None)
     logger.debug("Try connecting to guest")
 
@@ -284,7 +284,7 @@ def test_multiuser(guest, logger):
 
     userManagement_obj = guest.application("userManagement", {})
     userManagement_obj.addUser(user_name, user_pass)
-    
+
     logger.debug("test_multiuser() ended.")
 
 if __name__ == "__main__":
