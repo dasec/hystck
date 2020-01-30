@@ -480,14 +480,22 @@ class WebBrowserFirefoxGuestSide(ApplicationGuestSide):
         #experimental, todo: include "busy" and "ready" states and to be tested
         try:
             arguments = args.split(" ")
-            username = "email" + " " + arguments[0]
-            password = "pass" + " " + arguments[1]
+            #username = "email" + " " + arguments[0]
+            #password = "pass" + " " + arguments[1]
+            username = arguments[0]
+            password = arguments[1]
             id = arguments[2]
             url = "facebook.com"
             #todo include busy and ready states from here
             self.browse_to(url)
-            self.send_keys_to_browser_element(username)
-            self.send_keys_to_browser_element(password)
+            #self.send_keys_to_browser_element(username)
+            self.agent_object.send("application " + self.module_name + " " + str(self.window_id) + " busy")
+            self.helper.send_keys_to_element_by_name("email", username)
+            self.agent_object.send("application " + self.module_name + " " + str(self.window_id) + " ready")
+            #self.send_keys_to_browser_element(password)
+            self.agent_object.send("application " + self.module_name + " " + str(self.window_id) + " busy")
+            self.helper.send_keys_to_element_by_name("pass", password)
+            self.agent_object.send("application " + self.module_name + " " + str(self.window_id) + " ready")
             self.click_element_test(id)
 
         except Exception as e:
@@ -495,21 +503,21 @@ class WebBrowserFirefoxGuestSide(ApplicationGuestSide):
             self.agent_object.send("application " + self.module_name + " " + str(self.window_id) + " error")
 
     def click_element_test(self, id):
-	#experimental
+	#experimental; rename + busy/ready states
         element = id
         self.helper.click_element_by_id(element)
 
     def click_xpath_test(self, xpath):
-	#experimental
+	#experimental; rename + busy/ready states
 	xelement = xpath
 	self.helper.click_element_by_xpath(xelement)
 
     def press_enter_test(self, args):
-	#experimental
+	#experimental; rename + busy/ready states
 	keyboard.SendKeys('{ENTER 2}')
 
     def save_as(self, args):
-        #experimental, to be tested
+        #experimental, to be tested; busy/ready states
         keyboard.SendKeys('%s')
 
     def find_firefox_path(self):
