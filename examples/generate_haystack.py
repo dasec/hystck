@@ -6,6 +6,7 @@ from hystck.core.generator import Generator
 from hystck.core.vmm import Vmm
 from hystck.core.vmm import GuestListener
 
+
 def main():
     # Create logger.
     logger = create_logger('haystack_generator', logging.DEBUG)
@@ -23,7 +24,7 @@ def main():
     macs_in_use = []
     guests = []
 
-    # guest_listener = GuestListener(guests, logger)
+    guest_listener = GuestListener(guests, logger)
     virtual_machine_monitor = Vmm(macs_in_use, guests, logger)
     guest = virtual_machine_monitor.create_guest(guest_name=args.guest_name, platform="windows")
 
@@ -41,6 +42,9 @@ def main():
 
     # Execute action suite.
     generator.execute()
+
+    # Shutdown the generator before closing the VM.
+    generator.shutdown()
 
     # Shutdown virtual machine but keep the disk.
     guest.shutdown('keep')

@@ -1,36 +1,65 @@
 name: haystack-example
 description: A example action suite to generate a haystack (traffic)
 author: MPSE Group
-services:
-  mail:
+machines:
+  vm-0:
+    template: /data/templates/windows-7.xml
+  vm-1:
+    template: /data/templates/windows-10.xml
+collections:
+  c-http-0:
+    type: http
+    urls: ./generator/friendly_urls.txt
+  c-mail-0:
+    type: mail
+    recipients: ./generator/friendly_recipients.txt
+    subjects: ./generator/friendly_subjects.txt
+    messages: ./generator/friendly_messages.txt
+applications:
+  mail-0:
+    type: mail
     imap_hostname: imap.googlemail.com
     smtp_hostname: smtp.googlemail.com
     email: hystck007@gmail.com
     password: f!8Uq6b7hKMJX9vz
+  mail-1:
+    type: mail
+    imap_hostname: imap.gmx.net
+    smtp_hostname: smtp.gmx.net
+    email: hystck008@gmx.net
+    password: f!8Uq6b7hKMJX9vz
+  chat-0:
+    type: chat
+    hostname: jabber.cc
+    email: hystck007@gmail.com
+    password: f!8Uqldsflk(vz
+  printer-0:
+      type: printer
+      hostname: 127.0.0.1:9100
 hay:
-  http-0:
-    service: http
-    url: http://google.de
+  h-http-0:
+    application: http
+    url: https://dasec.h-da.de/
     amount: 4
-  http-1:
-      service: http
+  h-http-1:
+      application: http
       amount: 25
-      randomize: true
-  mail-0:
-      service: mail
+      collection: c-http-0
+  h-mail-0:
+      application: mail-0
       recipient: friend@gmx.de
       subject: a random mail
-      content: I'm sending you this mail because of X.
+      message: I'm sending you this mail because of X.
       attachments:
           - picture.jpeg
           - song.mp3
-      amount: 4
-  mail-1:
-      service: mail
+      amount: 1
+  h-mail-1:
+      application: mail-1
       amount: 20
-      randomize: true
-  chat-0:
-      service: chat
+      collection: c-mail-0
+  h-chat-0:
+      application: chat-0
       recipient: test@jabber.de
       message: Hello my friend.
       attachments:
@@ -38,13 +67,12 @@ hay:
         - song.mp3
       amount: 1
 needles:
-  printer-0:
-      service: printer
-      printer: 127.0.0.1:9100
+  n-printer-0:
+      application: printer-0
       file: file_on_blacklist.pdf
       amount: 1
-  mail-2:
-    service: mail
+  n-mail-0:
+    application: mail-0
     recipient: criminal@gmx.de
     subject: a suspicious mail
     content: I've attached said document.

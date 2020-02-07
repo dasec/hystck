@@ -1,0 +1,7 @@
+./generator/files/blue.jpeg
+./generator/files/black.jpeg
+./generator/files/red.jpeg
+./generator/files/yellow.jpeg
+./generator/files/white.jpeg
+./generator/files/document.pdf
+./generator/files/blue.pdf

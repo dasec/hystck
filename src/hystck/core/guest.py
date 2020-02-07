@@ -378,7 +378,7 @@ class Guest(object):
         guestInterfacesInfo = guestInterfacesInfo.split('\n')
         for guestInterfaceInfo in guestInterfacesInfo:
             if bridgeInterface in guestInterfaceInfo:
-                internetInterfaceName = guestInterfaceInfo.split()[2]
+                internetInterfaceName = guestInterfaceInfo.split()[0]
                 return internetInterfaceName
 
     def startSniffer(self):
