@@ -63,8 +63,8 @@ hay:
       recipient: martin-thissen97@web.de
       subject: a random mail
       message: I'm sending you this mail because of X.
-      attachments:
-          - /data/hystck_data/white.jpeg
+      attachment_path_list:
+          - /data/hystck_data/white.jpg
           - /data/hystck_data/hda_master.pdf
       amount: 1
   h-mail-1:
@@ -72,7 +72,7 @@ hay:
     recipient: sk@hystck.local
     subject: a random mail
     message: I'm sending you this mail because of Y.
-    attachments:
+    attachment_path_list:
       - /data/hystck_data/white.jpeg
       - /data/hystck_data/hda_master.pdf
     amount: 1
@@ -98,6 +98,6 @@ needles:
     recipient: criminal@gmx.de
     subject: a suspicious mail
     content: I've attached said document.
-    attachments:
-      - document.pdf
+    attachment_path_list:
+      - /data/hystck_data/document.pdf
     amount: 1
