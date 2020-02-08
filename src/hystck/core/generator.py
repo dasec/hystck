@@ -233,7 +233,7 @@ class Generator(object):
 
             attachment_path_list = None
             if 'attachment_path_list' in entry:
-                attachment_path_list = [entry['attachment_path_list']]
+                attachment_path_list = entry['attachment_path_list']
 
             actions.append(
                 {'type': 'mail',
