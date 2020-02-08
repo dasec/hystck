@@ -232,12 +232,12 @@ class Generator(object):
                     message = random.choice(self.collections['mail']['default']['messages'])
 
             if 'attachment_path_list' in entry:
-                attachment_path_list = entry['attachment_path_list']
+                attachment_path_list = [entry['attachment_path_list']]
             else:
                 if len(collection['attachment_path_list']) > 0:
-                    attachment_path_list = random.choice(collection['attachment_path_list'])
+                    attachment_path_list = [random.choice(collection['attachment_path_list'])]
                 else:
-                    attachment_path_list = random.choice(self.collections['mail']['default']['attachment_path_list'])
+                    attachment_path_list = [random.choice(self.collections['mail']['default']['attachment_path_list'])]
 
             actions.append(
                 {'type': 'mail',
