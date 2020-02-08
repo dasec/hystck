@@ -1,41 +1,5 @@
-import logging
 import os
 import time
-import shutil
-
-from hystck.core.vmm import GuestListener
-from hystck.core.vmm import Vmm
-from hystck.utility.logger_helper import create_logger
-from enum import Enum
-
-# Instanciate the VM
-logger = create_logger('mail_attachement', logging.DEBUG)
-macsInUse = []
-guests = []
-guest_listener = GuestListener(guests, logger)
-vmm = Vmm(macsInUse, guests, logger)
-
-# add a check to see if the vm already exists
-client = vmm.create_guest(guest_name='mail_attachement_vm')
-
-# path to the nfs mount point
-_guest_vm_nfs_path = 'Z:\\'
-nfs_directory_path = "/data/hystck_data"
-
-# path = 'C:\Users\hystck\Documents\document.txt'
-# path_pdf = 'C:\Users\hystck\Documents\hda_master.pdf'
-
-path = '/data/hystck_data/attachment.txt'
-path_pdf = '/data/hystck_data/hda_master.pdf'
-
-path_to_file = os.path.normpath(path)
-path_to_pdf = os.path.normpath(path_pdf)
-
-# Wait for the VM to become ready and connect to the VMM
-client.waitTillAgentIsConnected()
-
-# Create the mailer object
-thunderbird_guest_vm = client.application("mailClientThunderbird", {})
 
 
 class MailAccount:
@@ -60,11 +24,17 @@ class Mail:
         self.attachment_path_list = attachment_path_list
 
 
+class NFSSettings:
+    def __init__(self, guest_vm_nfs_path, host_vm_nfs_path):
+        self.guest_vm_nfs_path = guest_vm_nfs_path
+        self.host_vm_nfs_path = host_vm_nfs_path
+
+
 class IllegalArgumentError(ValueError):
     pass
 
 
-def send_mail(guest_vm, mail_account, mail):
+def send_mail(guest_vm, mail_account, mail, nfs_settings=None):
     if not isinstance(mail, Mail):
         raise IllegalArgumentError("Wrong object type. Please pass for the argument mail an instance of type Mail.")
 
@@ -72,7 +42,7 @@ def send_mail(guest_vm, mail_account, mail):
         raise IllegalArgumentError("Wrong object type. Please pass for the argument mail_account an instance of type MailAccount.")
 
     if mail.attachment_path_list is not None:
-        mail.attachment_path_list = _generate_path_list_for_guest_vm(mail.attachment_path_list, _guest_vm_nfs_path, nfs_directory_path)
+        mail.attachment_path_list = _generate_path_list_for_guest_vm(mail.attachment_path_list, nfs_settings.guest_vm_nfs_path, nfs_settings.host_vm_nfs_path)
     print(mail.attachment_path_list)
 
 
@@ -116,8 +86,8 @@ def send_mail(guest_vm, mail_account, mail):
 def _generate_path_list_for_guest_vm(attachment_path_list, guest_vm_nfs_path, host_vm_nfs_path):
     validated_file_list = []
     for file_path in attachment_path_list:
-        if os.path.isfile(path):
-            if os.path.dirname(path) == host_vm_nfs_path:
+        if os.path.isfile(file_path):
+            if os.path.dirname(file_path) == host_vm_nfs_path:
                 guest_vm_file_path = _generate_nfs_path_for_file_on_guest_vm(file_path, guest_vm_nfs_path)
                 validated_file_list.append(guest_vm_file_path)
             else:
@@ -129,17 +99,3 @@ def _generate_path_list_for_guest_vm(attachment_path_list, guest_vm_nfs_path, ho
 
 def _generate_nfs_path_for_file_on_guest_vm(file_path, guest_vm_nfs_path):
     return os.path.normpath(guest_vm_nfs_path + os.path.basename(file_path))
-
-
-web_mail_account = MailAccount("imap.web.de", "smtp.web.de", "hystck@web.de", "Vo@iLmx48Qv8m%y", "hystck", "Heinz Hystck", 3, 2, 3)
-local_mail_account = MailAccount("192.168.103.123", "192.168.103.123", "sk@hystck.local", "hystck", "sk", "Test User", 0, 0, 3)
-
-
-first_mail = Mail(recipient="martin-thissen97@web.de", subject="testmail", body="testmail", attachment_path_list=[path_to_file, path_to_pdf])
-second_mail = Mail(recipient="martin-thissen97@web.de", subject="testmail", body="testmail")
-third_mail = Mail(recipient="sk@hystck.local", subject="testmail", body="testmail", attachment_path_list=[path_to_file, path_to_pdf])
-
-# send mails
-send_mail(guest_vm=thunderbird_guest_vm, mail_account=web_mail_account, mail=first_mail)
-send_mail(guest_vm=thunderbird_guest_vm, mail_account=web_mail_account, mail=second_mail)
-send_mail(guest_vm=thunderbird_guest_vm, mail_account=local_mail_account, mail=third_mail)

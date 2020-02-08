@@ -37,9 +37,6 @@ client.waitTillAgentIsConnected()
 # Create the mailer object
 thunderbird_guest_vm = client.application("mailClientThunderbird", {})
 
-class Color(Enum):
-    red = 1
-
 
 class MailAccount:
     # TODO ENUM Socket types
@@ -75,7 +72,7 @@ def send_mail(guest_vm, mail_account, mail):
         raise IllegalArgumentError("Wrong object type. Please pass for the argument mail_account an instance of type MailAccount.")
 
     if mail.attachment_path_list is not None:
-        mail.attachment_path_list = generate_path_list_for_guest_vm(mail.attachment_path_list, _guest_vm_nfs_path, nfs_directory_path)
+        mail.attachment_path_list = _generate_path_list_for_guest_vm(mail.attachment_path_list, _guest_vm_nfs_path, nfs_directory_path)
     print(mail.attachment_path_list)
 
 
@@ -116,12 +113,12 @@ def send_mail(guest_vm, mail_account, mail):
     time.sleep(30)
 
 
-def generate_path_list_for_guest_vm(attachment_path_list, guest_vm_nfs_path, host_vm_nfs_path):
+def _generate_path_list_for_guest_vm(attachment_path_list, guest_vm_nfs_path, host_vm_nfs_path):
     validated_file_list = []
     for file_path in attachment_path_list:
         if os.path.isfile(path):
             if os.path.dirname(path) == host_vm_nfs_path:
-                guest_vm_file_path = generate_nfs_path_for_file_on_guest_vm(file_path, guest_vm_nfs_path)
+                guest_vm_file_path = _generate_nfs_path_for_file_on_guest_vm(file_path, guest_vm_nfs_path)
                 validated_file_list.append(guest_vm_file_path)
             else:
                 print "ERROR: " + file_path + "is not located within the host nfs directory: " + host_vm_nfs_path
@@ -130,7 +127,7 @@ def generate_path_list_for_guest_vm(attachment_path_list, guest_vm_nfs_path, hos
     return validated_file_list
 
 
-def generate_nfs_path_for_file_on_guest_vm(file_path, guest_vm_nfs_path):
+def _generate_nfs_path_for_file_on_guest_vm(file_path, guest_vm_nfs_path):
     return os.path.normpath(guest_vm_nfs_path + os.path.basename(file_path))
 
 

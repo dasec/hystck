@@ -5,6 +5,10 @@ import time
 import yaml
 
 from hystck.utility.logger_helper import create_logger
+from hystck.application.mail_interface import MailAccount
+from hystck.application.mail_interface import Mail
+from hystck.application.mail_interface import send_mail
+
 
 
 class Generator(object):
@@ -121,26 +125,21 @@ class Generator(object):
         mailer = self.guest.application("mail_client", {})
 
         # Set mail configuration for application from config file.
-        mailer.set_config("guest", self.config['applications'][entry['application']]['email'],
-                          self.config['applications'][entry['application']]['password'],
-                          self.config['applications'][entry['application']]['email'],
-                          self.config['applications'][entry['application']]['imap_hostname'],
-                          self.config['applications'][entry['application']]['smtp_hostname'])
+        mail_data = self.config['applications'][entry['application']]
 
-        mailer.open()
+        mail_account = MailAccount(mail_data['imap_hostname'],
+                                   mail_data['smtp_hostname'],
+                                   mail_data['email'],
+                                   mail_data['password'],
+                                   mail_data['username'],
+                                   mail_data['full_name'],
+                                   mail_data['socket_type'],
+                                   mail_data['socket_type_smtp'],
+                                   mail_data['auth_method_smtp'])
 
-        while mailer.is_busy is True:
-            self.logger.debug("[~] Thunderbird is busy.")
-            time.sleep(1)
+        mail = Mail(entry['recipient'], entry['subject'], entry['message'], entry['attachment_path_list'])
 
-        mailer.send_mail(entry['recipient'], entry['subject'], entry['message'])
-
-        while mailer.is_busy is True:
-            self.logger.debug("[~] Thunderbird is busy.")
-            time.sleep(1)
-
-        mailer.close()
-        time.sleep(5)
+        send_mail(mailer, mail_account, mail)
 
     def _execute_chat_action(self, entry):
         pass
@@ -239,19 +238,19 @@ class Generator(object):
                 else:
                     message = random.choice(self.collections['mail']['default']['messages'])
 
-            if 'attachments' in entry:
-                attachments = entry['attachments']
+            if 'attachment_path_list' in entry:
+                attachment_path_list = entry['attachment_path_list']
             else:
-                if len(collection['attachments']) > 0:
-                    attachments = random.choice(collection['attachments'])
+                if len(collection['attachment_path_list']) > 0:
+                    attachment_path_list = random.choice(collection['attachment_path_list'])
                 else:
-                    attachments = random.choice(self.collections['mail']['default']['attachments'])
+                    attachment_path_list = random.choice(self.collections['mail']['default']['attachment_path_list'])
 
             actions.append(
                 {'type': 'mail', 'recipient': recipient,
                  'subject': subject,
                  'message': message,
-                 'attachments': attachments})
+                 'attachment_path_list': attachment_path_list})
 
         return actions
 
@@ -365,11 +364,11 @@ class Generator(object):
                 else:
                     self.collections['mail'][key]['messages'] = []
 
-                if 'attachments' in collection:
-                    with open(collection['attachments'], 'r') as f:
-                        self.collections['mail'][key]['attachments'] = f.read().splitlines()
+                if 'attachment_path_list' in collection:
+                    with open(collection['attachment_path_list'], 'r') as f:
+                        self.collections['mail'][key]['attachment_path_list'] = f.read().splitlines()
                 else:
-                    self.collections['mail'][key]['attachments'] = []
+                    self.collections['mail'][key]['attachment_path_list'] = []
 
             elif collection['type'] == 'chat':
                 self.collections['chat'][key] = {}
@@ -416,7 +415,7 @@ class Generator(object):
             self.collections['mail']['default']['messages'] = f.read().splitlines()
 
         with open('./generator/general_default_attachments.txt', 'r') as f:
-            self.collections['mail']['default']['attachments'] = f.read().splitlines()
+            self.collections['mail']['default']['attachment_path_list'] = f.read().splitlines()
 
         # Load default fallback collections for chat.
         with open('./generator/chat_default_recipients.txt', 'r') as f:
