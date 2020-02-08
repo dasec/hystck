@@ -1,0 +1,2 @@
+./generator/files/blue.pdf
+./generator/files/document.pdf

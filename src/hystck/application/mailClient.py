@@ -21,6 +21,7 @@ try:
     from hystck.application.application import ApplicationGuestSide
     from hystck.application.application import ApplicationGuestSideCommands
     from hystck.utility.line import lineno
+    from hystck.utility.io import parse_attachment_string
 
     if platform.system() == "Windows":
         import pywinauto
@@ -107,21 +108,27 @@ class MailClientVmmSide(ApplicationVmmSide):
         except Exception as e:
             raise Exception(lineno() + " error MailClientVmmSide:setConfig()" + str(e))
 
-    def send_mail(self, receiver, subject, message):
+    def send_mail(self, receiver, subject, message, attachment_path_list=None):
         """Send an email via the mailClient.
 
         @param receiver: Receiver for this email.
         @param subject: Subject for this email.
         @param message: Message for this email.
+        @param attachment_path_list: (Optional) list of paths for files to attach to the mail.
 
         @return: No return value.
         """
+        attachment_string = parse_attachment_string(attachment_path_list)
+
         try:
             # incluce length before the values reciever, subject and message
             send_mail_command = "application mailClient " + str(self.window_id) + " send_mail " + \
                                 "%.8x" % len(receiver) + receiver + \
                                 "%.8x" % len(subject) + subject + \
                                 "%.8x" % len(message) + message
+            if attachment_string is not None:
+                send_mail_command += "%.8x" % len(attachment_string) + attachment_string
+
             self.is_busy = True
             self.guest_obj.send(send_mail_command)
         except Exception as e:
@@ -547,6 +554,8 @@ class MailClientWindowsGuestSide(MailClientPlatformIndependentGuestSide):
         @param receiver - Email address.
         @param subject - Subject of the email.
         @param message - Message of the email.
+        @param attachment_path_list: (Optional) list of paths for files to attach to the mail.
+
         """
         try:
             self.logger.info("function: MailClientGuestSide::send_mail")
@@ -590,12 +599,31 @@ class MailClientWindowsGuestSide(MailClientPlatformIndependentGuestSide):
             message = receiver_subject_message[start_pointer:end_pointer]
             self.logger.debug("message " + message)
 
+            attachment_string = None
+            # check if attachment_string is added
+            if end_pointer < len(receiver_subject_message):
+                start_pointer = end_pointer  # new start is old end
+                end_pointer += 8  # end set to end plus 8
+
+                attachment_path_length = int(receiver_subject_message[start_pointer:end_pointer], 16)
+
+                start_pointer = end_pointer  # new start is old end
+                end_pointer += attachment_path_length  # end set to end plus length
+
+                attachment_string = receiver_subject_message[start_pointer:end_pointer]
+                self.logger.debug("attachment_string " + attachment_string)
+
             ################
             # to = receiver # search if to, cc, bcc is in reciever and split
             self.logger.debug("open email window")
-            self.thunderbird_app = pywinauto.application.Application().start(
-                r'c:\Program files (x86)\Mozilla Thunderbird\Thunderbird.exe -compose "to=%s,subject=%s,body=%s"' % (
-                receiver, subject, message))
+            if attachment_string is None:
+                self.thunderbird_app = pywinauto.application.Application().start(
+                    'c:\Program files (x86)\Mozilla Thunderbird\Thunderbird.exe -compose "to=%s,subject=%s,body=%s"'% (
+                        receiver, subject, message))
+            else:
+                self.thunderbird_app = pywinauto.application.Application().start(
+                    'c:\Program files (x86)\Mozilla Thunderbird\Thunderbird.exe ' +
+                    '-compose "to=%s,subject=%s,body=%s,attachment=%s"' % (receiver, subject, message, attachment_string))
 
             self.logger.debug("email window is here")
             time.sleep(10)
@@ -987,6 +1015,8 @@ class MailClientLinuxGuestSide(MailClientPlatformIndependentGuestSide):
         @param receiver - Email address.
         @param subject - Subject of the email.
         @param message - Message of the email.
+        @param attachment_path_list: (Optional) list of paths for files to attach to the mail.
+
         """
         try:
             self.logger.info("function: MailClientGuestSide::send_mail")
@@ -1030,12 +1060,34 @@ class MailClientLinuxGuestSide(MailClientPlatformIndependentGuestSide):
             message = receiver_subject_message[start_pointer:end_pointer]
             self.logger.debug("message " + message)
 
+            attachment_string = None
+            # check if attachment_string is added
+            if end_pointer < len(receiver_subject_message):
+                start_pointer = end_pointer  # new start is old end
+                end_pointer += 8  # end set to end plus 8
+
+                attachment_path_length = int(receiver_subject_message[start_pointer:end_pointer], 16)
+
+                start_pointer = end_pointer  # new start is old end
+                end_pointer += attachment_path_length  # end set to end plus length
+
+                attachment_string = receiver_subject_message[start_pointer:end_pointer]
+                self.logger.debug("attachment_string " + attachment_string)
+
             ################
             # to = receiver # search if to, cc, bcc is in reciever and split
             self.logger.debug("open email window")
-            self.window_manager.start(
-                'thunderbird', args=['-compose', 'to=%s,subject=%s,body=%s"' % (receiver, subject, message)]
-            )
+            if attachment_string is None:
+                self.logger.debug('No attachment specified')
+                self.window_manager.start(
+                    'thunderbird', args=['-compose', 'to=%s,subject=%s,body=%s"' % (receiver, subject, message)]
+                )
+            else:
+                self.logger.debug('Attachment found')
+                self.window_manager.start(
+                    'thunderbird', args=['-compose', 'to=%s,subject=%s,body=%s,attachment=file://%s"' %
+                                         (receiver, subject, message, attachment_string)]
+                )
 
             self.logger.debug("email window is here")
 
@@ -1151,6 +1203,8 @@ class MailClientGuestSide(ApplicationGuestSide):
         @param receiver - Email address.
         @param subject - Subject of the email.
         @param message - Message of the email.
+        @param attachment_path_list: (Optional) list of paths for files to attach to the mail.
+
         """
         self.mailClientApp.send_mail(args)
 

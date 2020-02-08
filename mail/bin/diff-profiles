@@ -1,0 +1,8 @@
+#!/home/mpse/git/hystck_mail/mail/bin/python2
+# -*- coding: utf-8 -*-
+import re
+import sys
+from mozprofile import diff_profiles
+if __name__ == '__main__':
+    sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
+    sys.exit(diff_profiles())

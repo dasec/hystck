@@ -1,5 +1,3 @@
-pywinauto
-pywin32
 setuptools
 selenium
 marionette_driver
