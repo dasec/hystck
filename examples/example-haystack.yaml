@@ -73,7 +73,7 @@ hay:
     subject: a random mail
     message: I'm sending you this mail because of Y.
     attachment_path_list:
-      - /data/hystck_data/white.jpeg
+      - /data/hystck_data/white.jpg
       - /data/hystck_data/hda_master.pdf
     amount: 1
   h-mail-2:
