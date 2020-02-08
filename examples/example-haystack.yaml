@@ -29,15 +29,15 @@ applications:
     auth_method_smtp: 3
   mail-1:
     type: mail
-      imap_hostname: 192.168.103.123
-      smtp_hostname: 192.168.103.123
-      email: sk@hystck.local
-      password: hystck
-      username: sk
-      full_name: Heinz Hystck
-      socket_type: 0
-      socket_type_smtp: 0
-      auth_method_smtp: 3
+    imap_hostname: 192.168.103.123
+    smtp_hostname: 192.168.103.123
+    email: sk@hystck.local
+    password: hystck
+    username: sk
+    full_name: Heinz Hystck
+    socket_type: 0
+    socket_type_smtp: 0
+    auth_method_smtp: 3
   chat-0:
     type: chat
     hostname: jabber.cc
