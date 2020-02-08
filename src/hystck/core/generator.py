@@ -8,7 +8,7 @@ from hystck.utility.logger_helper import create_logger
 from hystck.application.mail_interface import MailAccount
 from hystck.application.mail_interface import Mail
 from hystck.application.mail_interface import send_mail
-
+from hystck.application.mail_interface import NFSSettings
 
 
 class Generator(object):
@@ -51,6 +51,9 @@ class Generator(object):
 
         # Load parameters for different applications.
         self._load_collections()
+
+        self._load_mail_accounts()
+        self._load_nfs_location()
 
         self.logger.info('[~] Generating randomized action suite.')
 
@@ -125,21 +128,11 @@ class Generator(object):
         mailer = self.guest.application("mailClientThunderbird", {})
 
         # Set mail configuration for application from config file.
-        mail_data = self.config['applications'][entry['application']]
-
-        mail_account = MailAccount(mail_data['imap_hostname'],
-                                   mail_data['smtp_hostname'],
-                                   mail_data['email'],
-                                   mail_data['password'],
-                                   mail_data['username'],
-                                   mail_data['full_name'],
-                                   mail_data['socket_type'],
-                                   mail_data['socket_type_smtp'],
-                                   mail_data['auth_method_smtp'])
 
         mail = Mail(entry['recipient'], entry['subject'], entry['message'], entry['attachment_path_list'])
+        mail_account = self.mail_account_dict['mail-account']
 
-        send_mail(mailer, mail_account, mail)
+        send_mail(mailer, mail_account, mail, self.nfs_settings)
 
     def _execute_chat_action(self, entry):
         pass
@@ -247,7 +240,9 @@ class Generator(object):
                     attachment_path_list = random.choice(self.collections['mail']['default']['attachment_path_list'])
 
             actions.append(
-                {'type': 'mail', 'recipient': recipient,
+                {'type': 'mail',
+                 'mail-account': entry['application'],
+                 'recipient': recipient,
                  'subject': subject,
                  'message': message,
                  'attachment_path_list': attachment_path_list})
@@ -430,6 +425,29 @@ class Generator(object):
         # Load default fallback collections for printer.
         with open('./generator/printer_default_documents.txt', 'r') as f:
             self.collections['printer']['default']['documents'] = f.read().splitlines()
+
+    def _load_mail_accounts(self):
+        self.mail_account_dict = {}
+        for key, entry in self.config['applications'].items():
+            if entry['type'] == 'mail':
+                self.mail_account_dict[key] = MailAccount(
+                    entry['imap_hostname'],
+                    entry['smtp_hostname'],
+                    entry['email'],
+                    entry['password'],
+                    entry['username'],
+                    entry['full_name'],
+                    entry['socket_type'],
+                    entry['socket_type_smtp'],
+                    entry['auth_method_smtp']
+                )
+
+    def _load_nfs_location(self):
+        self.nfs_settings = None
+        if ('host_nfs_path' in self.config['settings']) & ('guest_nfs_path' in self.config['settings']):
+            self.nfs_settings = NFSSettings(host_vm_nfs_path=self.config['settings']['host_nfs_path'],
+                                            guest_vm_nfs_path=self.config['settings']['guest_nfs_path'])
+
 
     def _get_browser(self):
         """

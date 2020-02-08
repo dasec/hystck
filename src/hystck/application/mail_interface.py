@@ -25,9 +25,9 @@ class Mail:
 
 
 class NFSSettings:
-    def __init__(self, guest_vm_nfs_path, host_vm_nfs_path):
-        self.guest_vm_nfs_path = guest_vm_nfs_path
+    def __init__(self, host_vm_nfs_path, guest_vm_nfs_path):
         self.host_vm_nfs_path = host_vm_nfs_path
+        self.guest_vm_nfs_path = guest_vm_nfs_path
 
 
 class IllegalArgumentError(ValueError):

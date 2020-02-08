@@ -1,7 +1,7 @@
-./generator/files/blue.jpeg
-./generator/files/black.jpeg
-./generator/files/red.jpeg
-./generator/files/yellow.jpeg
-./generator/files/white.jpeg
-./generator/files/document.pdf
-./generator/files/blue.pdf
+/data/hystck_data/blue.jpeg
+/data/hystck_data/black.jpeg
+/data/hystck_data/red.jpeg
+/data/hystck_data/yellow.jpeg
+/data/hystck_data/white.jpeg
+/data/hystck_data/document.pdf
+/data/hystck_data/blue.pdf
