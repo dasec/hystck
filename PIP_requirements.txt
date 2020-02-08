@@ -6,5 +6,6 @@ psutil
 netaddr
 enum34
 protobuf==2.5.0
+smbprotocol
 urllib3==1.23
 yaml
