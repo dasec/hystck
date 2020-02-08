@@ -122,7 +122,7 @@ class Generator(object):
         :return:
         """
         # Create new mail application.
-        mailer = self.guest.application("mail_client", {})
+        mailer = self.guest.application("mailClientThunderbird", {})
 
         # Set mail configuration for application from config file.
         mail_data = self.config['applications'][entry['application']]

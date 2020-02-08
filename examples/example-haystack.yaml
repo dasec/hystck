@@ -18,16 +18,26 @@ collections:
 applications:
   mail-0:
     type: mail
-    imap_hostname: imap.googlemail.com
-    smtp_hostname: smtp.googlemail.com
-    email: hystck007@gmail.com
-    password: f!8Uq6b7hKMJX9vz
+    imap_hostname: imap.web.de
+    smtp_hostname: smtp.web.de
+    email: hystck@web.de
+    password: Vo@iLmx48Qv8m%y
+    username: hystck
+    full_name: Heinz Hystck
+    socket_type: 3
+    socket_type_smtp: 2
+    auth_method_smtp: 3
   mail-1:
     type: mail
-    imap_hostname: imap.gmx.net
-    smtp_hostname: smtp.gmx.net
-    email: hystck008@gmx.net
-    password: f!8Uq6b7hKMJX9vz
+      imap_hostname: 192.168.103.123
+      smtp_hostname: 192.168.103.123
+      email: sk@hystck.local
+      password: hystck
+      username: sk
+      full_name: Heinz Hystck
+      socket_type: 0
+      socket_type_smtp: 0
+      auth_method_smtp: 3
   chat-0:
     type: chat
     hostname: jabber.cc
