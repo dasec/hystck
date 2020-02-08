@@ -130,7 +130,7 @@ class Generator(object):
         # Set mail configuration for application from config file.
 
         mail = Mail(entry['recipient'], entry['subject'], entry['message'], entry['attachment_path_list'])
-        mail_account = self.mail_account_dict['mail-account']
+        mail_account = self.mail_account_dict[entry['mail-account']]
 
         send_mail(mailer, mail_account, mail, self.nfs_settings)
 
