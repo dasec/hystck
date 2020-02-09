@@ -1,3 +1,6 @@
+# Copyright (C) 2019-20 Marcel Meuter
+# This file is part of hystck - http://hystck.fbi.h-da.de
+# See the file 'docs/LICENSE' for copying permission.
 import sys
 import logging
 import random
@@ -5,15 +8,14 @@ import time
 import yaml
 
 from hystck.utility.logger_helper import create_logger
-from hystck.application.mail_interface import MailAccount
-from hystck.application.mail_interface import Mail
-from hystck.application.mail_interface import send_mail
-from hystck.application.mail_interface import NFSSettings
+from hystck.application.mail_interface import MailAccount, Mail, send_mail, NFSSettings
 
 
 class Generator(object):
     """
-
+    The generator can generate a randomized set of actions (simulated user activity) from a user supplied configuration
+    file as well as execute the actions on a specified virtual machine afterwards in order to create and capture
+    network traffic.
     """
 
     def __init__(self, guest, path, logger=None):
@@ -27,7 +29,8 @@ class Generator(object):
         self.logger = logger
         self.actions = []
         self.collections = {'mail': {'default': {}}, 'chat': {'default': {}},
-                            'http': {'default': []}, 'printer': {'default': {}}}
+                            'http': {'default': []}, 'printer': {'default': []}, 'smb': {'default': []}}
+        self.settings = {}
 
         self.browser = None
 
@@ -47,70 +50,72 @@ class Generator(object):
             self.logger.error('[-] Config file does not contain both hay and needle sections.')
             sys.exit(1)
 
+        # Load collections for different applications.
         self.logger.info('[~] Loading collections.')
-
-        # Load parameters for different applications.
         self._load_collections()
 
-        self._load_mail_accounts()
-        self._load_nfs_location()
+        # Setup needed objects for applications.
+        self.logger.info('[~] Setup applications.')
+        self._setup_applications()
 
         self.logger.info('[~] Generating randomized action suite.')
 
         # Collect actions used for the hay and needle(s).
         for key, entry in self.config['hay'].items() + self.config['needles'].items():
             # Generate action with specified parameters and generated missing parameters if needed.
-            self.actions.extend(self._generate_action_content(entry))
+            self.actions.extend(self._generate_action(key, entry))
             self.logger.info('\t Created %s set.', key)
 
         # Randomize action suite.
         random.shuffle(self.actions, random.random)
 
         # Generate action suite from config.
-        self.logger.info('[~] Generated randomized action suite.')
+        self.logger.info('[+] Generated randomized action suite.')
 
     def shutdown(self):
         """
-
-        :return:
+        Shutdowns the generator as well as the started applications within the virtual machine.
         """
         self._shutdown_browser()
 
     def execute(self):
         """
+        Executes the previously generated set of actions.
+        """
+        for action in self.actions:
+            self.logger.debug('[~] Executing %s.', action)
+            self._execute_action(action)
 
+    def _execute_action(self, action):
+        """
+        Executes a single action.
+        :param action:
         :return:
         """
-        # Execute actions.
-        for entry in self.actions:
-            self.logger.debug('[~] Executing %s.', entry)
-            self._execute_action(entry)
-
-    def _execute_action(self, entry):
-        """
-
-        :param entry:
-        :return:
-        """
-        if entry['type'] == 'http':
-            self._execute_http_action(entry)
-        elif entry['type'] == 'mail':
-            self._execute_mail_action(entry)
-        elif entry['type'] == 'chat':
+        if action['type'] == 'http':
+            self._execute_action_http(action)
+        elif action['type'] == 'mail':
+            self._execute_action_mail(action)
+        elif action['type'] == 'chat':
             pass
-        elif entry['type'] == 'printer':
-            pass
+        elif action['type'] == 'printer':
+            self._execute_action_printer(action)
+        elif action['type'] == 'smb':
+            self._execute_action_smb(action)
 
-    def _execute_http_action(self, entry):
+        # Wait for a randomized interval.
+        time.sleep(random.randint(10, 20))
+
+    def _execute_action_http(self, action):
         """
-        Executes a http (browser) action.
-        :param entry:
+        Executes a http(s) (browser) action.
+        :param action:
         :return:
         """
         browser = self._get_browser()
 
         # Open URL.
-        browser.open(url=entry['url'])
+        browser.open(url=action['url'])
 
         while browser.is_busy is True:
             self.logger.debug("[~] Firefox is busy.")
@@ -118,37 +123,83 @@ class Generator(object):
 
         time.sleep(5)
 
-    def _execute_mail_action(self, entry):
+    def _execute_action_mail(self, action):
         """
         Executes a mail action.
-        :param entry:
+        :param action:
         :return:
         """
         # Create new mail application.
         mailer = self.guest.application("mailClientThunderbird", {})
 
         # Set mail configuration for application from config file.
+        mail_account_config = self.config['applications'][action['application']]
+        mail = Mail(action['recipient'], action['subject'], action['message'], action['attachments'])
+        mail_account = MailAccount(
+            mail_account_config['imap_hostname'],
+            mail_account_config['smtp_hostname'],
+            mail_account_config['email'],
+            mail_account_config['password'],
+            mail_account_config['username'],
+            mail_account_config['full_name'],
+            mail_account_config['socket_type'],
+            mail_account_config['socket_type_smtp'],
+            mail_account_config['auth_method_smtp']
+        )
 
-        mail = Mail(entry['recipient'], entry['subject'], entry['message'], entry['attachment_path_list'])
-        mail_account = self.mail_account_dict[entry['mail-account']]
+        send_mail(mailer, mail_account, mail, self.settings['nfs'])
+        self.logger.debug('[+] Mail: Send mail from %s to %s.', mail_account_config['email'], action['recipient'])
 
-        send_mail(mailer, mail_account, mail, self.nfs_settings)
+    def _execute_action_chat(self, action):
+        """
+        Executes a chat action.
+        :param action:
+        :return:
+        """
+        raise NotImplementedError("This function is not implemented yet.")
 
-    def _execute_chat_action(self, entry):
-        pass
+    def _execute_action_printer(self, action):
+        """
+        Executes a printer action.
+        :param action:
+        :return:
+        """
+        # TODO: Refactor printing functionality to own "Printer" class. How to properly address the printer which should
+        # be used? Do we want to initialize different printers?
+        self.guest.shellExec('notepad.exe /p "%s', action['file'])
+        self.logger.debug('[+] Printer: Send file %s to printer.', action['file'])
+        time.sleep(5)
 
-    def _execute_printer_action(self, entry):
-        pass
+    def _execute_action_smb(self, action):
+        """
+        Executes a SMB action.
+        :param action:
+        :return:
+        """
+        for _file in action['files']:
+            self.guest.smbCopy(_file, self.config['applications'][action['application']]['destination'],
+                               self.config['applications'][action['application']]['username'],
+                               self.config['applications'][action['application']]['password'])
+            self.logger.debug('[+] SMB: Send file %s to %s.', _file,
+                              self.config['applications'][action['application']]['destination'])
 
-    def _generate_action_content(self, entry):
+    def _generate_action(self, key, entry):
+        """
+
+        :param key: Unique identifier of the entry.
+        :param entry: The entry in form of a dictionary itself.
+        :return: Returns a action dictionary with filled in (randomized) parameters.
+        """
         if entry['application'] == 'http':
             action_type = 'http'
         else:
             # Check if application configuration exists for the action.
             if entry['application'] not in self.config['applications']:
-                logging.error('[-] No application configuration found for %s.', entry['application'])
+                self.logger.error('[-] No application configuration found for %s, which is required by %s.',
+                                  entry['application'], key)
                 sys.exit(1)
 
+            # We can resolve the action type of the entry by the application linked to it.
             action_type = self.config['applications'][entry['application']]['type']
 
         if action_type == 'http':
@@ -159,12 +210,14 @@ class Generator(object):
             return self._generate_action_chat(entry)
         elif action_type == 'printer':
             return self._generate_action_printer(entry)
+        elif action_type == 'smb':
+            return self._generate_action_smb(entry)
 
     def _generate_action_http(self, entry):
         """
-
+        Generates http(s) action(s) by combining the specified parameters with randomized (default) values.
         :param entry:
-        :return:
+        :return: List of actions.
         """
         actions = []
 
@@ -192,9 +245,9 @@ class Generator(object):
 
     def _generate_action_mail(self, entry):
         """
-
+        Generates mail action(s) by combining the specified parameters with randomized (default) values.
         :param entry:
-        :return:
+        :return: List of actions.
         """
         actions = []
 
@@ -231,25 +284,29 @@ class Generator(object):
                 else:
                     message = random.choice(self.collections['mail']['default']['messages'])
 
-            attachment_path_list = None
-            if 'attachment_path_list' in entry:
-                attachment_path_list = entry['attachment_path_list']
+            if 'attachments' in entry:
+                attachments = entry['attachments']
+            else:
+                if len(collection['attachments']) > 0:
+                    attachments = [random.choice(collection['attachments'])]
+                else:
+                    attachments = [random.choice(self.collections['mail']['default']['attachments'])]
 
             actions.append(
                 {'type': 'mail',
-                 'mail-account': entry['application'],
+                 'application': entry['application'],
                  'recipient': recipient,
                  'subject': subject,
                  'message': message,
-                 'attachment_path_list': attachment_path_list})
+                 'attachments': attachments})
 
         return actions
 
     def _generate_action_chat(self, entry):
         """
-
+        Generates chat action(s) by combining the specified parameters with randomized (default) values.
         :param entry:
-        :return:
+        :return: List of actions.
         """
         actions = []
 
@@ -287,15 +344,19 @@ class Generator(object):
                     attachments = random.choice(self.collections['chat']['default']['attachments'])
 
             actions.append(
-                {'type': 'chat', 'recipient': recipient, 'message': message, 'attachments': attachments})
+                {'type': 'chat',
+                 'application': entry['application'],
+                 'recipient': recipient,
+                 'message': message,
+                 'attachments': attachments})
 
         return actions
 
     def _generate_action_printer(self, entry):
         """
-
+        Generates printer action(s) by combining the specified parameters with randomized (default) values.
         :param entry:
-        :return:
+        :return: List of actions.
         """
         actions = []
 
@@ -316,14 +377,46 @@ class Generator(object):
                 else:
                     document = random.choice(self.collections['printer']['default'])
 
-            actions.append({'type': 'printer', 'file': document})
+            actions.append({'type': 'printer',
+                            'application': entry['application'],
+                            'file': document})
+
+        return actions
+
+    def _generate_action_smb(self, entry):
+        """
+        Generates SMB action(s) by combining the specified parameters with randomized (default) values.
+        :param entry:
+        :return: List of actions.
+        """
+        actions = []
+
+        if 'collection' in entry:
+            if entry['collection'] in self.collections['smb']:
+                collection = self.collections['smb'][entry['collection']]
+            else:
+                collection = self.collections['smb']['default']
+        else:
+            collection = self.collections['smb']['default']
+
+        for _ in range(0, entry['amount']):
+            if 'files' in entry:
+                files = entry['files']
+            else:
+                if len(collection) > 0:
+                    files = random.choice(collection)
+                else:
+                    files = random.choice(self.collections['smb']['default'])
+
+            actions.append({'type': 'smb',
+                            'application': entry['application'],
+                            'files': files})
 
         return actions
 
     def _load_collections(self):
         """
-
-        :return:
+        Loads the default and user defined collections of parameters for actions (e.g. lists of URLs).
         """
         # Load custom collections if specified.
         for key, collection in self.config['collections'].items():
@@ -355,11 +448,11 @@ class Generator(object):
                 else:
                     self.collections['mail'][key]['messages'] = []
 
-                if 'attachment_path_list' in collection:
-                    with open(collection['attachment_path_list'], 'r') as f:
-                        self.collections['mail'][key]['attachment_path_list'] = f.read().splitlines()
+                if 'attachments' in collection:
+                    with open(collection['attachments'], 'r') as f:
+                        self.collections['mail'][key]['attachments'] = f.read().splitlines()
                 else:
-                    self.collections['mail'][key]['attachment_path_list'] = []
+                    self.collections['mail'][key]['attachments'] = []
 
             elif collection['type'] == 'chat':
                 self.collections['chat'][key] = {}
@@ -385,9 +478,18 @@ class Generator(object):
             elif collection['type'] == 'printer':
                 self.collections['printer'][key] = {}
 
-                if 'documents' in collection:
-                    with open(collection['documents'], 'r') as f:
+                if 'files' in collection:
+                    with open(collection['files'], 'r') as f:
                         self.collections['printer'][key] = f.read().splitlines()
+                else:
+                    self.collections['printer'][key] = []
+
+            elif collection['type'] == 'smb':
+                self.collections['smb'][key] = {}
+
+                if 'files' in collection:
+                    with open(collection['files'], 'r') as f:
+                        self.collections['smb'][key] = f.read().splitlines()
                 else:
                     self.collections['printer'][key] = []
 
@@ -406,7 +508,7 @@ class Generator(object):
             self.collections['mail']['default']['messages'] = f.read().splitlines()
 
         with open('./generator/general_default_attachments.txt', 'r') as f:
-            self.collections['mail']['default']['attachment_path_list'] = f.read().splitlines()
+            self.collections['mail']['default']['attachments'] = f.read().splitlines()
 
         # Load default fallback collections for chat.
         with open('./generator/chat_default_recipients.txt', 'r') as f:
@@ -420,38 +522,27 @@ class Generator(object):
 
         # Load default fallback collections for printer.
         with open('./generator/printer_default_documents.txt', 'r') as f:
-            self.collections['printer']['default']['documents'] = f.read().splitlines()
+            self.collections['printer']['default'] = f.read().splitlines()
 
-    def _load_mail_accounts(self):
-        self.mail_account_dict = {}
-        for key, entry in self.config['applications'].items():
-            if entry['type'] == 'mail':
-                self.mail_account_dict[key] = MailAccount(
-                    entry['imap_hostname'],
-                    entry['smtp_hostname'],
-                    entry['email'],
-                    entry['password'],
-                    entry['username'],
-                    entry['full_name'],
-                    entry['socket_type'],
-                    entry['socket_type_smtp'],
-                    entry['auth_method_smtp']
-                )
+        # Load default fallback collections for SMB.
+        with open('./generator/general_default_attachments.txt', 'r') as f:
+            self.collections['smb']['default'] = f.read().splitlines()
 
-    def _load_nfs_location(self):
-        self.nfs_settings = None
-        if ('host_nfs_path' in self.config['settings']) & ('guest_nfs_path' in self.config['settings']):
-            self.nfs_settings = NFSSettings(host_vm_nfs_path=self.config['settings']['host_nfs_path'],
-                                            guest_vm_nfs_path=self.config['settings']['guest_nfs_path'])
-
+    def _setup_applications(self):
+        """
+        Setups needed settings (and objects) for the applications to run later on.
+        """
+        if 'host_nfs_path' in self.config['settings'] and 'guest_nfs_path' in self.config['settings']:
+            self.settings['nfs'] = NFSSettings(host_vm_nfs_path=self.config['settings']['host_nfs_path'],
+                                               guest_vm_nfs_path=self.config['settings']['guest_nfs_path'])
 
     def _get_browser(self):
         """
-
-        :return:
+        Start a instance of the Firefox browser if none is running yet and return the object. Is used to make that
+        there is only one instance at the time.
         """
+        # Create a new Firefox instance if there is none exists yet.
         if not self.browser:
-            # Create a new Firefox application.
             self.browser = self.guest.application("webBrowserFirefox", {'webBrowser': "firefox"})
 
             # Wait for Firefox to start.
@@ -464,8 +555,7 @@ class Generator(object):
 
     def _shutdown_browser(self):
         """
-
-        :return:
+        Close the Firefox instance within the virtual machine.
         """
         if self.browser:
             self.browser.close()
