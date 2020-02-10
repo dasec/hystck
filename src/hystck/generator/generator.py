@@ -536,6 +536,24 @@ class Generator(object):
             self.settings['nfs'] = NFSSettings(host_vm_nfs_path=self.config['settings']['host_nfs_path'],
                                                guest_vm_nfs_path=self.config['settings']['guest_nfs_path'])
 
+        self._setup_printer()
+
+    def _setup_printer(self):
+        """
+        Create network printer required by the config file.
+        """
+        for application in self.config['applications']:
+            if application['type'] == 'printer':
+                self.guest.shellExec(
+                    'rundll32 printui.dll,PrintUIEntry /if /b IPPTool-Printer /m "Generic / Text Only" /r "%s"',
+                    application['hostname'])
+                time.sleep(3)
+                self.guest.shellExec('rundll32 printui.dll,PrintUIEntry /y /n IPPTool-Printer')
+                time.sleep(3)
+                self.guest.shellExec(
+                    'REG ADD "HKCU\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Windows" /t REG_DWORD /v LegacyDefaultPrinterMode /d 1 /f')
+                time.sleep(5)
+
     def _get_browser(self):
         """
         Start a instance of the Firefox browser if none is running yet and return the object. Is used to make that
