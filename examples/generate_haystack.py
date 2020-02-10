@@ -2,7 +2,7 @@ import argparse
 import logging
 import time
 from hystck.utility.logger_helper import create_logger
-from hystck.core.generator import Generator
+from hystck.generator import Generator
 from hystck.core.vmm import Vmm
 from hystck.core.vmm import GuestListener
 
