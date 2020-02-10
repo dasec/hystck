@@ -1,5 +1,3 @@
-.. Usage chapter frontpage
-
 Generator
 =========
 
@@ -13,12 +11,6 @@ Commandline usage::
 Usage sample as a script::
 
     $ python examples/generate_haystack.py
-
-
-Configuration file
---------
-
-TODO
 
 Machine
 ^^^^^^^
@@ -60,6 +52,6 @@ Followed by the definition which application should handle this payload and
 arguments specific to the application.
 
 Sample configuration file
--------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. literalinclude:: ../../../examples/example-haystack.yaml
