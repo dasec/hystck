@@ -546,8 +546,8 @@ class Generator(object):
         for key, application in self.config['applications'].items():
             if application['type'] == 'printer':
                 self.guest.shellExec(
-                    'rundll32 printui.dll,PrintUIEntry /if /b IPPTool-Printer /m "Generic / Text Only" /r "%s"',
-                    application['hostname'])
+                    'rundll32 printui.dll,PrintUIEntry /if /b IPPTool-Printer /m "Generic / Text Only" /r "{}"'.format(
+                        application['hostname']))
                 time.sleep(3)
                 self.guest.shellExec('rundll32 printui.dll,PrintUIEntry /y /n IPPTool-Printer')
                 time.sleep(3)

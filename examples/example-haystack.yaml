@@ -89,7 +89,7 @@ hay:
 needles:
   n-printer-0:
     application: printer-0
-    file: C:\Users\hystck\Dokumente\document.txt
+    file: C:\Users\hystck\Documents\document.txt
     amount: 1
   n-mail-0:
     application: mail-0
@@ -103,4 +103,4 @@ needles:
     application: smb-0
     amount: 1
     files:
-      - C:\Users\hystck\Dokumente\document.txt
+      - C:\Users\hystck\Documents\document.txt
