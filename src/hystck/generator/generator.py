@@ -26,7 +26,7 @@ class Generator(object):
         :param logger:
         """
         self.guest = guest
-        self.logger = logger
+        self._logger = logger
         self.actions = []
         self.collections = {'mail': {'default': {}}, 'chat': {'default': {}},
                             'http': {'default': []}, 'printer': {'default': []}, 'smb': {'default': []}}
@@ -34,43 +34,43 @@ class Generator(object):
 
         self.browser = None
 
-        if self.logger is None:
-            self.logger = create_logger('generator', logging.DEBUG)
+        if self._logger is None:
+            self._logger = create_logger('generator', logging.DEBUG)
 
         # Parse YAML config.
         try:
             with open(path, 'r') as f:
                 self.config = yaml.safe_load(f)
         except (IOError, yaml.YAMLError) as error:
-            self.logger.error('[-] Could not find or parse config file %s: %s', path, error)
+            self._logger.error('[-] Could not find or parse config file %s: %s', path, error)
             sys.exit(1)
 
         # Check if minimum requirements are fulfilled.
         if 'hay' not in self.config or 'needles' not in self.config:
-            self.logger.error('[-] Config file does not contain both hay and needle sections.')
+            self._logger.error('[-] Config file does not contain both hay and needle sections.')
             sys.exit(1)
 
         # Load collections for different applications.
-        self.logger.info('[~] Loading collections.')
+        self._logger.info('[~] Loading collections.')
         self._load_collections()
 
         # Setup needed objects for applications.
-        self.logger.info('[~] Setup applications.')
+        self._logger.info('[~] Setup applications.')
         self._setup_applications()
 
-        self.logger.info('[~] Generating randomized action suite.')
+        self._logger.info('[~] Generating randomized action suite.')
 
         # Collect actions used for the hay and needle(s).
         for key, entry in self.config['hay'].items() + self.config['needles'].items():
             # Generate action with specified parameters and generated missing parameters if needed.
             self.actions.extend(self._generate_action(key, entry))
-            self.logger.info('\t Created %s set.', key)
+            self._logger.info('\t Created %s set.', key)
 
         # Randomize action suite.
         random.shuffle(self.actions, random.random)
 
         # Generate action suite from config.
-        self.logger.info('[+] Generated randomized action suite.')
+        self._logger.info('[+] Generated randomized action suite.')
 
     def shutdown(self):
         """
@@ -83,7 +83,7 @@ class Generator(object):
         Executes the previously generated set of actions.
         """
         for action in self.actions:
-            self.logger.debug('[~] Executing %s.', action)
+            self._logger.info('[~] Executing %s.', action)
             self._execute_action(action)
 
     def _execute_action(self, action):
@@ -118,9 +118,10 @@ class Generator(object):
         browser.open(url=action['url'])
 
         while browser.is_busy is True:
-            self.logger.debug("[~] Firefox is busy.")
+            self._logger.debug("[~] Firefox is busy.")
             time.sleep(1)
 
+        self._logger.info('[+] HTTP: Opened URL %s.', action['url'])
         time.sleep(5)
 
     def _execute_action_mail(self, action):
@@ -148,7 +149,7 @@ class Generator(object):
         )
 
         send_mail(mailer, mail_account, mail, self.settings['nfs'])
-        self.logger.debug('[+] Mail: Send mail from %s to %s.', mail_account_config['email'], action['recipient'])
+        self._logger.info('[+] Mail: Send mail from %s to %s.', mail_account_config['email'], action['recipient'])
 
     def _execute_action_chat(self, action):
         """
@@ -167,7 +168,7 @@ class Generator(object):
         # TODO: Refactor printing functionality to own "Printer" class. How to properly address the printer which should
         # be used? Do we want to initialize different printers?
         self.guest.shellExec('notepad.exe /p "%s', action['file'])
-        self.logger.debug('[+] Printer: Send file %s to printer.', action['file'])
+        self._logger.info('[+] Printer: Send file %s to printer.', action['file'])
         time.sleep(5)
 
     def _execute_action_smb(self, action):
@@ -180,7 +181,7 @@ class Generator(object):
             self.guest.smbCopy(_file, self.config['applications'][action['application']]['destination'],
                                self.config['applications'][action['application']]['username'],
                                self.config['applications'][action['application']]['password'])
-            self.logger.debug('[+] SMB: Send file %s to %s.', _file,
+            self._logger.info('[+] SMB: Send file %s to %s.', _file,
                               self.config['applications'][action['application']]['destination'])
 
     def _generate_action(self, key, entry):
@@ -195,8 +196,8 @@ class Generator(object):
         else:
             # Check if application configuration exists for the action.
             if entry['application'] not in self.config['applications']:
-                self.logger.error('[-] No application configuration found for %s, which is required by %s.',
-                                  entry['application'], key)
+                self._logger.error('[-] No application configuration found for %s, which is required by %s.',
+                                   entry['application'], key)
                 sys.exit(1)
 
             # We can resolve the action type of the entry by the application linked to it.
@@ -553,7 +554,7 @@ class Generator(object):
                 self.guest.shellExec(
                     'REG ADD "HKCU\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Windows" /t REG_DWORD /v LegacyDefaultPrinterMode /d 1 /f')
                 time.sleep(5)
-                self.logger.info('[~] Created new printer %s.', key)
+                self._logger.info('[~] Created new printer %s.', key)
 
     def _get_browser(self):
         """
@@ -566,7 +567,7 @@ class Generator(object):
 
             # Wait for Firefox to start.
             while self.browser.is_busy is True:
-                self.logger.debug("[~] Firefox is starting. Waiting.")
+                self._logger.debug("[~] Firefox is starting. Waiting.")
                 time.sleep(1)
 
         # Return the browser.
