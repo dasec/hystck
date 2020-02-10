@@ -542,7 +542,7 @@ class Generator(object):
         """
         Create network printer required by the config file.
         """
-        for key, application in self.config['applications']:
+        for key, application in self.config['applications'].items():
             if application['type'] == 'printer':
                 self.guest.shellExec(
                     'rundll32 printui.dll,PrintUIEntry /if /b IPPTool-Printer /m "Generic / Text Only" /r "%s"',

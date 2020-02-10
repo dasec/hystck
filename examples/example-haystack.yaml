@@ -57,9 +57,9 @@ applications:
     hostname: http://192.168.103.123:631/ipp/print/name
   smb-0:
     type: smb
-    username: blafile
-    password: test
-    destination: \\192.168.103.102\public
+    username: service
+    password: hystck
+    destination: \\192.168.103.123\sambashare
 hay:
   h-http-0:
     application: http
@@ -88,7 +88,7 @@ hay:
       - /data/hystck_data/hda_master.pdf
     amount: 1
   h-mail-2:
-    application: mail-1
+    application: mail-0
     amount: 3
     collection: c-mail-0
   h-chat-0:
