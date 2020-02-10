@@ -167,7 +167,7 @@ class Generator(object):
         """
         # TODO: Refactor printing functionality to own "Printer" class. How to properly address the printer which should
         # be used? Do we want to initialize different printers?
-        self.guest.shellExec('notepad.exe /p "%s', action['file'])
+        self.guest.shellExec('notepad.exe /p "{}"'.format(action['file']))
         self._logger.info('[+] Printer: Send file %s to printer.', action['file'])
         time.sleep(5)
 
