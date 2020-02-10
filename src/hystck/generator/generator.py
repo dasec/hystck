@@ -542,7 +542,7 @@ class Generator(object):
         """
         Create network printer required by the config file.
         """
-        for application in self.config['applications']:
+        for key, application in self.config['applications']:
             if application['type'] == 'printer':
                 self.guest.shellExec(
                     'rundll32 printui.dll,PrintUIEntry /if /b IPPTool-Printer /m "Generic / Text Only" /r "%s"',
@@ -553,6 +553,7 @@ class Generator(object):
                 self.guest.shellExec(
                     'REG ADD "HKCU\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Windows" /t REG_DWORD /v LegacyDefaultPrinterMode /d 1 /f')
                 time.sleep(5)
+                self.logger.info('[~] Created new printer %s.', key)
 
     def _get_browser(self):
         """

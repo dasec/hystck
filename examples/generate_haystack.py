@@ -28,9 +28,6 @@ def main():
     virtual_machine_monitor = Vmm(macs_in_use, guests, logger)
     guest = virtual_machine_monitor.create_guest(guest_name=args.guest_name, platform="windows")
 
-    # Load and parse config file.
-    generator = Generator(guest, args.config_file, logger)
-
     # Waiting to connect to guest.
     logger.debug("[~] Trying to connect to guest.")
 
@@ -39,6 +36,9 @@ def main():
         time.sleep(1)
 
     logger.debug('[+] Connected to %s', guest.guestname)
+
+    # Load and parse config file.
+    generator = Generator(guest, args.config_file, logger)
 
     # Execute action suite.
     generator.execute()
