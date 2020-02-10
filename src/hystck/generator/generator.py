@@ -1,14 +1,15 @@
 # Copyright (C) 2019-20 Marcel Meuter
 # This file is part of hystck - http://hystck.fbi.h-da.de
 # See the file 'docs/LICENSE' for copying permission.
-import sys
 import logging
 import random
+import sys
 import time
+
 import yaml
 
-from hystck.utility.logger_helper import create_logger
 from hystck.application.mail_interface import MailAccount, Mail, send_mail, NFSSettings
+from hystck.utility.logger_helper import create_logger
 
 
 class Generator(object):
