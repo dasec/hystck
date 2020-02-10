@@ -8,8 +8,9 @@ from hystck.core.vmm import GuestListener
 
 
 def main():
-    # Create logger.
-    logger = create_logger('haystack_generator', logging.DEBUG)
+    # Create logger for the Haystack core and generator.
+    logger_core = create_logger('haystack_core', logging.ERROR)
+    logger_generator = create_logger('haystack_generator', logging.DEBUG)
 
     # Parse command line arguments.
     parser = argparse.ArgumentParser(description='Haystack generator utility.')
@@ -24,21 +25,21 @@ def main():
     macs_in_use = []
     guests = []
 
-    guest_listener = GuestListener(guests, logger)
-    virtual_machine_monitor = Vmm(macs_in_use, guests, logger)
+    guest_listener = GuestListener(guests, logger_core)
+    virtual_machine_monitor = Vmm(macs_in_use, guests, logger_core)
     guest = virtual_machine_monitor.create_guest(guest_name=args.guest_name, platform="windows")
 
     # Waiting to connect to guest.
-    logger.debug("[~] Trying to connect to guest.")
+    logger_generator.info("[~] Trying to connect to guest.")
 
     while guest.state != "connected":
-        logger.debug(".")
+        logger_generator.debug(".")
         time.sleep(1)
 
-    logger.debug('[+] Connected to %s', guest.guestname)
+    logger_generator.info('[+] Connected to %s', guest.guestname)
 
     # Load and parse config file.
-    generator = Generator(guest, args.config_file, logger)
+    generator = Generator(guest, args.config_file, logger_generator)
 
     # Execute action suite.
     generator.execute()
