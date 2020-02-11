@@ -1,6 +1,6 @@
-========================
+==========================
 Creation of the Service VM
-========================
+==========================
 
 The Service-VM is a collection of tools and services that are needed for specific scenarios. All of the services are optional and are not mandatory in general. If you want to use the full functionality of the hystck_generator you have to install all of the following services.
 
@@ -96,6 +96,16 @@ This is just the minimal configuration setup.
 Note: The home_mailbox parameter is a relative path to the home directory of the current user. It has to be created beforehand.
 
 For further customization see: http://www.postfix.org/postconf.5.html
+
+Edit /etc/postfix/master.cf
+
+Uncommend the following flag
+
+::
+
+$ -o smtpd_reject_unlisted_recipient=no
+
+This enables you to receive mails from unlisted providers and domains.
 
 Restart postfix to apply the changes:
 ::

@@ -40,8 +40,23 @@ Run the ``pre_setup.py`` as admin with the following command to install the syst
 
 .. _Download here: http://aka.ms/vcpython27
 
+Configure KVM
+=============
+
+There are several permission related settings to adjust in order to be able to run hystck without root permissions.
+
+For all created/cloned VMs you should verify that the owner of the files is "libvirt-qemu" and the usergroup is "kvm".
+
+Furthermore you should adjust the permissions of qemu by editing /etc/qemu.conf.
+Change the following parameters.
+
+::
+
+$ User = "libvirt-qemu"
+$ Group = "kvm"
+
 Installing Tcpdump
-=============================
+==================
 
 In order to dump the network activity performed by the application during
 execution, you'll need a network sniffer properly configured to capture
@@ -67,6 +82,8 @@ Or otherwise (**not recommended**) do::
     $ sudo chmod +s /usr/sbin/tcpdump
 
 .. _tcpdump: http://www.tcpdump.org
+
+Further the folder where tcpdump places the .pcap files should be owned by the user who is running hystck.
 
 
 
