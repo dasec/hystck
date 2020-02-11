@@ -66,13 +66,13 @@ hay:
     collection: c-http-0
   h-mail-0:
     application: mail-0
-    recipient: mpse2020@trash-me.com
+    recipient: mpse2020@trash-mail.com
     subject: a random mail
     message: I'm sending you this mail because of X.
     attachments:
       - /data/hystck_data/white.jpg
       - /data/hystck_data/hda_master.pdf
-    amount: 1
+    amount: 0
   h-mail-1:
     application: mail-1
     recipient: sk@hystck.local
@@ -83,8 +83,9 @@ hay:
       - /data/hystck_data/hda_master.pdf
     amount: 1
   h-mail-2:
-    application: mail-0
+    application: mail-1
     amount: 3
+    recipient: sk@hystck.local
     collection: c-mail-0
 needles:
   n-printer-0:
@@ -92,8 +93,8 @@ needles:
     file: C:\Users\hystck\Documents\document.txt
     amount: 1
   n-mail-0:
-    application: mail-0
-    recipient: criminal@vermutlich.net
+    application: mail-1
+    recipient: sk@hystck.local
     subject: a suspicious mail
     content: I've attached said document.
     attachments:
