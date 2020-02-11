@@ -2,7 +2,9 @@
 Creation of the Service VM
 ========================
 
-We decided to use a debian image for the service vm, but feel free to choose your favorite linux distribution. In case you choose a lnux distribution other than debian be aware that some commands of this instruction won't work on your vm. Nevertheless, the changes for the config files will stay the same for each linux distribution.
+The Service-VM is a collection of tools and services that are needed for specific scenarios. All of the services are optional and are not mandatory in general. If you want to use the full functionality of the hystck_generator you have to install all of the following services.
+
+We decided to use a debian image for the Service-VM, but feel free to choose your favorite linux distribution. In case you choose a linux distribution other than debian be aware that some commands of this instruction won't work on your VM. Nevertheless, the changes for the config files will stay the same for each linux distribution.
 
 Create Service-VM:
 ::
@@ -17,16 +19,49 @@ Create Service-VM:
 	--graphics vnc,listen=0.0.0.0
 	--noautoconsole -v
 
-After installing the service vm, switch to your service vm and open a cli.
+This command creates a new VM and connects it to the previously configured networks.
 
+After installing the VM, connect to it and follow the instructions to install optional services.
 
+DHCP
+====
+
+Here comes a quick introduction for configuring dnsmasq to serve as a DHCP-Server.
+
+Configuration
+#############
+
+The following config parameters need to be adjusted:
+::
+
+	$ cat /etc/dnsmasq.conf
+
+	...
+	interface=eth0
+	interface=eth1
+	...
+	dhcp-range=eth0,192.168.2.10,192.168.2.254,12h
+	dhcp-range=eth1,192.168.3.10,192.168.3.254,12h
+	...
+
+	$ sudo ifconfig eth0 192.168.2.2
+	$ sudo ifconfig eth1 192.168.3.2
+
+	$ sudo service dnsmasq restart
+
+Be aware that you have to replace the IP-Range aswell as the interfaces based on your system configuration. The interfaces should be the ones
+connected to the bridges br0 and br1.
 
 Setting up the mail server
-========================
+==========================
 
-First we will start with the SMTP server which is primarily responsible for forwarding and storing of mails.
+The local mailserver is needed for capturing unencrypted mail traffic. Alternatively you can use any provider to send
+and receive mails but their traffic is usually encrypted which restricts network analysis.
 
-SMTP server:
+SMTP-Server
+############
+
+We will start by installing the SMTP-Server first, which is primarily responsible for forwarding and storing of mails.
 
 ::
 
@@ -34,6 +69,8 @@ $ sudo apt-get update
 $ sudo apt-get install install postfix
 
 Configuring Postfix
+*******************
+
 Edit /etc/postfix/main.cf:
 
 ::
@@ -54,18 +91,29 @@ $ mynetworks = 192.168.1.0/24, 127.0.0.0/8
 $
 $ home_mailbox = Maildir/
 
+This is just the minimal configuration setup.
+
+Note: The home_mailbox parameter is a relative path to the home directory of the current user. It has to be created beforehand.
+
+For further customization see: http://www.postfix.org/postconf.5.html
+
 Restart postfix to apply the changes:
 ::
 
 $ systemctl restart postfix
 
-Now, create a test user called "hystck":
+Create a test-user called "hystck":
 ::
 
 $ /usr/sbin/adduser hystck
 $ passwd <type_a_password_of_your_choice>
 
-Now we will install the IMAP/POP3 server:
+Install the IMAP/POP3-Server
+****************************
+
+Dovecot is used as IMAP/POP3-Server. It is needed for registering accounts within Thunderbird or any other mail client.
+Although we technically do not need a IMAP/POP3-Server to send emails, it is mandatory for our mail scenarios.
+
 ::
 
 $ sudo apt-get install dovecot
