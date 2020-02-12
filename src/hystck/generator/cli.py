@@ -10,25 +10,11 @@ from hystck.utility.logger_helper import create_logger
 
 def cli():
     parser = argparse.ArgumentParser(description='Haystack generator utility.')
-    parser.add_argument(
-        'config_file',
-        type=str,
-        help='path to the config file'
-    )
-    parser.add_argument(
-        '--guest',
-        type=str,
-        help='name of the guest virtual machine',
-        nargs='?',
-        default='guest'
-    )
-    parser.add_argument(
-        '--seed',
-        type=int,
-        help='initial seed to use for random number generation',
-        nargs='?',
-        default=None
-    )
+    parser.add_argument('config_file', type=str, help='path to the config file')
+    parser.add_argument('--guest', type=str, help='name of the guest virtual machine', nargs='?',
+                        default='guest-{}'.format(int(time.time())))
+    parser.add_argument('--seed', type=int, help='initial seed to use for random number generation', nargs='?',
+                        default=None)
 
     args = parser.parse_args()
 

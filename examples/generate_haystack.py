@@ -15,7 +15,8 @@ def main():
     # Parse command line arguments.
     parser = argparse.ArgumentParser(description='Haystack generator utility.')
     parser.add_argument('config_file', type=str, help='path to the config file')
-    parser.add_argument('--guest', type=str, help='name of the guest virtual machine', nargs='?', default='guest')
+    parser.add_argument('--guest', type=str, help='name of the guest virtual machine', nargs='?',
+                        default='guest-{}'.format(int(time.time())))
     parser.add_argument('--seed', type=int, help='initial seed to use for random number generation', nargs='?',
                         default=None)
 
@@ -27,7 +28,7 @@ def main():
 
     guest_listener = GuestListener(guests, logger_core)
     virtual_machine_monitor = Vmm(macs_in_use, guests, logger_core)
-    guest = virtual_machine_monitor.create_guest(guest_name=args.guest_name, platform="windows")
+    guest = virtual_machine_monitor.create_guest(guest_name=args.guest, platform="windows")
 
     # Waiting to connect to guest.
     logger_generator.info("[~] Trying to connect to guest.")
@@ -39,7 +40,7 @@ def main():
     logger_generator.info('[+] Connected to %s', guest.guestname)
 
     # Load and parse config file.
-    generator = Generator(guest, args.config_file, logger_generator)
+    generator = Generator(guest, args.config_file, logger_generator, args.seed)
 
     # Execute action suite.
     generator.execute()
