@@ -1,6 +1,5 @@
 import argparse
 import logging
-import random
 import time
 
 from hystck.core.vmm import GuestListener
@@ -33,29 +32,28 @@ def cli():
 
     args = parser.parse_args()
 
-    # Seed the random number generator
-    random.seed(args.seed)
+    logger_core = create_logger('haystack_core', logging.ERROR)
+    logger_generator = create_logger('haystack_generator', logging.DEBUG)
 
     # Create virtual machine.
     macs_in_use = []
     guests = []
 
-    logger = create_logger('haystack_generator', logging.DEBUG)
-    guest_listener = GuestListener(guests, logger)
-    virtual_machine_monitor = Vmm(macs_in_use, guests, logger)
-    guest = virtual_machine_monitor.create_guest(guest_name=args.guest_name, platform="windows")
+    guest_listener = GuestListener(guests, logger_core)
+    virtual_machine_monitor = Vmm(macs_in_use, guests, logger_core)
+    guest = virtual_machine_monitor.create_guest(guest_name=args.guest, platform="windows")
 
     # Waiting to connect to guest.
-    logger.debug("[~] Trying to connect to guest.")
+    logger_generator.info("[~] Trying to connect to guest.")
 
     while guest.state != "connected":
-        logger.debug(".")
+        logger_generator.debug(".")
         time.sleep(1)
 
-    logger.debug('[+] Connected to %s', guest.guestname)
+    logger_generator.info('[+] Connected to %s', guest.guestname)
 
     # Load and parse config file.
-    generator = Generator(guest, args.config_file, logger)
+    generator = Generator(guest, args.config_file, logger_generator, seed=args.seed)
 
     # Execute action suite.
     generator.execute()
