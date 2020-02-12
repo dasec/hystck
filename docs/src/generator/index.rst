@@ -19,6 +19,13 @@ Guest
 
 At the moment the generator can only work with one guest.
 
+Seed
+^^^^
+
+The randomness in side the generator can be seeded either using the **seed** field inside
+the configuration file or using the commandline by adding the **--seed** option which
+overrides the seed field. Using the same seed should result in similar network traffic.
+
 Sections
 ^^^^^^^^^
 
