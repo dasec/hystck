@@ -43,8 +43,6 @@ def send_mail(guest_vm, mail_account, mail, nfs_settings=None):
 
     if mail.attachment_path_list is not None:
         mail.attachment_path_list = _generate_path_list_for_guest_vm(mail.attachment_path_list, nfs_settings.guest_vm_nfs_path, nfs_settings.host_vm_nfs_path)
-    print(mail.attachment_path_list)
-
 
     # Set a password for the mail service
     guest_vm.set_session_password(mail_account.password)

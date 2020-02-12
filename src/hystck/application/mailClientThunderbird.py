@@ -33,6 +33,7 @@ try:
     from hystck.application.application import ApplicationGuestSideCommands
     from hystck.utility.line import lineno
     from hystck.utility.io import parse_attachment_string
+    from hystck.utility.io import escape_password_string
 
     if platform.system() == "Windows":
         import pywinauto
@@ -198,8 +199,6 @@ class MailClientThunderbirdVmmSide(ApplicationVmmSide):
         @param receiver: Receiver for this email.
         @param subject: Subject for this email.
         @param message: Message for this email.
-        TODO Proof correctness
-        TODO Proof naming, attachment, attachments?
         @param attachment_path_list: (Optional) list of paths for files to attach to the mail.
 
         @return: No return value.
@@ -211,7 +210,6 @@ class MailClientThunderbirdVmmSide(ApplicationVmmSide):
             # check if attachment_string is added
             if attachment_path_list is not None:
                 attachment_string = parse_attachment_string(attachment_path_list)
-                print(attachment_string)
                 if attachment_string is not None:
                     m["attachment_string"] = attachment_string
             pcl_m = ph.base64pickle(m)
@@ -472,8 +470,7 @@ class MailClientThunderbirdWindowsGuestSide(MailClientThunderbirdPlatformIndepen
             self.logger.debug("password window appeared")
             time.sleep(1)
             self.logger.debug("self.password: " + str(self.password))
-            #TODO Escape all special characters
-            escaped_password = self.password.replace("@", "{@}").replace("%", "{%}")
+            escaped_password = escape_password_string(self.password)
             send_key_string = escaped_password + "{TAB}" + "{SPACE}" + "{ENTER}"
             password_window.TypeKeys(send_key_string)
             self.logger.debug("the password should now be inserted")
@@ -578,12 +575,11 @@ class MailClientThunderbirdWindowsGuestSide(MailClientThunderbirdPlatformIndepen
                 self.logger.debug("if case")
                 self.thunderbird_window = self.thunderbird_app.window_(title_re=".*%s.*" % subject)
             else:
-                # TODO Code is always failing, needs to be investigated
                 self.logger.debug("else case")
                 app = pywinauto.application.Application().connect_(title_re=".*%s.*" % subject)
                 self.thunderbird_window = app.window_(title_re=".*%s.*" % subject)
 
-            self.thunderbird_window.TypeKeys("^{ENTER}") # bug: for some reason this does not work, probably the wrong base window is used
+            self.thunderbird_window.TypeKeys("^{ENTER}")
         except Exception as e:
             self.logger.error(lineno() + str(e))
 
@@ -618,8 +614,6 @@ class MailClientThunderbirdWindowsGuestSide(MailClientThunderbirdPlatformIndepen
         except Exception as e:
             self.logger.error("MailClientThunderbird::open No window named '.*Mozilla Thunderbird'")
             self.logger.error("MailClientThunderbird::open SMTP password may have been entered previously")
-            #self.agent_object.send("application " + self.module_name + " " + str(self.imParent.window_id) + " error")
-            #return
 
         # if window appears
         try:
@@ -637,9 +631,7 @@ class MailClientThunderbirdWindowsGuestSide(MailClientThunderbirdPlatformIndepen
             self.logger.info("password window = ")
             self.logger.info(password_window)
             time.sleep(1)
-            print "self password"
-            print self.password
-            escaped_password = self.password.replace("@", "{@}").replace("%", "{%}")
+            escaped_password = escape_password_string(self.password)
             sendkeystring = escaped_password + "{TAB}" + "{SPACE}" + "{ENTER}"
             password_window.TypeKeys(sendkeystring)
             self.logger.info("the password should now be inserted")
@@ -904,8 +896,6 @@ class MailClientThunderbirdLinuxGuestSide(MailClientThunderbirdPlatformIndepende
         # - Insert Password
         try:
             self.logger.info("password window appeared")
-            print "self password"
-            print self.password
             self.window_manager.text('SMTP Server Password Required', 'txt0', self.password)
             self.window_manager.focus('SMTP Server Password Required')
             keys_combo = "<tab>" + "<space>" + "<enter>"
