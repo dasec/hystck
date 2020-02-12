@@ -24,3 +24,12 @@ If you omit one of the parameters a set of default parameters is used.
         recipients: ./generator/friendly_recipients.txt
         subjects: ./generator/friendly_subjects.txt
         messages: ./generator/friendly_messages.txt
+
+
+**HTTP**
+
+.. code-block:: yaml
+
+  c-sample-name:
+    type: http
+    urls: file each line one url

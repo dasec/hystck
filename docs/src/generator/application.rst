@@ -28,3 +28,7 @@ There are two different types of mail accounts:
         socket_type: 3
         socket_type_smtp: 2
         auth_method_smtp: 3
+
+**HTTP**
+
+The application for http does not need to be configured.

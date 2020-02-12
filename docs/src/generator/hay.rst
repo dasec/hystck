@@ -46,3 +46,15 @@ If you want to send several mails randomly selected from your previously defined
         amount: 3
         recipient: sk@hystck.local
         collection: c-mail-0
+
+**HTTP**
+
+.. code-block:: yaml
+
+    a-sample-name:
+        application: http
+        collection: c-sample-nam
+        url: https://dasec.h-da.de/
+        amount: the number of urls to open
+
+Either a hard defined url or random urls from a collection can be used.
