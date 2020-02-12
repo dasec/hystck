@@ -171,7 +171,7 @@ Apply changes and restart the nfs server:
 $ sudo exportfs -a
 $ sudo systemctl restart nfs-server
 
-**Client side**
+**Client side (guest vm)**
 
 (**Windows**)
 
@@ -188,7 +188,7 @@ $ mount -o nolock <ip_host_vm>:/<mnt_path_host_vm> z:
 - Create a new "New DWORD (32-bit) Value" inside the "Default" folder named "AnonymousGid" and assign the value 0.
 - Reboot the machine.
 
-Auto startup on windows
+Auto startup on windows (guest side)
 
 - Press Windows+R, then type "shell:startup"
 - Create a .bat file containing following commands:
@@ -197,6 +197,8 @@ Auto startup on windows
 
 $ @echo off
 $ net use z:  \\<ip_host_vm>\<mnt_path_host_vm>
+
+and put the file into the autostart folder.
 
 (**Linux**)
 
