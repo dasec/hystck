@@ -1,11 +1,7 @@
 name: haystack-example
 description: A example action suite to generate a haystack (traffic)
 author: MPSE Group
-machines:
-  vm-0:
-    template: /data/templates/windows-7.xml
-  vm-1:
-    template: /data/templates/windows-10.xml
+seed: 1234
 collections:
   c-http-0:
     type: http

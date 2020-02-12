@@ -46,6 +46,11 @@ class Generator(object):
             self._logger.error('[-] Could not find or parse config file %s: %s', path, error)
             sys.exit(1)
 
+        # Check if user specified a seed to be used for randomization.
+        if 'seed' in self.config:
+            self._logger.info('[~] Using the specified seed: %d.', self.config['seed'])
+            random.seed(self.config['seed'])
+
         # Check if minimum requirements are fulfilled.
         if 'hay' not in self.config or 'needles' not in self.config:
             self._logger.error('[-] Config file does not contain both hay and needle sections.')
@@ -105,7 +110,7 @@ class Generator(object):
             self._execute_action_smb(action)
 
         # Wait for a randomized interval.
-        time.sleep(random.randint(10, 20))
+        time.sleep(random.randint(1, 5))
 
     def _execute_action_http(self, action):
         """
