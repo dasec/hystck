@@ -243,9 +243,72 @@ change directory owner to smb user
 
 $ sudo chown -R <user>.<user> <path/samba>
 
+::
+
 Add smb password for user
 ::
 
 $ sudo  smbpasswd -a <user>
 
+::
 
+Seting up the print server
+=========================
+
+**Installing the IPP Server**
+
+For the simulation of a printer we use the `ippsample` tool.
+In the following we will present the initial setup on a clean debian with docker installed.
+
+Clone the IPPSample Repository
+
+::
+
+    $ git clone https://github.com/istopwg/ippsample.git && cd ippsample
+
+
+Build the container
+::
+
+    $ docker build -t ippsample .
+
+
+
+**Starting the IPP Server**
+
+The service has encryption enabled by default. In order to disable it, it is necessary to create certain configs as described in the following.
+Within the `debian_service` VM:
+
+
+::
+
+    docker run --name ippserver -d --rm -it -p 631:631 ippsample /bin/bash
+    docker exec -it ippserver bash -c "mkdir -p config/print && echo Encryption Never > config/system.conf && touch config/print/name.conf"
+
+
+Structure:
+
+::
+
+
+    ippsample   
+    └───config
+    │   │   system.conf
+    │   └───print
+    │       │   <name>.conf
+
+
+
+* `system.conf` contains the global `ippserver` config. To disable encryption it should contain `Encryption Never`
+* `name.conf` contains config related to the printer (currently empty). `name` is the name of the simulated printer
+
+The service can be started now.
+Within the `debian_service` VM:
+
+::
+
+    docker exec -it ippserver bash -c "ippserver -v  -p 631 -C /config"
+
+
+* The printer is now ready to receive print jobs
+* Printed documents are saved in the `/tmp/` directory
