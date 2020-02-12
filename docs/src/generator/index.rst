@@ -8,14 +8,16 @@ Commandline usage::
 
     $ python -m hystck.generator examples/example-haystack.yaml
 
+    $ python -m hystck.generator --help
+
 Usage sample as a script::
 
     $ python examples/generate_haystack.py
 
-Machine
+Guest
 ^^^^^^^
 
-At the moment the generator can only work with one machine.
+At the moment the generator can only work with one guest.
 
 Collection
 ^^^^^^^^^^
