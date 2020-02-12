@@ -32,3 +32,26 @@ There are two different types of mail accounts:
 **HTTP**
 
 The application for http does not need to be configured.
+
+**Printer**
+
+.. code-block:: yaml
+
+  printer-0:
+    type: printer
+    hostname: http://service_vm:631/ipp/print/name
+
+Hostname is the url of the network printer. For example the printer on the
+service vm.
+
+**Samba Share**
+
+.. code-block:: yaml
+
+  smb-0:
+    type: smb
+    username: service
+    password: hystck
+    destination: \\service_vm\sambashare
+
+Username password and path of the smb share.
