@@ -14,10 +14,10 @@ def main():
 
     # Parse command line arguments.
     parser = argparse.ArgumentParser(description='Haystack generator utility.')
-    parser.add_argument('guest_name', type=str, help='name of the guest virtual machine', nargs='?',
-                        default='guest')
-    parser.add_argument('config_file', type=str, help='path to the config file', nargs='?',
-                        default='example-haystack.yaml')
+    parser.add_argument('config_file', type=str, help='path to the config file')
+    parser.add_argument('--guest', type=str, help='name of the guest virtual machine', nargs='?', default='guest')
+    parser.add_argument('--seed', type=int, help='initial seed to use for random number generation', nargs='?',
+                        default=None)
 
     args = parser.parse_args()
 
