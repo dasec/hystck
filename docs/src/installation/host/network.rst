@@ -11,6 +11,12 @@ The hystck-framework has to do some management stuff and therefor uses this netw
 
 The public network interface will only be used for the "real" traffic and has to have a internet-connection. This could also be done by a second bridge with an attached interface eth1. The interface eth1 is internet-ready.
 
+Possibly you need to remove the default network that virsh installs:
+
+::
+
+$ virsh net-destroy default
+$ virsh net-undefine default
 
 Use the following command from the hystck base directory to create the network interface from the template:
 
