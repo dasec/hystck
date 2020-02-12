@@ -34,7 +34,7 @@ If you omit one of the parameters a set of default parameters is used.
     type: http
     urls: urls.txt
 
-Each line in the url.txt document represents one file path.
+Each line in the url.txt document represents one url.
 
 **Printer**
 
