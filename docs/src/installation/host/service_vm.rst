@@ -209,4 +209,43 @@ $ sudo mount -t nfs4 -o proto=tcp,port=2049 <ip_host_vm>:/<mnt_path_host_vm> <mn
 
 
 
+Setting up the smb server
+==========================
+A SMB server is needed to access a typical network share inside a windows machine.
+It can be used with the hystck generator.
+
+Installation of the smb server
+
+::
+
+$ sudo apt-get install samba
+
+Edit the smb.conf with
+
+::
+
+    $ sudo nano /etc/samba/smb.conf <<EOL
+    [global]
+    workgroup = smb
+    security = user
+    encrypt passwords = true
+    valid users = service
+
+    [sambashare]
+    comment = samba
+    path = /home/samba_share
+    read only = no
+    browsable = yes
+    EOL
+
+change directory owner to smb user
+::
+
+$ sudo chown -R <user>.<user> <path/samba>
+
+Add smb password for user
+::
+
+$ sudo  smbpasswd -a <user>
+
 
