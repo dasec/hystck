@@ -3,11 +3,11 @@ Hay and Needles
 
 Hay defines the inconspicuous traffic that should be generated and
 needles define the suspicious traffic that should be generated.
-In both sections of the configuration file actions are assigned to applications
-the arguments for the actions can either be defined by hand or can be drawn from collections.
+In both sections of the configuration file action groups are assigned to applications
+the arguments for the action groups can either be defined by hand or can be drawn from collections.
 
-Each action is defined as a YAML object, the name being the identifier of that
-payload.
+Each action group is defined as a YAML object, the name being the identifier of that
+action group.
 
 .. code-block:: yaml
 
@@ -18,8 +18,13 @@ payload.
         subject: some subject
         content: sample content
 
-Followed by the definition which application should handle this payload and
+        amount: 1
+
+Followed by the definition which application should handle this action and
 arguments specific to the application.
+
+An action block requires an amount argument that specifies how many actions
+should be generated with the given parameters.
 
 **Mail scenario**
 
@@ -58,3 +63,19 @@ If you want to send several mails randomly selected from your previously defined
         amount: the number of urls to open
 
 Either a hard defined url or random urls from a collection can be used.
+
+**Printer**
+
+TODO
+
+**Samba Share**
+
+.. code-block:: yaml
+
+  n-smb-0:
+    application: smb-0
+    files: []
+    collection: sample
+    amount: 1
+
+Either a list files or a collection.
