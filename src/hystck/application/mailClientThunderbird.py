@@ -545,21 +545,21 @@ class MailClientThunderbirdWindowsGuestSide(MailClientThunderbirdPlatformIndepen
             if os.path.exists(thunderbird_x86_path):
                 if attachment_string is None:
                     self.thunderbird_app = pywinauto.application.Application().start(
-                        thunderbird_x86_path + ' -p default -compose "to=%s,subject=%s,body=%s"' % (
+                        thunderbird_x86_path + ' -p default -compose "to=%s,subject=\'%s\',body=\'%s\'"' % (
                             receiver, subject, message))
                 else:
                     self.thunderbird_app = pywinauto.application.Application().start(
-                        thunderbird_x86_path + ' -p default -compose "to=%s,subject=%s,body=%s,attachment=\'%s\'"' % (
+                        thunderbird_x86_path + ' -p default -compose "to=%s,subject=\'%s\',body=\'%s\',attachment=\'%s\'"' % (
                             receiver, subject, message, attachment_string))
 
             elif os.path.exists(thunderbird_path):
                 if attachment_string is None:
                     self.thunderbird_app = pywinauto.application.Application().start(
-                        thunderbird_path + ' -p default -compose "to=%s,subject=%s,body=%s"' % (
+                        thunderbird_path + ' -p default -compose "to=%s,subject=\'%s\',body=\'%s\'"' % (
                             receiver, subject, message))
                 else:
                     self.thunderbird_app = pywinauto.application.Application().start(
-                        thunderbird_path + ' -p default -compose "to=%s,subject=%s,body=%s,attachment=\'%s\'"' % (
+                        thunderbird_path + ' -p default -compose "to=%s,subject=\'%s\',body=\'%s\',attachment=\'%s\'"' % (
                             receiver, subject, message, attachment_string))
             else:
                 self.logger.error(
@@ -856,11 +856,11 @@ class MailClientThunderbirdLinuxGuestSide(MailClientThunderbirdPlatformIndepende
 
             if attachment_string is None:
                 self.window_manager.start(
-                    'thunderbird', args=['-compose', 'to=%s,subject=%s,body=%s"' % (receiver, subject, message)]
+                    'thunderbird', args=['-compose', '"to=%s,subject=\'%s\',body=\'%s\'"' % (receiver, subject, message)]
                 )
             else:
                 self.window_manager.start(
-                    'thunderbird', args=['-compose', 'to=%s,subject=%s,body=%s,attachment=%s"' %
+                    'thunderbird', args=['-compose', '"to=%s,subject=\'%s\',body=\'%s\',attachment=\'%s\'"' %
                                          (receiver, subject, message, attachment_string)]
                 )
 
