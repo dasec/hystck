@@ -19,7 +19,7 @@ class Generator(object):
     network traffic.
     """
 
-    def __init__(self, guest, path, logger=None):
+    def __init__(self, guest, path, logger=None, seed=None):
         """
 
         :param guest:
@@ -47,9 +47,12 @@ class Generator(object):
             sys.exit(1)
 
         # Check if user specified a seed to be used for randomization.
-        if 'seed' in self.config:
+        # Does not override the seed passed as an argument
+        if 'seed' in self.config and seed is None:
             self._logger.info('[~] Using the specified seed: %d.', self.config['seed'])
-            random.seed(self.config['seed'])
+            seed = self.config['seed']
+
+        random.seed(seed)
 
         # Check if minimum requirements are fulfilled.
         if 'hay' not in self.config or 'needles' not in self.config:
