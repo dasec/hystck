@@ -32,4 +32,26 @@ If you omit one of the parameters a set of default parameters is used.
 
   c-sample-name:
     type: http
-    urls: file each line one url
+    urls: urls.txt
+
+Each line in the url.txt document represents one file path.
+
+**Printer**
+
+.. code-block:: yaml
+
+  c-print-0:
+    type: printer
+    files: files.txt
+
+Each line in the files.txt document represents one file path.
+
+**Samba Share**
+
+.. code-block:: yaml
+
+  c-smb-0:
+    type: smb
+    files: files.txt
+
+Each line in the files.txt document represents one file path.

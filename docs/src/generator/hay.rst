@@ -66,7 +66,15 @@ Either a hard defined url or random urls from a collection can be used.
 
 **Printer**
 
-TODO
+.. code-block:: yaml
+
+  n-printer-0:
+    application: printer-0
+    file: C:\Users\hystck\Documents\top_secret.txt
+    collection: sample
+    amount: 2
+
+Either a file to print or a collection from which files can be selected.
 
 **Samba Share**
 
