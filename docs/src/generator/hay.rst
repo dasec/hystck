@@ -3,10 +3,10 @@ Hay and Needles
 
 Hay defines the inconspicuous traffic that should be generated and
 needles define the suspicious traffic that should be generated.
-In both sections of the configuration file payloads are assigned to applications
-the payloads can either be defined by hand or can be drawn from collections.
+In both sections of the configuration file actions are assigned to applications
+the arguments for the actions can either be defined by hand or can be drawn from collections.
 
-Each payload is defined as a YAML object the name being the identifier of that
+Each action is defined as a YAML object, the name being the identifier of that
 payload.
 
 .. code-block:: yaml
