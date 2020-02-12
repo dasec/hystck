@@ -1,0 +1,48 @@
+Hay and Needles
+^^^^^^^^^^^^^^^
+
+Hay defines the inconspicuous traffic that should be generated and
+needles define the suspicious traffic that should be generated.
+In both sections of the configuration file payloads are assigned to applications
+the payloads can either be defined by hand or can be drawn from collections.
+
+Each payload is defined as a YAML object the name being the identifier of that
+payload.
+
+.. code-block:: yaml
+
+    n-mail-sample:
+        application: mail-sample
+
+        recipient: sample@mail.com
+        subject: some subject
+        content: sample content
+
+Followed by the definition which application should handle this payload and
+arguments specific to the application.
+
+**Mail scenario**
+
+In the hay definition you can reference a previously defined mail account via the application tag. Be sure that the referenced mail account is defined. The attachments tag is optional.
+
+.. code-block:: yaml
+
+    h-mail-1:
+        application: mail-1
+        recipient: sk@hystck.local
+        subject: a random mail
+        message: I'm sending you this mail because of Y.
+        attachments:
+          - /data/hystck_data/white.jpg
+          - /data/hystck_data/hda_master.pdf
+        amount: 1
+
+If you want to send several mails randomly selected from your previously defined collection, have a look at the following yaml configuration as a point of reference:
+
+.. code-block:: yaml
+
+    h-mail-2:
+        application: mail-1
+        amount: 3
+        recipient: sk@hystck.local
+        collection: c-mail-0

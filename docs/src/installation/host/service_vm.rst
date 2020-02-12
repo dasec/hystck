@@ -112,10 +112,10 @@ Restart postfix to apply the changes:
 
 $ systemctl restart postfix
 
-Create a test-user called "hystck":
+Create a new user:
 ::
 
-$ /usr/sbin/adduser hystck
+$ /usr/sbin/adduser <username>
 $ passwd <type_a_password_of_your_choice>
 
 Install the IMAP/POP3-Server
