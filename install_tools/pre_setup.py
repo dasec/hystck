@@ -90,6 +90,7 @@ def main():
         for command in commands:
             prepCmd = command.format(line.strip())
             os.system(prepCmd)
+
         # Reboot to enable virt-manager user privileges
         os.system("reboot")
     elif param == "vm":
