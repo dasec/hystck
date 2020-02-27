@@ -64,12 +64,17 @@ def main():
     #inst_pip_requirements_cmd = "pip install -U --requirement {}".format(pip_requ_file)
     #logger.debug("Install pip requirement: {}".format(inst_pip_requirements_cmd))
     #os.system(inst_pip_requirements_cmd)
-    
-    # Setup tcpdump user rights
-    os.system("setcap cap_net_raw,cap_net_admin=eip /usr/sbin/tcpdump")
 
     # Check if installation is host or vm side
     if param == "host":
+        # Add Usergroup libvirtd
+        os.system("groupadd libvirtd")
+        os.system("usermod -a -G libvirtd hystck")
+
+        # Setup tcpdump user rights
+        logger.info("setting up tcpdump.")
+        os.system("setcap cap_net_raw,cap_net_admin=eip /usr/sbin/tcpdump")
+
         # Add Pools for Libvirt
         logger.info("adding pools for libvirt.")
         # To-Do: get names from configuration file
@@ -77,6 +82,7 @@ def main():
         for command in commands:
             prepCmd = command.format(line.strip())
             os.system(prepCmd)
+
         # Network Interface Setup
         logger.info("adding network interfaces.")
         # To-Do: get names from configuration file
@@ -84,6 +90,8 @@ def main():
         for command in commands:
             prepCmd = command.format(line.strip())
             os.system(prepCmd)
+        # Reboot to enable virt-manager user privileges
+        os.system("reboot")
     elif param == "vm":
         logger.info("nothing to do here.")
     else:
