@@ -22,6 +22,10 @@ def isAdmin():
 
 
 def main():
+    if len(sys.argv) > 2:
+        param = sys.argv[1]
+    else:
+        param = "vm"
     
     # Logger Stuff
     logger = logging.getLogger("hystck-Installer")
@@ -62,6 +66,28 @@ def main():
     #os.system(inst_pip_requirements_cmd)
     
     # Setup tcpdump user rights
+    os.system("setcap cap_net_raw,cap_net_admin=eip /usr/sbin/tcpdump")
+
+    # Check if installation is host or vm side
+    if param == "host":
+        # Add Pools for Libvirt
+        logger.info("adding pools for libvirt.")
+        # To-Do: get names from configuration file
+        commands = ["mkdir /data", "virsh pool-define-as hystck-pool dir - - - - /data/hystck-pool", "virsh pool-build hystck-pool", "virsh pool-start hystck-pool", "virsh pool-autostart hystck-pool"]
+        for command in commands:
+            prepCmd = command.format(line.strip())
+            os.system(prepCmd)
+        # Network Interface Setup
+        logger.info("adding network interfaces.")
+        # To-Do: get names from configuration file
+        commands = ["virsh net-define public.xml", "virsh net-define private.xml", "virsh net-start public", "virsh net-start private", "virsh net-autostart public", "virsh net-autostart private"]
+        for command in commands:
+            prepCmd = command.format(line.strip())
+            os.system(prepCmd)
+    elif param == "vm":
+        logger.info("nothing to do here.")
+    else:
+        logger.error("Unknown Parameter {}".format(param))
 	
 	
 
