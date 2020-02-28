@@ -3,6 +3,7 @@
 import sys
 import os
 import logging
+import json
 import platform
 
 pip_requ_file = "PIP_requirements.txt"
@@ -26,6 +27,13 @@ def main():
         param = sys.argv[1]
     else:
         param = "vm"
+
+    with open('config.json') as json_data_file:
+        data = json.load(json_data_file)
+        general = data['general']
+        tcpdump = data['tcpdump']
+        virtpools = data['libvirt-pools']
+        netifaces = data['network-interfaces']
     
     # Logger Stuff
     logger = logging.getLogger("hystck-Installer")
@@ -69,16 +77,20 @@ def main():
     if param == "host":
         # Add Usergroup libvirtd
         os.system("groupadd libvirtd")
-        os.system("usermod -a -G libvirtd hystck")
+        os.system("usermod -a -G libvirtd {}".format(general['user']))
 
         # Setup tcpdump user rights
         logger.info("setting up tcpdump.")
-        os.system("setcap cap_net_raw,cap_net_admin=eip /usr/sbin/tcpdump")
+        os.system("setcap cap_net_raw,cap_net_admin=eip {}".format(tcpdump['path']))
 
         # Add Pools for Libvirt
         logger.info("adding pools for libvirt.")
         # To-Do: get names from configuration file
-        commands = ["mkdir /data", "virsh pool-define-as hystck-pool dir - - - - /data/hystck-pool", "virsh pool-build hystck-pool", "virsh pool-start hystck-pool", "virsh pool-autostart hystck-pool"]
+        commands = ["mkdir {}".format(data['libvirt-pools']['path']),
+                    "virsh pool-define-as hystck-pool dir - - - - {}/{}".format(virtpools['path'], virtpools['name']),
+                    "virsh pool-build {}".format(virtpools['name']),
+                    "virsh pool-start {}".format(virtpools['name']),
+                    "virsh pool-autostart {}".format(virtpools['name'])]
         for command in commands:
             prepCmd = command.format(line.strip())
             os.system(prepCmd)
@@ -86,7 +98,12 @@ def main():
         # Network Interface Setup
         logger.info("adding network interfaces.")
         # To-Do: get names from configuration file
-        commands = ["virsh net-define public.xml", "virsh net-define private.xml", "virsh net-start public", "virsh net-start private", "virsh net-autostart public", "virsh net-autostart private"]
+        commands = ["virsh net-define {}".format(netifaces['public-interface-config-file']),
+                    "virsh net-define {}".format(netifaces['private-interface-config-file']),
+                    "virsh net-start {}".format(netifaces['public-interface-name']),
+                    "virsh net-start {}".format(netifaces['private-interface-name']),
+                    "virsh net-autostart {}".format(netifaces['public-interface-name']),
+                    "virsh net-autostart {}".format(netifaces['private-interface-name']) ]
         for command in commands:
             prepCmd = command.format(line.strip())
             os.system(prepCmd)
