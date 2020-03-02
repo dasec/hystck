@@ -23,11 +23,13 @@ def isAdmin():
 
 
 def main():
+    # Check Command Line parameter, if none is given set to "vm"
     if len(sys.argv) >= 2:
         param = sys.argv[1]
     else:
         param = "vm"
 
+    # Load config file and read different sections into variables
     with open('config.json') as json_data_file:
         data = json.load(json_data_file)
         general = data['general']
@@ -103,7 +105,7 @@ def main():
                     "virsh net-start {}".format(netifaces['public-interface-name']),
                     "virsh net-start {}".format(netifaces['private-interface-name']),
                     "virsh net-autostart {}".format(netifaces['public-interface-name']),
-                    "virsh net-autostart {}".format(netifaces['private-interface-name']) ]
+                    "virsh net-autostart {}".format(netifaces['private-interface-name'])]
         for command in commands:
             prepCmd = command.format(line.strip())
             os.system(prepCmd)
