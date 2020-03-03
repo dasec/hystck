@@ -87,8 +87,9 @@ class Installer:
         :return:
         """
         self.logger.info("[i] This function is not yet implemented.")
+        # ToDo implement this function to install everything that is needed, except python.
 
-    def install_pip(self):
+    def install_pip_dep(self):
         """
         Reads a file of all required pip packages and installs them through pip install.
         :return:
@@ -180,7 +181,7 @@ class Installer:
         """
         self.load_config()
         self.install_sys_dep()
-        self.install_pip()
+        self.install_pip_dep()
 
         # Check if installation is host or vm side
         if self.param == "host":

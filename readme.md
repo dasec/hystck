@@ -7,6 +7,7 @@ hystck can emulate user input for, but they are of little interest for the gener
 ## What do different console outputs mean
 
 There are different categories of outputs:
+1) notset
 1) debug
 1) info
 1) warning
