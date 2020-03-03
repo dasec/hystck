@@ -207,7 +207,13 @@ def main():
         installer.setup_network_interfaces()
 
         # Reboot to enable virt-manager user privileges
-        os.system("reboot")
+        answer = raw_input('System needs to be restarted for the changes to take effect. '
+                           'Do you want to restart now?: [y/n]')
+        if not answer or answer[0].lower() != 'y':
+            print('You did not indicate approval')
+            exit(1)
+        else:
+            os.system("reboot")
     elif param == "vm":
         logger.info("[X] Nothing to do inside vm.")
     else:
