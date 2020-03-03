@@ -6,11 +6,7 @@ import logging
 import json
 import platform
 
-pip_requ_file = "PIP_requirements.txt"
-packet_requ_file = "packet_requirements.txt"
-
 requ = "."
-#requ = "Y:\Dokumente\git\hystck"            # just for development stuff
 
 # is current script user an admin / root
 def isAdmin():
@@ -54,7 +50,7 @@ def main():
         
     # Install required packages
     aptCmd = "apt-get --yes install {}"
-    packetDepFile = os.path.join(requ, packet_requ_file)
+    packetDepFile = os.path.join(requ, general['packet-requirements'])
     with open(packetDepFile, "r") as file:
         for line in file:
             prepCmd = aptCmd.format(line.strip())
@@ -63,7 +59,7 @@ def main():
     
     # Install pip dependencies
     pipCmd = "pip install -U {}"
-    pipDepFile = os.path.join(requ, pip_requ_file)
+    pipDepFile = os.path.join(requ, general['pip-requirements'])
     with open(pipDepFile, "r") as file:
         for line in file:
             prepCmd = pipCmd.format(line.strip())

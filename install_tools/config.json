@@ -1,6 +1,8 @@
 {
     "general":{
-        "user":"hystck"
+        "user":"hystck",
+        "pip-requirements":"PIP_requirements.txt",
+        "packet-requirements":"packet_requirements.txt"
     },
     "tcpdump": {
         "path":"/usr/sbin/tcpdump"
