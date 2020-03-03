@@ -13,13 +13,15 @@ class Installer:
     """
     requ = "."
     logger = ""
+    param = ""
     general = ""
     tcpdump = ""
     virtpools = ""
     netifaces = ""
 
-    def __init__(self, logger):
+    def __init__(self, logger, param):
         self.logger = logger
+        self.param = param
 
     def load_config(self):
         """
@@ -147,6 +149,35 @@ class Installer:
         else:
             self.logger.info("[+] Added network interfaces.")
 
+    def run(self):
+        """
+        Here all functions for a full installation are called.
+        :return:
+        """
+        self.load_config()
+        self.install_apt()
+        self.install_pip()
+
+        # Check if installation is host or vm side
+        if self.param == "host":
+            self.setup_tcpdump()
+            self.setup_libivrt()
+            self.setup_network_interfaces()
+
+            # Reboot to enable virt-manager user privileges
+            # Python2.7: raw_input(); Python3.7: input()
+            answer = raw_input('System needs to be restarted for the changes to take effect. '
+                               'Do you want to restart now?: [y/n]')
+            if not answer or answer[0].lower() != 'y':
+                print('You did not indicate approval')
+                exit(1)
+            else:
+                os.system("reboot")
+        elif self.param == "vm":
+            self.logger.info("[X] Nothing to do inside vm.")
+        else:
+            self.logger.error("[X] Unknown Parameter {}".format(self.param))
+
 
 def is_admin():
     """
@@ -177,7 +208,7 @@ def create_logger():
 
 def main():
     """
-    Main Program where all necessary functions are called.
+    Main Program where instantiations take place and necessary checks and validations are done.
     :return:
     """
     logger = create_logger()
@@ -190,34 +221,10 @@ def main():
     # Check Command Line parameter, if none is given set to "vm"
     param = sys.argv[1] if len(sys.argv) >= 2 else "vm"
 
-    installer = Installer(logger)
+    installer = Installer(logger, param)
 
-    installer.load_config()
-
-    installer.install_apt()
-
-    installer.install_pip()
-
-    # Check if installation is host or vm side
-    if param == "host":
-        installer.setup_tcpdump()
-
-        installer.setup_libivrt()
-
-        installer.setup_network_interfaces()
-
-        # Reboot to enable virt-manager user privileges
-        answer = raw_input('System needs to be restarted for the changes to take effect. '
-                           'Do you want to restart now?: [y/n]')
-        if not answer or answer[0].lower() != 'y':
-            print('You did not indicate approval')
-            exit(1)
-        else:
-            os.system("reboot")
-    elif param == "vm":
-        logger.info("[X] Nothing to do inside vm.")
-    else:
-        logger.error("[X] Unknown Parameter {}".format(param))
+    # Run actual installation
+    installer.run()
 
 
 if __name__ == '__main__':
