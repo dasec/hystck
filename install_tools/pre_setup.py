@@ -4,6 +4,7 @@ import os
 import logging
 import json
 import subprocess
+import platform
 
 
 class Installer:
@@ -43,14 +44,30 @@ class Installer:
         else:
             self.logger.info("[+] Done loading configuration.")
 
+    def install_sys_dep(self):
+        """
+        Checks which OS is running and calls corresponding function
+        :return:
+        """
+        if platform.system() == "Linux":
+            self.logger.debug("Linux OS found.")
+            self.install_apt()
+        elif platform.system() == "Windows":
+            self.logger.debug("Windows OS found.")
+            self.install_msi()
+        else:
+            self.logger.error("[X] Your Operating System is not supported by hystck.")
+            sys.exit(1)
+
     def install_apt(self):
         """
+        Install all dependencies specific to Linux Operating System
         Reads a file of all required packages and installs them through apt-get.
         :return:
         """
         self.logger.info("[~] Installing packet requirements over 'apt'...")
         try:
-            aptCmd = "apt-get --yes install {}"
+            aptCmd = "apt-get --yes -qqq install {}"
             packetDepFile = os.path.join(self.requ, self.general['packet-requirements'])
             with open(packetDepFile, "r") as file:
                 for line in file:
@@ -63,6 +80,13 @@ class Installer:
             sys.exit(1)
         else:
             self.logger.info("[+] Installed 'apt' packet requirements.")
+
+    def install_msi(self):
+        """
+        Install all dependencies specific to Windows Operating System
+        :return:
+        """
+        self.logger.info("[i] This function is not yet implemented.")
 
     def install_pip(self):
         """
@@ -155,7 +179,7 @@ class Installer:
         :return:
         """
         self.load_config()
-        self.install_apt()
+        self.install_sys_dep()
         self.install_pip()
 
         # Check if installation is host or vm side
@@ -167,6 +191,7 @@ class Installer:
             # Reboot to enable virt-manager user privileges
             # Python2.7: raw_input(); Python3.7: input()
             answer = raw_input('System needs to be restarted for the changes to take effect. '
+                               'The installation is complete now, no further steps after restart. '
                                'Do you want to restart now?: [y/n]')
             if not answer or answer[0].lower() != 'y':
                 print('You did not indicate approval')
