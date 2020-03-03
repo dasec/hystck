@@ -1,15 +1,158 @@
 #!/usr/bin/python3
-#test
 import sys
 import os
 import logging
 import json
-import platform
+import subprocess
 
-requ = "."
 
-# is current script user an admin / root
-def isAdmin():
+class Installer:
+    """
+    This class is used to install all prerequisites that are needed for hystck. Additionally all paths and privileges
+    that hystck needs are created.
+    """
+    requ = "."
+    logger = ""
+    general = ""
+    tcpdump = ""
+    virtpools = ""
+    netifaces = ""
+
+    def __init__(self, logger):
+        self.logger = logger
+
+    def load_config(self):
+        """
+        Load config file and read different sections into variables
+        :return:
+        """
+        self.logger.info("[~] Loading configuration...")
+        try:
+            with open('config.json') as json_data_file:
+                data = json.load(json_data_file)
+                self.general = data['general']
+                self.tcpdump = data['tcpdump']
+                self.virtpools = data['libvirt-pools']
+                self.netifaces = data['network-interfaces']
+        except ValueError, e:
+            self.logger.info("[X] Error while reading config file.")
+            self.logger.error(e)
+            sys.exit(1)
+        else:
+            self.logger.info("[+] Done loading configuration.")
+
+    def install_apt(self):
+        """
+        Reads a file of all required packages and installs them through apt-get.
+        :return:
+        """
+        self.logger.info("[~] Installing packet requirements over 'apt'...")
+        try:
+            aptCmd = "apt-get --yes install {}"
+            packetDepFile = os.path.join(self.requ, self.general['packet-requirements'])
+            with open(packetDepFile, "r") as file:
+                for line in file:
+                    prepCmd = aptCmd.format(line.strip())
+                    self.logger.debug("Running: {}".format(prepCmd))
+                    subprocess.call(prepCmd.split(), stdout=subprocess.PIPE)
+        except OSError, e:
+            self.logger.info("[X] Error while installing packet requirements.")
+            self.logger.error(e)
+            sys.exit(1)
+        else:
+            self.logger.info("[+] Installed 'apt' packet requirements.")
+
+    def install_pip(self):
+        """
+        Reads a file of all required pip packages and installs them through pip install.
+        :return:
+        """
+        self.logger.info("[~] Installing pip requirements...")
+        try:
+            pipCmd = "pip install -U {}"
+            pipDepFile = os.path.join(self.requ, self.general['pip-requirements'])
+            with open(pipDepFile, "r") as file:
+                for line in file:
+                    prepCmd = pipCmd.format(line.strip())
+                    self.logger.debug("Running: {}".format(prepCmd))
+                    subprocess.call(prepCmd.split(), stdout=subprocess.PIPE)
+        except OSError, e:
+            self.logger.info("[X] Error while installing pip packages.")
+            self.logger.error(e)
+            sys.exit(1)
+        else:
+            self.logger.info("[+] Successfuly installed pip requirements.")
+
+    def setup_tcpdump(self):
+        """
+        Setup tcpdump user rights.
+        :return:
+        """
+        self.logger.info("[~] Setting up tcpdump...")
+        try:
+            prepCmd = "setcap cap_net_raw,cap_net_admin=eip {}".format(self.tcpdump['path'])
+            subprocess.call(prepCmd.split(), stdout=subprocess.PIPE)
+        except OSError, e:
+            self.logger.info("[X] Error setting up tcpdump")
+            self.logger.error(e)
+            sys.exit(1)
+        else:
+            self.logger.info("[+] Setting up tcpdump.")
+
+    def setup_libivrt(self):
+        """
+        Adding groups and rights for libvirt as well as creating disk pools to work with.
+        :return:
+        """
+        self.logger.info("[~] Adding disk pools for libvirt...")
+        try:
+            commands = ["groupadd libvirtd",
+                        "usermod -a -G libvirtd {}".format(self.general['user']),
+                        "mkdir {}".format(self.virtpools['path']),
+                        "virsh pool-define-as hystck-pool dir - - - - {}/{}".format(self.virtpools['path'],
+                                                                                    self.virtpools['name']),
+                        "virsh pool-build {}".format(self.virtpools['name']),
+                        "virsh pool-start {}".format(self.virtpools['name']),
+                        "virsh pool-autostart {}".format(self.virtpools['name'])]
+            for command in commands:
+                prepCmd = command.strip()
+                subprocess.call(prepCmd.split(), stdout=subprocess.PIPE)
+        except OSError, e:
+            self.logger.info("[X] Error while adding disk pools.")
+            self.logger.error(e)
+            sys.exit(1)
+        else:
+            self.logger.info("[+] Added disk pools for libvirt.")
+
+    def setup_network_interfaces(self):
+        """
+        Sets up the needed network interfaces to later communicate with the vm.
+        :return:
+        """
+        self.logger.info("[~] Adding network interfaces...")
+        try:
+            commands = ["virsh net-define {}".format(self.netifaces['public-interface-config-file']),
+                        "virsh net-define {}".format(self.netifaces['private-interface-config-file']),
+                        "virsh net-start {}".format(self.netifaces['public-interface-name']),
+                        "virsh net-start {}".format(self.netifaces['private-interface-name']),
+                        "virsh net-autostart {}".format(self.netifaces['public-interface-name']),
+                        "virsh net-autostart {}".format(self.netifaces['private-interface-name'])]
+            for command in commands:
+                prepCmd = command.strip()
+                subprocess.call(prepCmd.split(), stdout=subprocess.PIPE)
+        except OSError, e:
+            self.logger.info("[X] Error while adding network interfaces.")
+            self.logger.error(e)
+            sys.exit(1)
+        else:
+            self.logger.info("[+] Added network interfaces.")
+
+
+def is_admin():
+    """
+    Determine if script is running as admin/root
+    :return:
+    """
     try:
         import os
         return os.getuid() == 0
@@ -18,102 +161,58 @@ def isAdmin():
         return ctypes.windll.shell32.IsUserAnAdmin() != 0
 
 
-def main():
-    # Check Command Line parameter, if none is given set to "vm"
-    if len(sys.argv) >= 2:
-        param = sys.argv[1]
-    else:
-        param = "vm"
-
-    # Load config file and read different sections into variables
-    with open('config.json') as json_data_file:
-        data = json.load(json_data_file)
-        general = data['general']
-        tcpdump = data['tcpdump']
-        virtpools = data['libvirt-pools']
-        netifaces = data['network-interfaces']
-    
-    # Logger Stuff
+def create_logger():
+    """
+    Create a logger for sophisticated console output
+    :return:
+    """
     logger = logging.getLogger("hystck-Installer")
     logger.setLevel(logging.DEBUG)
     fmttr = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s", "%Y.%m.%d %H:%M:%S")
     handler = logging.StreamHandler(sys.stdout)
     handler.setFormatter(fmttr)
-    
     logger.addHandler(handler)
-    logger.debug("test")
-    
-    # stop script if you are no admin
-    if not isAdmin():
-        logger.critical("You are not an admin. Run the installation as admin.")
+    return logger
+
+
+def main():
+    """
+    Main Program where all necessary functions are called.
+    :return:
+    """
+    logger = create_logger()
+
+    # stop script if you are not admin
+    if not is_admin():
+        logger.critical("You are not an admin. Run the installation as admin/root.")
         sys.exit(1)
-        
-    # Install required packages
-    aptCmd = "apt-get --yes install {}"
-    packetDepFile = os.path.join(requ, general['packet-requirements'])
-    with open(packetDepFile, "r") as file:
-        for line in file:
-            prepCmd = aptCmd.format(line.strip())
-            logger.debug("Running: {}".format(prepCmd))
-            os.system(prepCmd)
-    
-    # Install pip dependencies
-    pipCmd = "pip install -U {}"
-    pipDepFile = os.path.join(requ, general['pip-requirements'])
-    with open(pipDepFile, "r") as file:
-        for line in file:
-            prepCmd = pipCmd.format(line.strip())
-            logger.debug("Running: {}".format(prepCmd))
-            os.system(prepCmd)
-    
-    # Alternatve
-    #inst_pip_requirements_cmd = "pip install -U --requirement {}".format(pip_requ_file)
-    #logger.debug("Install pip requirement: {}".format(inst_pip_requirements_cmd))
-    #os.system(inst_pip_requirements_cmd)
+
+    # Check Command Line parameter, if none is given set to "vm"
+    param = sys.argv[1] if len(sys.argv) >= 2 else "vm"
+
+    installer = Installer(logger)
+
+    installer.load_config()
+
+    installer.install_apt()
+
+    installer.install_pip()
 
     # Check if installation is host or vm side
     if param == "host":
-        # Add Usergroup libvirtd
-        os.system("groupadd libvirtd")
-        os.system("usermod -a -G libvirtd {}".format(general['user']))
+        installer.setup_tcpdump()
 
-        # Setup tcpdump user rights
-        logger.info("setting up tcpdump.")
-        os.system("setcap cap_net_raw,cap_net_admin=eip {}".format(tcpdump['path']))
+        installer.setup_libivrt()
 
-        # Add Pools for Libvirt
-        logger.info("adding pools for libvirt.")
-        # To-Do: get names from configuration file
-        commands = ["mkdir {}".format(data['libvirt-pools']['path']),
-                    "virsh pool-define-as hystck-pool dir - - - - {}/{}".format(virtpools['path'], virtpools['name']),
-                    "virsh pool-build {}".format(virtpools['name']),
-                    "virsh pool-start {}".format(virtpools['name']),
-                    "virsh pool-autostart {}".format(virtpools['name'])]
-        for command in commands:
-            prepCmd = command.format(line.strip())
-            os.system(prepCmd)
-
-        # Network Interface Setup
-        logger.info("adding network interfaces.")
-        # To-Do: get names from configuration file
-        commands = ["virsh net-define {}".format(netifaces['public-interface-config-file']),
-                    "virsh net-define {}".format(netifaces['private-interface-config-file']),
-                    "virsh net-start {}".format(netifaces['public-interface-name']),
-                    "virsh net-start {}".format(netifaces['private-interface-name']),
-                    "virsh net-autostart {}".format(netifaces['public-interface-name']),
-                    "virsh net-autostart {}".format(netifaces['private-interface-name'])]
-        for command in commands:
-            prepCmd = command.format(line.strip())
-            os.system(prepCmd)
+        installer.setup_network_interfaces()
 
         # Reboot to enable virt-manager user privileges
         os.system("reboot")
     elif param == "vm":
-        logger.info("nothing to do here.")
+        logger.info("[X] Nothing to do inside vm.")
     else:
-        logger.error("Unknown Parameter {}".format(param))
-	
-	
+        logger.error("[X] Unknown Parameter {}".format(param))
+
 
 if __name__ == '__main__':
     main()
