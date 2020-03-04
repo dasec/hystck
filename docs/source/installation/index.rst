@@ -26,7 +26,7 @@ Installation Guest (virtual machine)
 Here we will describe how to install the guest part of hystck on a virtual machine as well as creating said virtual
 machine with everything needed for hystck to operate correctly.
 
-An in-depth installation manual can be found here: :ref:`guestinstall`.
+An in-depth installation manual for both Windows and Ubuntu can be found here: :ref:`guestinstall`.
 
 Windows
 *******
