@@ -1,3 +1,5 @@
+.. _installindex:
+
 **********************
 Installation of hystck
 **********************
@@ -13,9 +15,10 @@ Installation Host (physical machine)
 
 Here we will describe how to install the host part of hystck on a physical machine.
 
-For this **Ubuntu 19.10** is the recommended OS
+For this **Ubuntu 19.10** is the recommended OS. Other Ubuntu distributions will work as well, but the automatic setup
+script might need some alterations depending on your distribution.
 
-Instructions will follow here shortly.
+Instructions can be found in :ref:`hostinstall`.
 
 Installation Guest (virtual machine)
 ####################################
@@ -47,3 +50,14 @@ follow the simple steps in the list below.
 #. extract hystck source code to a folder on the Desktop of your virtual machine
 #. open the folder *hystck/install*
 #. start linux_setup.sh
+
+
+
+Installation Service VM
+#########################
+
+
+Here we will describe how to install the Service VM containing third party services that enhance hystck's capabilities
+such as a DHCP server as well as services needed for specific scenarios.
+
+Instructions will follow here shortly.
