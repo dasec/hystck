@@ -14,3 +14,19 @@ other hand.
 
 .. image:: ../../figures/architecture.png
 
+
+Framework architecture
+#######################
+
+
+Service VM
+####################
+
+
+Generator
+####################
+
+
+
+Reporter
+#################
