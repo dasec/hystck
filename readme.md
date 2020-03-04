@@ -15,6 +15,7 @@ There are different categories of outputs:
 1) critical
 
 For info there are different starting symbols describing different actions:
+- \[i] means: Information; May mean, that a function is not fully implemented yet.
 - \[~] means: Task started and in progress.
 - \[+] means: Task successfully ended.
 - \[X] means: There have been errors and the program has been terminated.
@@ -37,3 +38,7 @@ run the command ```make html```. After this you will find the newest documentati
 https://www.dropbox.com/s/bc5iqp2aieb3fly/Installfiles-batchscript.zip?dl=0 - batchscript, pre setup python script and .msi files. (Temporary solution!)
 
 ## License and Copyright
+
+
+## Findings
+Ubuntu 19.10 is not installing virt-manager by default???

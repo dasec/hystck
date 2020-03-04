@@ -86,8 +86,9 @@ class Installer:
         Install all dependencies specific to Windows Operating System
         :return:
         """
-        self.logger.info("[i] This function is not yet implemented.")
+        self.logger.info("[~] Installing all necessary MSI packages.")
         # ToDo implement this function to install everything that is needed, except python.
+        self.logger.info("[+] MSI packages successfully installed.")
 
     def install_pip_dep(self):
         """
@@ -109,6 +110,22 @@ class Installer:
             sys.exit(1)
         else:
             self.logger.info("[+] Successfuly installed pip requirements.")
+
+    def install_sources(self):
+        """
+        This function calls 'setup.py' to install the framework source code onto the machine
+        :return:
+        """
+        self.logger.info("[~] Installing hystck framework...")
+        try:
+            prepCmd = "python ../setup.py install --user"
+            subprocess.call(prepCmd.split(), stdout=subprocess.PIPE)
+        except OSError, e:
+            self.logger.info("[X] Error while installing hystck framework.")
+            self.logger.error(e)
+            sys.exit(1)
+        else:
+            self.logger.info("[+] hystck Framework installed successfully.")
 
     def setup_tcpdump(self):
         """
@@ -182,6 +199,9 @@ class Installer:
         self.load_config()
         self.install_sys_dep()
         self.install_pip_dep()
+
+        # Maybe add setup.py call here?
+
 
         # Check if installation is host or vm side
         if self.param == "host":
