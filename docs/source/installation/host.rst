@@ -9,25 +9,7 @@ The installation of the host component of hystck can be done automatically using
 in :ref:`installindex`, you might need to tweak either file or run a completely manual installation of the host
 component.
 
-Regardless of what method you choose, you first need to install python. By default, only python 3 is installed on the recommended Ubuntu distribution, but hystck is
-currently still running on python 2. The following command should install python 2.7.
-
-.. code-block:: console
-
-    $ sudo apt install python
-
-
-You can check your python version:
-
-.. code-block:: console
-
-    $ python -V
-
-
-If somehow your default python is still python 3, you can change this using the following guidelines:
-
-.. TODO update-alternatives guide
-
+.. Regardless of what method you choose, you first need to install python.
 
 Installation Host -- scripted
 ####################################
@@ -47,8 +29,21 @@ To run the following commands, you will need to download hystck now.
 Hystck can be found here: `Github link <https://github.com/dasec/hystck>`_.
 Clone or download the repository and navigate into **/install_tools**.
 
+In this folder, you will find a shell script called **linux_installation.sh**. To install the further parts of hystck's
+host component, run the script with root privileges and choose **h** when the console prompts you to make a choice. The
+script will then install all necessary packages including the appropriate Python version.
 
-Then, run the **pre_setup.py** with the  **host** parameter to start installing all necessary packages and python modules.
+
+.. code-block:: console
+
+    $ sudo ./linux_installation.sh
+    Please choose if this installation is host (h) or guest (g) side installation:
+    Selection: h
+    ...
+
+
+This then runs the **pre_setup.py** with the  **host** parameter to start installing all
+necessary packages and python modules. You can also start this script by hand if you choose to do so.
 
 .. code-block:: console
 
@@ -82,7 +77,29 @@ In case there are any issues with the partially automatic installation, you are 
 or simply want to adapt the installation process to a different OS, this section will guide you through the entire
 host-side installation process.
 
-First, you will also want to create the user named **hystck**.
+By default, only python 3 is installed on the recommended Ubuntu distribution, but hystck is
+currently still running on python 2. The following command should install python 2.7.
+
+.. code-block:: console
+
+    $ sudo apt install python
+
+
+You can check your python version:
+
+.. code-block:: console
+
+    $ python -V
+
+
+If somehow your default python is still python 3, you can change this using the following guidelines:
+
+.. TODO update-alternatives guide
+
+
+First, you will also want to create the user named **hystck**. This default user is chosen by us to make the following
+steps (e.g. rights management) easier. You can use your default or any other user, just make sure to adapt the further
+steps mentioning the hystck user to your chosen username.
 
 .. code-block:: console
 
