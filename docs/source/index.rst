@@ -28,6 +28,9 @@ Contents
 
    architecture/index
    installation/index
+   installation/host
+   installation/guest
+   installation/service_vm
    functions/index
    firstrun/index
    implementing/index
