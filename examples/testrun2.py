@@ -9,6 +9,8 @@ import subprocess
 import xml.etree.ElementTree as ET
 import hashlib
 
+#TODO Paths for main and hash need to be changed to correspond with config.json
+
 try:
     from hystck.core.vmm import Vmm
     from hystck.utility.logger_helper import create_logger

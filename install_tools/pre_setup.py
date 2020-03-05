@@ -90,24 +90,26 @@ class Installer:
         """
         self.logger.info("Creating autostart script in ~/.config/autostart")
         filename = 'agent.desktop'
-        path =os.path.expanduser('~/.config/autostart/')
+        path = '/home/'+ self.general['user'] +'/.config/autostart/'
 
         try:
             if not os.path.exists(path):
-                self.logger.info("[X] Autostart path does not exist.")
-                subprocess.call(["mdir", path], stdout=subprocess.PIPE)
+                self.logger.info("[-] Autostart path does not exist and will be created.")
+                subprocess.call(["mkdir", path], stdout=subprocess.PIPE)
             with open(os.path.join(path, filename), 'w') as temp:
                 temp.write('''\
 #! /bin/bash
 [Desktop Entry]
 Type=Application
 Terminal=false
-exec=xterm -hold -e "python ~/Schreibtisch/hystck/examples/guestAgent.py"
+Exec=gnome-terminal -e 'bash -c "python ~/Desktop/hystck/guest_tools/guestAgent.py; bash"'
 Hidden=false
 X-GNOME-Autostart-enabled=true
 Name=Startup Script
 Comment=
 ''')
+# TODO add path to hystck to config.json ; reminder about language of distribution
+
         except OSError, e:
             self.logger.info("[X] Error while creating autorun script")
             self.logger.error(e)
@@ -148,6 +150,8 @@ Comment=
         else:
             self.logger.info("[+] Successfuly installed pip requirements.")
 
+
+    #TODO call install_sources at end of pre setup
     def install_sources(self):
         """
         This function calls 'setup.py' to install the framework source code onto the machine
