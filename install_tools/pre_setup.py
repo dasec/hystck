@@ -90,7 +90,7 @@ class Installer:
         """
         self.logger.info("Creating autostart script in ~/.config/autostart")
         filename = 'agent.desktop'
-        path =os.path.expanduser('~/config/autostart/')
+        path =os.path.expanduser('~/.config/autostart/')
 
         try:
             if not os.path.exists(path):
