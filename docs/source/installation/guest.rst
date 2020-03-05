@@ -15,6 +15,8 @@ an installation of a Windows 10 guest requires some additional work.
 Windows 10 Guest
 #################
 
+Prior to
+
 Windows installation - automated
 ####################################
 
@@ -58,6 +60,10 @@ Ubuntu Guest
 
 Ubuntu installation - automated
 ###################################
+
+
+download hystck -> copy to desktop
+->
 
 Ubuntu installation - manual
 ###############################

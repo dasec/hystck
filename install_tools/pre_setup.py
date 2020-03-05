@@ -52,6 +52,7 @@ class Installer:
         if platform.system() == "Linux":
             self.logger.debug("Linux OS found.")
             self.install_apt()
+            self.linux_autostart()
         elif platform.system() == "Windows":
             self.logger.debug("Windows OS found.")
             self.install_msi()
@@ -80,6 +81,37 @@ class Installer:
             sys.exit(1)
         else:
             self.logger.info("[+] Installed 'apt' packet requirements.")
+
+    def linux_autostart(self):
+        """
+        Creates autostart script for Ubuntu guest
+        :return:
+        """
+        self.logger.info("Creating autostart script in ~/.config/autostart")
+        filename = 'agent.desktop'
+        path =os.path.expanduser('~/config/autostart/')
+
+        try:
+            if not os.path.exists(path):
+                self.logger.info("[X] Autostart path does not exist.")
+                sys.exit(1)
+            with open(os.path.join(path, filename), 'w') as temp:
+                temp.write('''\
+                #! /bin/bash
+                [Desktop Entry]
+                Type=Application
+                Terminal=false
+                exec=xterm -hold -e "python ~/Schreibtisch/hystck/examples/guestAgent.py"
+                ''')
+        except OSError, e:
+            self.logger.info("[X] Error while creating autorun script")
+            self.logger.error(e)
+            sys.exit(1)
+        else:
+            self.logger.info("[+] Created autorun script.")
+
+
+
 
     def install_msi(self):
         """
