@@ -1,4 +1,4 @@
-pywinauto
+pywinauto==0.6.0
 pywin32
 setuptools
 selenium
