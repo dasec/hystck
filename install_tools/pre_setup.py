@@ -102,7 +102,7 @@ class Installer:
 Type=Application
 Terminal=false
 exec=xterm -hold -e "python ~/Schreibtisch/hystck/examples/guestAgent.py"
-                ''')
+''')
         except OSError, e:
             self.logger.info("[X] Error while creating autorun script")
             self.logger.error(e)
