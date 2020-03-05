@@ -22,14 +22,23 @@ todo: download windows iso beforehand
 
 .. code-block:: console
 
-       $ virt-install --name windows-template --ram 4096 \
-       --vcpus sockets=1,cores=4,threads=4 --disk pool=hystck-pool,bus=sata,size=50,format=qcow2 \
-       --cdrom de_windows_10_professional_with_sp1_x64_dvd_u_676919.iso --network network=public \
-       --network network=private --graphics spice,listen=0.0.0.0 --noautoconsole -v
+       $ virt-install --name windows-template \
+        --ram 4096 \
+        --vcpus sockets=1,cores=2,threads=1 \
+        --disk pool=hystck-pool,bus=sata,size=40,format=qcow2 \
+        --cdrom /home/hystck/Win10_1903_V1_German_x64.iso \
+        --network network=public \
+        --network network=private \
+        --graphics spice,listen=0.0.0.0 \
+        --noautoconsole \
+        -v
+
 
 
 Windows installation - automated
 ####################################
+
+windows_installation.bat
 
 Windows installation - manual
 #################################
@@ -68,6 +77,7 @@ from
 Ubuntu Guest
 #################
 
+eject installation device after successful installation of vm
 
 Ubuntu installation - automated
 ###################################

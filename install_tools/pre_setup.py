@@ -95,7 +95,7 @@ class Installer:
         try:
             if not os.path.exists(path):
                 self.logger.info("[X] Autostart path does not exist.")
-                sys.exit(1)
+                subprocess.call(["mdir", "~/.config/autostart"], stdout=subprocess.PIPE)
             with open(os.path.join(path, filename), 'w') as temp:
                 temp.write('''\
 #! /bin/bash
