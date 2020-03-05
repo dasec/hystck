@@ -97,11 +97,11 @@ class Installer:
                 sys.exit(1)
             with open(os.path.join(path, filename), 'w') as temp:
                 temp.write('''\
-                #! /bin/bash
-                [Desktop Entry]
-                Type=Application
-                Terminal=false
-                exec=xterm -hold -e "python ~/Schreibtisch/hystck/examples/guestAgent.py"
+#! /bin/bash
+[Desktop Entry]
+Type=Application
+Terminal=false
+exec=xterm -hold -e "python ~/Schreibtisch/hystck/examples/guestAgent.py"
                 ''')
         except OSError, e:
             self.logger.info("[X] Error while creating autorun script")
