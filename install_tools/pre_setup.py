@@ -52,7 +52,8 @@ class Installer:
         if platform.system() == "Linux":
             self.logger.debug("Linux OS found.")
             self.install_apt()
-            self.linux_autostart()
+            if self.param == "vm":
+                self.linux_autostart()
         elif platform.system() == "Windows":
             self.logger.debug("Windows OS found.")
             self.install_msi()
