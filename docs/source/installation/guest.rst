@@ -15,7 +15,18 @@ an installation of a Windows 10 guest requires some additional work.
 Windows 10 Guest
 #################
 
-Prior to
+The first step in creating your virtual Windows guest is creating the virtual machine. While this can be done via the
+graphical interface of the **virt-manager**, we recommend simply copying the command seen below:
+
+todo: download windows iso beforehand
+
+.. code-block:: console
+
+       $ virt-install --name windows-template --ram 4096 \
+       --vcpus sockets=1,cores=4,threads=4 --disk pool=hystck-pool,bus=sata,size=50,format=qcow2 \
+       --cdrom de_windows_10_professional_with_sp1_x64_dvd_u_676919.iso --network network=public \
+       --network network=private --graphics spice,listen=0.0.0.0 --noautoconsole -v
+
 
 Windows installation - automated
 ####################################

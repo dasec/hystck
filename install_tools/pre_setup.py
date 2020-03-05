@@ -103,6 +103,10 @@ class Installer:
 Type=Application
 Terminal=false
 exec=xterm -hold -e "python ~/Schreibtisch/hystck/examples/guestAgent.py"
+Hidden=false
+X-GNOME-Autostart-enabled=true
+Name=Startup Script
+Comment=
 ''')
         except OSError, e:
             self.logger.info("[X] Error while creating autorun script")
