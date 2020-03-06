@@ -12,7 +12,7 @@ class Installer:
     This class is used to install all prerequisites that are needed for hystck. Additionally all paths and privileges
     that hystck needs are created.
     """
-    requ = "."
+    requ = os.path.dirname(__file__)
     logger = ""
     param = ""
     general = ""
@@ -31,7 +31,7 @@ class Installer:
         """
         self.logger.info("[~] Loading configuration...")
         try:
-            with open('config.json') as json_data_file:
+            with open(os.path.join(self.requ, 'config.json')) as json_data_file:
                 data = json.load(json_data_file)
                 self.general = data['general']
                 self.tcpdump = data['tcpdump']
@@ -57,6 +57,8 @@ class Installer:
         elif platform.system() == "Windows":
             self.logger.debug("Windows OS found.")
             self.install_msi()
+            if self.param == "vm":
+                self.windows_autostart()
         else:
             self.logger.error("[X] Your Operating System is not supported by hystck.")
             sys.exit(1)
@@ -88,13 +90,13 @@ class Installer:
         Creates autostart script for Ubuntu guest
         :return:
         """
-        self.logger.info("Creating autostart script in ~/.config/autostart")
+        self.logger.info("[~] Creating autostart script in ~/.config/autostart")
         filename = 'agent.desktop'
-        path = '/home/'+ self.general['user'] +'/.config/autostart/'
+        path = '/home/' + self.general['user'] + '/.config/autostart/'
 
         try:
             if not os.path.exists(path):
-                self.logger.info("[-] Autostart path does not exist and will be created.")
+                self.logger.info("[i] Autostart path does not exist and will be created.")
                 subprocess.call(["mkdir", path], stdout=subprocess.PIPE)
             with open(os.path.join(path, filename), 'w') as temp:
                 temp.write('''\
@@ -118,6 +120,8 @@ Comment=
             self.logger.info("[+] Created autorun script.")
 
 
+    def windows_autostart(self):
+        self.logger.info("[-] Creating autostart for hystck.")
 
 
     def install_msi(self):
@@ -126,7 +130,7 @@ Comment=
         :return:
         """
         self.logger.info("[~] Installing all necessary MSI packages.")
-        # ToDo implement this function to install everything that is needed, except python.
+        # Nothing is needed here at the moment.
         self.logger.info("[+] MSI packages successfully installed.")
 
     def install_pip_dep(self):
@@ -242,7 +246,7 @@ Comment=
         self.install_pip_dep()
 
         # Maybe add setup.py call here?
-
+        self.install_sources()
 
         # Check if installation is host or vm side
         if self.param == "host":
