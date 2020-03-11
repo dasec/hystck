@@ -43,7 +43,8 @@ script will then install all necessary packages including the appropriate Python
 
 
 This then runs the **pre_setup.py** with the  **host** parameter to start installing all
-necessary packages and python modules. You can also start this script by hand if you choose to do so.
+necessary packages and python modules. You can also start this script by hand if you choose to do so, although it would
+require a manual installation of Python beforehand.
 
 .. code-block:: console
 

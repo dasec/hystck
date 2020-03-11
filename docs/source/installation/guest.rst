@@ -15,10 +15,19 @@ an installation of a Windows 10 guest requires some additional work.
 Windows 10 Guest
 #################
 
-The first step in creating your virtual Windows guest is creating the virtual machine. While this can be done via the
-graphical interface of the **virt-manager**, we recommend simply copying the command seen below:
+The first step in creating your virtual Windows 10 guest is creating the virtual machine. To do this, you will need to
+obtain a Windows 10 image. We recommend downloading an ISO-file from an official source such as ---
+.. TODO insert link
 
-todo: download windows iso beforehand
+Next, you need to set up the virtual machine.
+While this can be done via the graphical interface of the **virt-manager**, we recommend running the **win10install.sh**
+install script found in the **install_tools** folder
+
+.. code-block:: console
+
+       $ ./win10install.sh
+
+or simply copying the command seen below:
 
 .. code-block:: console
 
@@ -34,58 +43,316 @@ todo: download windows iso beforehand
         -v
 
 
+Either method would require you to adapt the **--cdrom** parameter with the correct path and name of your installation
+medium. You might also want to change **--ram** or **--vcpus** depending on your available resources. When starting the
+virtual machine, make sure to name your primary user **hystck**.
+
+.. TODO skip login?
 
 Windows installation - automated
 ####################################
+While most of the installation of the Windows guest can be automated, a few steps have to be done manually.
 
-windows_installation.bat
+First and foremost, hystck has to be downloaded and moved or copied to your desktop.
+It can be found `here <https://github.com/dasec/hystck>`_.
 
-Windows installation - manual
-#################################
-...
-
-Once the virtual machine can be run, you will need to download and install a few prerequisites before being able
+Next, you will need to download and install a few prerequisites before being able
 to install python packages and hystck itself.
 
-The first is Python 2.7 and can be found `here <https://www.python.org/ftp/python/2.7.17/python-2.7.17.amd64.msi>`_.
+The first is Python 2.7 and can be `downloaded here <https://www.python.org/ftp/python/2.7.17/python-2.7.17.amd64.msi>`_.
 During installation, make sure Python is added to PATH and pip is installed alongside Python.
 
 .. image:: ../../figures/pythonpathandpip.PNG
 
 These options should be turned on by default. If needed, both options can be performed after the actual installation.
 
-To add Python to your PATH,
-
-.. TODO: add to path
+A useful, short guide on how to add Python to your PATH can be found `at this link <https://geek-university.com/python/add-python-to-the-windows-path/>`_.
 
 If you need to install pip after the fact, download the `get-pip.py script here <https://bootstrap.pypa.io/get-pip.py>`_
 and run the following command in your command line:
 
 .. code-block:: console
 
-    C:\Users\user\Downloads python get-pip.py
+    C:\Users\user\hystck\Downloads> python get-pip.py
 
 
 Furthermore, you will need to install the Visual C++ Compiler for Python 2.7. The compiler can be downloaded directly
 from
 `Microsoft's web presence <https://download.microsoft.com/download/7/9/6/796EF2E4-801B-4FC4-AB28-B59FBF6D907B/VCForPython27.msi>`_.
 
-...
+Next, you will want to install all applications used to generate traffic. Both Firefox and Thunderbird are the default
+mail and browsing applications used by hystck.
 
+.. TODO pidgin??
+
+Afterwards, simply run **windows_installation.bat** with admin privileges. This will check if Python and the Visual C++
+Compiler for Python are installed and follow up by installing all necessary python modules by calling **pre_setup.py**.
+
+.. code-block:: console
+
+    C:\Users\user\hystck\Desktop\hystck\install_tools> windows_installation.bat
+
+After all of the presetup is done, you have two more tasks to fulfill until the Windows guest template
+is fully prepared. First, navigate into the hystck folder and install hystck:
+
+.. code-block:: console
+
+    C:\Users\user\hystck\Desktop\hystck> python setup.py install
+
+The final step requires you to manipulate the Windows Task Scheduler to run **startGuestAgent.bat**, which in turn
+will start the **guestAgent.py** script, both located in **guest_tools**. This script manages the communication between
+your host and guest instances.
+
+
+.. TODO automation: task scheduler
+
+Windows installation - manual
+#################################
+
+Your first step in a manual installation of a Windows guest template should also be to download hystck from
+`the repository <https://github.com/dasec/hystck>`_ and the folder to your desktop.
+
+Next, you will need to download and install a few prerequisites before being able to install python packages and hystck itself.
+
+The first is Python 2.7 and can be `found here <https://www.python.org/ftp/python/2.7.17/python-2.7.17.amd64.msi>`_.
+During installation, make sure Python is added to PATH and pip is installed alongside Python.
+
+.. image:: ../../figures/pythonpathandpip.PNG
+
+These options should be turned on by default. If needed, both options can be performed after the actual installation.
+
+A useful, short guide on how to add Python to your PATH can be found `on this website <https://geek-university.com/python/add-python-to-the-windows-path/>`_.
+
+If you need to install pip after the fact, download the `get-pip.py script here <https://bootstrap.pypa.io/get-pip.py>`_
+and run the following command in your command line:
+
+.. code-block:: console
+
+    C:\Users\user\hystck\Downloads> python get-pip.py
+
+
+Furthermore, you will need to install the Visual C++ Compiler for Python 2.7. The compiler can be downloaded directly
+from
+`Microsoft's web presence <https://download.microsoft.com/download/7/9/6/796EF2E4-801B-4FC4-AB28-B59FBF6D907B/VCForPython27.msi>`_.
+
+Next, you will want to install all applications used to generate traffic. Both Firefox and Thunderbird are the default
+mail and browsing applications used by hystck. Finally, you will need to install the required python modules. If you have
+installed Python as recommended above, you will simply be able to use the **pip install** command to install the following
+packages:
+
+.. TODO pidgin??
+
+.. code-block:: console
+
+    C:\Users\user\hystck\Desktop> pip install -U pywinauto==0.6.0
+    C:\Users\user\hystck\Desktop> pip install -U pywin32
+    C:\Users\user\hystck\Desktop> pip install -U setuptools
+    C:\Users\user\hystck\Desktop> pip install -U selenium
+    C:\Users\user\hystck\Desktop> pip install -U marionette_driver
+    C:\Users\user\hystck\Desktop> pip install -U netifaces
+    C:\Users\user\hystck\Desktop> pip install -U psutil
+    C:\Users\user\hystck\Desktop> pip install -U netaddr
+    C:\Users\user\hystck\Desktop> pip install -U enum34
+    C:\Users\user\hystck\Desktop> pip install -U protobuf==2.5.0
+    C:\Users\user\hystck\Desktop> pip install -U mozprofile
+    C:\Users\user\hystck\Desktop> pip install -U mozrunner
+
+.. TODO task scheduler for agent -> spice?? pidgin??
+
+Now you need to manipulate the Windows Task Scheduler to run **startGuestAgent.bat**, which in turn
+will start the **guestAgent.py** script, both located in **guest_tools**. This script manages the communication between
+your host and guest instances.
+
+The only thing left to do to make this Windows guest template operational is to install hystck.
+
+.. code-block:: console
+
+    C:\Users\user\hystck\Desktop> python setup.py install
 
 #################
 Ubuntu Guest
 #################
 
-eject installation device after successful installation of vm
+The first step in creating your virtual Ubuntu guest is creating the virtual machine. To do this, you will need to
+obtain a Ubuntu image. We recommend downloading an ISO-file from an official source such as ---
+
+.. TODO insert link
+
+Although we recommend Ubuntu 19.10, you can use other versions as well - the installation process *should* remain
+the same.
+
+Next, you need to set up the virtual machine.
+While this can be done via the graphical interface of the **virt-manager**, we recommend running the **ubuntu19.10install.sh**
+install script found in the **install_tools** folder
+
+.. code-block:: console
+
+       $ ./ubuntu19.10install.sh
+
+or simply copying the command seen below:
+
+.. code-block:: console
+
+       $ virt-install --name linux-template \
+        --ram 4096 \
+        --vcpus sockets=1,cores=2,threads=1 \
+        --disk pool=hystck-pool,bus=sata,size=40,format=qcow2 \
+        --cdrom /home/hystck/ubuntu-19.10-desktop-amd64.iso \
+        --network network=public \
+        --network network=private \
+        --graphics spice,listen=0.0.0.0 \
+        --noautoconsole \
+        -v
+
+
+Either method would require you to adapt the **--cdrom** parameter with the correct path and name of your installation
+medium. You might also want to change **--ram** or **--vcpus** depending on your available resources. When starting the
+virtual machine, make sure to name your primary user **hystck**.
+
+Once you are able to start the virtual machine and the OS has been installed and initialized, you should eject the installation medium.
+
+.. TODO skip login?
 
 Ubuntu installation - automated
 ###################################
 
+The automated installation for a guest running Ubuntu is similar to the installation of the host machine described in
+:ref:`hostinstall`.
 
-download hystck -> copy to desktop
-->
+First and foremost, hystck has to be downloaded and moved or copied to your desktop.
+It can be found `here <https://github.com/dasec/hystck>`_.
+
+Next, you will want to install all applications used to generate traffic. Both Firefox and Thunderbird are the default
+mail and browsing applications used by hystck.
+
+.. Todo pidgin??
+
+After hystck has been downloaded and your traffic generating application have been installed, simply navigate into **install_tools** and run **linux_installation.sh** and choose the option
+for the guest installation.
+
+.. code-block:: console
+
+    $ sudo ./linux_installation.sh
+    Please choose if this installation is host (h) or guest (g) side installation:
+    Selection: g
+    ...
+
+
+This will install Python and then run the **pre_setup.py** with the **vm** parameter to start installing all
+necessary python modules. You can also start this script by hand if you choose to do so, although it would
+require a manual installation of Python beforehand.
+
+.. code-block:: console
+
+    $ sudo python pre_setup.py vm
+
+This script also creates the **~/.config/autostart** folder and places the script **agent.desktop** inside. This script
+ensures that **guestAgent.py** from the **guest_tools** folder is called on system boot to facilitate communication
+between guest and host.
+
+After installing all necessary Python modules, you just have to install hystck to complete the installation process. To do
+so, navigate into the main directory you copied to your desktop and run the following:
+
+.. code-block:: console
+
+    $ python setup.py install --user
+
 
 Ubuntu installation - manual
 ###############################
 
+First and foremost, hystck has to be downloaded and moved or copied to your desktop.
+It can be found `here <https://github.com/dasec/hystck>`_.
+
+Next, you will want to install all applications used to generate traffic. Both Firefox and Thunderbird are the default
+mail and browsing applications used by hystck.
+
+.. Todo pidgin??
+
+After hystck has been downloaded and your traffic generating application have been installed, you need to install a few
+packages and Python modules. First, install the Python and Python-Pip packages.
+
+.. code-block:: console
+
+    $ sudo apt install python
+    $ sudo apt install python-pip
+
+Make sure the default Python version is a variation of 2.7
+
+.. code-block:: console
+
+    $ python -V
+
+If this command returns a Python version higher than 2.7, refer to :ref:`hostinstall` for a guide on how to
+change the default Python version.
+
+.. TODO add section update alternatives to host installation
+
+Next, you will need to install the required Python modules. Simply use the **pip install -U** commands listed below.
+
+.. code-block:: console
+
+    C:\Users\user\hystck\Desktop> pip install -U pywinauto==0.6.0
+    C:\Users\user\hystck\Desktop> pip install -U pywin32
+    C:\Users\user\hystck\Desktop> pip install -U setuptools
+    C:\Users\user\hystck\Desktop> pip install -U selenium
+    C:\Users\user\hystck\Desktop> pip install -U marionette_driver
+    C:\Users\user\hystck\Desktop> pip install -U netifaces
+    C:\Users\user\hystck\Desktop> pip install -U psutil
+    C:\Users\user\hystck\Desktop> pip install -U netaddr
+    C:\Users\user\hystck\Desktop> pip install -U enum34
+    C:\Users\user\hystck\Desktop> pip install -U protobuf==2.5.0
+    C:\Users\user\hystck\Desktop> pip install -U mozprofile
+    C:\Users\user\hystck\Desktop> pip install -U mozrunner
+
+Once you have installed all necessary modules, you need to make sure that **guestAgent.py** located in the directory
+**guest_tools** gets executed automatically when the template or one of its future clones boots. To accomplish this,
+make sure the directory **~/.config/autostart** exists - you might have to create **autostart** manually.
+
+.. code-block:: console
+
+    $ cd ~/.config
+    $ mkdir autostart
+
+Use an editor of your choice to create a file in this directory and name it **agent.desktop** (you can choose a
+different name), copy and then paste the following text in it:
+
+.. code-block:: console
+
+    [Desktop Entry]
+    Type=Application
+    Terminal=false
+    Exec=gnome-terminal -e 'bash -c "python ~/Desktop/hystck/guest_tools/guestAgent.py; bash"'
+    Hidden=false
+    X-GNOME-Autostart-enabled=true
+    Name=Startup Script
+    Comment=
+
+The last step of your presetup will be to install hystck. Navigate into the main directory you copied to your desktop
+and run:
+
+.. code-block:: console
+
+    $ python setup.py install --user
+
+
+######################################################
+Creating backups or manual clones for guest templates
+######################################################
+
+Hystck creates and disposes of clones of the prepared templates automatically, but you might want to create
+a backup of your templates manually. To do so, simply start **virt-manager**, right-click on the template and select **clone**.
+
+While the method above works for both Windows and Ubuntu, you can create a Ubuntu backup without a graphical interface:
+
+.. code-block:: console
+
+    $ qemu-img create -f qcow2 -b /media/KVM-Images/ubuntu_template.qcow2 /media/KVM-Images/l-guest01.qcow2
+
+.. code-block:: console
+
+    $ virt-clone --connect qemu:///system \
+    --preserve-data `#Do not clone disk image`\
+    --original ubuntu_template \
+    --name l-guest01 \
+    --file /media/KVM-Images/l-guest01.qcow2
