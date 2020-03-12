@@ -7,7 +7,8 @@ Guest Installation
 Similarly to the installation of the host component described in :ref:`hostinstall`, the guest can be installed
 both automatically via a set of scripts or manually. A major difference in the installation is the OS of the guest
 component. While a similar approach to the host installation can be taken if Ubuntu is chosen as a guest platform,
-an installation of a Windows 10 guest requires some additional work.
+an installation of a Windows 10 guest requires some additional work. Similar to the host installation, it is recommended
+to check :ref:`config` for any needed adjustments **before** starting one of the automated install scripts.
 
 
 
@@ -16,8 +17,7 @@ Windows 10 Guest
 #################
 
 The first step in creating your virtual Windows 10 guest is creating the virtual machine. To do this, you will need to
-obtain a Windows 10 image. We recommend downloading an ISO-file from an official source such as ---
-.. TODO insert link
+obtain a Windows 10 image. We recommend downloading an ISO-file from an official source.
 
 Next, you need to set up the virtual machine.
 While this can be done via the graphical interface of the **virt-manager**, we recommend running the **win10install.sh**
@@ -174,9 +174,7 @@ Ubuntu Guest
 #################
 
 The first step in creating your virtual Ubuntu guest is creating the virtual machine. To do this, you will need to
-obtain a Ubuntu image. We recommend downloading an ISO-file from an official source such as ---
-
-.. TODO insert link
+obtain a Ubuntu image. We recommend downloading an ISO-file from an official source.
 
 Although we recommend Ubuntu 19.10, you can use other versions as well - the installation process *should* remain
 the same.
@@ -292,18 +290,35 @@ Next, you will need to install the required Python modules. Simply use the **pip
 
 .. code-block:: console
 
-    C:\Users\user\hystck\Desktop> pip install -U pywinauto==0.6.0
-    C:\Users\user\hystck\Desktop> pip install -U pywin32
-    C:\Users\user\hystck\Desktop> pip install -U setuptools
-    C:\Users\user\hystck\Desktop> pip install -U selenium
-    C:\Users\user\hystck\Desktop> pip install -U marionette_driver
-    C:\Users\user\hystck\Desktop> pip install -U netifaces
-    C:\Users\user\hystck\Desktop> pip install -U psutil
-    C:\Users\user\hystck\Desktop> pip install -U netaddr
-    C:\Users\user\hystck\Desktop> pip install -U enum34
-    C:\Users\user\hystck\Desktop> pip install -U protobuf==2.5.0
-    C:\Users\user\hystck\Desktop> pip install -U mozprofile
-    C:\Users\user\hystck\Desktop> pip install -U mozrunner
+    $ pip install -U pywinauto==0.6.0
+    $ pip install -U pywin32
+    $ pip install -U setuptools
+    $ pip install -U selenium
+    $ pip install -U marionette_driver
+    $ pip install -U netifaces
+    $ pip install -U psutil
+    $ pip install -U netaddr
+    $ pip install -U enum34
+    $ pip install -U protobuf==2.5.0
+    $ pip install -U mozprofile
+    $ pip install -U mozrunner
+
+It is possible, that **netifaces** will require you to install **python-dev**:
+
+.. code-block:: console
+
+    $ sudo apt install python-dev
+    $ pip install -U netiface
+
+Additionally, Linux requires an additional package called **LDTP** as well as an enabled accessibility feature in Gnome
+to control and manage window actions:
+
+.. code-block:: console
+
+    $ wget http://download.freedesktop.org/ldtp/3.x/3.5.x/ldtp-3.5.0.tar.gz
+    $ pip install –user ldtp-3.5.0.tar.gz
+    $ sudo apt install python-gnome2 python-twisted-web2 python-pyatspi
+    $ gsettings set org.gnome.desktop.interface toolkit-accessibility true
 
 Once you have installed all necessary modules, you need to make sure that **guestAgent.py** located in the directory
 **guest_tools** gets executed automatically when the template or one of its future clones boots. To accomplish this,

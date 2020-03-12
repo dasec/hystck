@@ -1,10 +1,15 @@
+.. _archindex:
+
 *****************************
 Framework Architecture
 *****************************
 
-This chapter
+This chapter will detail the key components of hystck as well as relate the currently available features and functions.
+To get a more in-depth explanation of all functions, you can view the corresponding chapter here: :ref:`funcindex`.
 
-Basic Architecture
+
+
+Architecture
 ########################
 
 basic architecture traits, images,

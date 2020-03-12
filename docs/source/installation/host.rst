@@ -5,9 +5,9 @@ Host Installation
 **********************
 
 The installation of the host component of hystck can be done automatically using **pre_setup.py** and the corresponding
-**config.json** located in the install_tools folder. If you are using a different Ubuntu distribution than recommended
-in :ref:`installindex`, you might need to tweak either file or run a completely manual installation of the host
-component.
+**config.json** located in the install_tools folder. Please check :ref:`config` before you start any of the installation
+scripts and make adjustments where necessary. If you are using a different Ubuntu distribution than recommended in
+:ref:`installindex`, you might need to tweak either file or run a completely manual installation of the host component.
 
 .. Regardless of what method you choose, you first need to install python.
 
@@ -53,8 +53,9 @@ require a manual installation of Python beforehand.
 After installing all packages and python modules, the script sets up permissions for the
 appropriate user to create clones of the virtual guest environments by creating the libvirtd group and adding
 the user mentioned in **config.json** to that group. Additionally, rights for the user to run tcpdump are given.
-**pre_setup.py** then creates both the virtual machines pool at the path given in **config.json** and the network
-bridges. All of these steps will be described further in the next section **Installation Host -- manual**.
+**pre_setup.py** then creates both the virtual machines pool and the network bridges. If you need to adjust any of the
+default paths for your pools or the location of tcpdump, you can do so in **config.json** (see: :ref:`config`)
+All of these steps will be described further in the next section **Installation Host -- manual**.
 
 Important note: It is possible, that the **backing** folder inside the created pool location is missing, which
 means you have to add it manually before running any **hystck** commands. If your pool is located in **/data**,
