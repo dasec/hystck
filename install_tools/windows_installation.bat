@@ -13,6 +13,7 @@ if %errorLevel% == 0 (
 SET vcc=
 SET pyt=
 
+REM Check Registry entries to see if Python and VC++ for Python are installed
 FOR /F "tokens=2*" %%A IN (REG Query HKLM\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall /s /v DisplayName 2^>nul ^| find /I "for python 2.7"') DO (
     set vcc=OK
 )

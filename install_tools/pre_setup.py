@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import sys
+import getpass
 import os
 import logging
 import json
@@ -104,25 +105,40 @@ class Installer:
 [Desktop Entry]
 Type=Application
 Terminal=false
-Exec=gnome-terminal -e 'bash -c "python ~/Desktop/hystck/guest_tools/guestAgent.py; bash"'
+Exec=gnome-terminal -e 'bash -c "python ''' + os.path.join(self.general['hystck-path'],  "guest_tools/guestAgent.py") + '''; bash"'
 Hidden=false
 X-GNOME-Autostart-enabled=true
 Name=Startup Script
 Comment=
 ''')
-# TODO add path to hystck to config.json ; reminder about language of distribution
-
         except OSError, e:
-            self.logger.info("[X] Error while creating autorun script")
+            self.logger.info("[X] Error while creating autorun script.")
             self.logger.error(e)
             sys.exit(1)
         else:
             self.logger.info("[+] Created autorun script.")
 
-
     def windows_autostart(self):
+        """
+        Creates autostart script for Windows guest
+        :return:
+        """
         self.logger.info("[-] Creating autostart for hystck.")
 
+        try:
+            # create link in autostart folder, or scheduled task for guestAgent.py
+            domain = os.environ['userdomain']
+            user = getpass.getuser()
+            prepCmd = "schtasks /create /U {} /RU SYSTEM /SC BEIMSTART /TN adminAgent /TR C:\\Windows\\System32\\cmd.exe python {}".format(os.path.join(domain, user), os.path.join(self.general['hystck-path'], "guest_tools/guestAgent.py"))
+            subprocess.call(prepCmd.split(), stdout=subprocess.PIPE)
+            self.logger.info("doing something...")
+        except OSError, e:
+            # error
+            self.logger.info("[X] Error while creating autostart entry.")
+            self.logger.error(e)
+        else:
+            # success
+            self.logger.info("[+] Created autostart entry.")
 
     def install_msi(self):
         """
@@ -154,8 +170,6 @@ Comment=
         else:
             self.logger.info("[+] Successfuly installed pip requirements.")
 
-
-    #TODO call install_sources at end of pre setup
     def install_sources(self):
         """
         This function calls 'setup.py' to install the framework source code onto the machine
@@ -241,15 +255,18 @@ Comment=
         Here all functions for a full installation are called.
         :return:
         """
+
+        # Preparations
         self.load_config()
+
+        # Installs
         self.install_sys_dep()
         self.install_pip_dep()
-
-        # Maybe add setup.py call here?
         self.install_sources()
 
         # Check if installation is host or vm side
         if self.param == "host":
+            # Setups
             self.setup_tcpdump()
             self.setup_libivrt()
             self.setup_network_interfaces()
