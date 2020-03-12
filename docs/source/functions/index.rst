@@ -1,3 +1,5 @@
+.. _funcindex:
+
 ===================
 Functions of hystck
 ===================
