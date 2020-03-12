@@ -10,6 +10,13 @@ it is mandatory to install hystck on both, the host and the guest system. In the
 installation can be done.
 
 
+Configuration of installation paths and values
+#################################################
+
+In case you want to use the automated installation scripts for either the host or the guest machines, it is recommended
+to read :ref:`config` and make adjustments if necessary before proceeding with the installation.
+
+
 Installation Host (physical machine)
 ####################################
 
@@ -18,7 +25,7 @@ Here we will describe how to install the host part of hystck on a physical machi
 For this **Ubuntu 19.10** is the recommended OS. Other Ubuntu distributions will work as well, but the automatic setup
 script might need some alterations depending on your distribution.
 
-Instructions can be found in :ref:`hostinstall`.
+In-depth instructions can be found in :ref:`hostinstall`.
 
 Installation Guest (virtual machine)
 ####################################
@@ -30,29 +37,31 @@ An in-depth installation manual for both Windows and Ubuntu can be found here: :
 
 Windows
 *******
-Instructions will follow here shortly.
-
-Setup the virtual machine and install Windows like you normally would (or download our template at: ). After that
+Setup the virtual machine and install Windows like you normally would (or use our prepared script
+**win10install.sh** in **install_tools**). After that
 follow the simple steps in the list below.
 
 #. Download hystck source code inside VM
 #. Download additional MSI installers for C++ and Python
 #. extract hystck source code to a folder on the Desktop of your virtual machine
 #. open the folder *hystck/install*
-#. start windows_setup.bat
+#. start windows_installation.bat
+
+In-depth instructions can be found in :ref:`hostinstall`.
+
 
 Linux
 *****
-Instructions will follow here shortly.
-
-Setup the virtual machine and install Ubuntu like you normally would (or download our template at: ). After that
+Setup the virtual machine and install Ubuntu like you normally would (or use our prepared script
+**ubuntu19.10.sh** in **install_tools**). After that
 follow the simple steps in the list below.
 
 #. Download hystck source code inside VM
 #. extract hystck source code to a folder on the Desktop of your virtual machine
 #. open the folder *hystck/install*
-#. start linux_setup.sh
+#. start linux_installation.sh
 
+In-depth instructions can be found in :ref:`hostinstall`.
 
 
 Installation Service VM
@@ -63,3 +72,6 @@ Here we will describe how to install the Service VM containing third party servi
 such as a DHCP server as well as services needed for specific scenarios.
 
 Instructions will follow here shortly.
+
+
+

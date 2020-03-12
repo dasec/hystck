@@ -7,7 +7,8 @@ Guest Installation
 Similarly to the installation of the host component described in :ref:`hostinstall`, the guest can be installed
 both automatically via a set of scripts or manually. A major difference in the installation is the OS of the guest
 component. While a similar approach to the host installation can be taken if Ubuntu is chosen as a guest platform,
-an installation of a Windows 10 guest requires some additional work.
+an installation of a Windows 10 guest requires some additional work. Similar to the host installation, it is recommended
+to check :ref:`config` for any needed adjustments **before** starting one of the automated install scripts.
 
 
 
@@ -16,8 +17,7 @@ Windows 10 Guest
 #################
 
 The first step in creating your virtual Windows 10 guest is creating the virtual machine. To do this, you will need to
-obtain a Windows 10 image. We recommend downloading an ISO-file from an official source such as ---
-.. TODO insert link
+obtain a Windows 10 image. We recommend downloading an ISO-file from an official source.
 
 Next, you need to set up the virtual machine.
 While this can be done via the graphical interface of the **virt-manager**, we recommend running the **win10install.sh**
@@ -174,9 +174,7 @@ Ubuntu Guest
 #################
 
 The first step in creating your virtual Ubuntu guest is creating the virtual machine. To do this, you will need to
-obtain a Ubuntu image. We recommend downloading an ISO-file from an official source such as ---
-
-.. TODO insert link
+obtain a Ubuntu image. We recommend downloading an ISO-file from an official source.
 
 Although we recommend Ubuntu 19.10, you can use other versions as well - the installation process *should* remain
 the same.

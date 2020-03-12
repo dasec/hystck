@@ -28,6 +28,7 @@ Contents
 
    architecture/index
    installation/index
+   installation/config
    installation/host
    installation/guest
    installation/service_vm
