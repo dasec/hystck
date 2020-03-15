@@ -24,10 +24,6 @@ windows.shellExec('REG ADD "HKCU\Software\Microsoft\Windows NT\CurrentVersion\Wi
 time.sleep(5)
 
 # Print document
-
-#windows.runElevated('powershell -command "Get-Content -Path ./hystck-mpse_ws1920/packet_requirements.txt | Out-Printer"')
-time.sleep(5)
-
 windows.shellExec('notepad.exe /p "C:\Users\hystck\hystck\packet_requirements.txt')
 
 # windows.remove()
