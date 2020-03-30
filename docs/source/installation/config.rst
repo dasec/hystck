@@ -12,7 +12,7 @@ necessary information for your hystck installation on both the host and guest ma
 config.json
 #############
 
-.. literalinclude:: ..\..\..\install_tools\config.json
+.. literalinclude:: ../../../install_tools/config.json
     :language: json
 
 
