@@ -36,7 +36,7 @@ As can be seen in the graphic, the connection between the host and client is sep
 internet connection. This is done to minimize the simulation's footprint on the generated data. The IP addresses and other
 related information can be adjusted in the **constants.py** file.
 
-Additionally, the host side is used to evaluate the created traffic using the reporting function (see :ref:`report`) and the *.pcap* file
+Additionally, the host side is used to evaluate the created traffic using the reporting function (see :ref:`architecture_index`) and the *.pcap* file
 created by the automated use of **tcpdump**.
 
 
@@ -141,7 +141,7 @@ hystck to generate network dumps of an attack from the victim's side. It is also
 
 *SMB file transfer*
 
-*IPP print job* 
+*IPP print job*
 
 .. TODO: add some explanation to SMB file transfer & IPP print job?
 

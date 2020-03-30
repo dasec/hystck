@@ -1,2 +1,2 @@
 @echo off
-python.exe %HOMEPATH%\hystck\examples\guestAgent.py
+python.exe %HOMEPATH%\hystck\guest_tools\guestAgent.py

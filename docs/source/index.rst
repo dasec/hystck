@@ -39,9 +39,7 @@ Contents
    developer/index
    developer/functions
    developer/implementing
-   .. functions/index
-   .. firstrun/index
-..   implementing/index
+
 
 
 

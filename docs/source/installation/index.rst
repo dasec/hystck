@@ -9,6 +9,7 @@ Hystck is a framework that consists of two distinct parts as we described in
 it is mandatory to install hystck on both, the host and the guest system. In the next sections we will show how that
 installation can be done.
 
+Once you have finished the installation process, visit :ref:`firstrun` for some help on getting started with hystck.
 
 Configuration of installation paths and values
 #################################################
@@ -71,7 +72,7 @@ Installation Service VM
 Here we will describe how to install the Service VM containing third party services that enhance hystck's capabilities
 such as a DHCP server as well as services needed for specific scenarios.
 
-Instructions will follow here shortly.
+Instructions can be found in :ref:`serviceinstall`.
 
 
 

@@ -45,7 +45,11 @@ or simply copying the command seen below:
 
 Either method would require you to adapt the **--cdrom** parameter with the correct path and name of your installation
 medium. You might also want to change **--ram** or **--vcpus** depending on your available resources. When starting the
-virtual machine, make sure to name your primary user **hystck**.
+virtual machine, make sure to name your primary user **hystck**. Additionally, it is important **not** to set a password
+when first starting the guest component. Otherwise, hystck will be unable to log into the default chosen user. If, for any
+reason the auto login does not work with your Windows 10 guest component,
+`this link <https://support.microsoft.com/en-us/help/324737/how-to-turn-on-automatic-logon-in-windows>`_ should guide you
+through the process of (re-)enabling auto login.
 
 .. TODO skip login?
 
@@ -205,7 +209,12 @@ or simply copying the command seen below:
 
 Either method would require you to adapt the **--cdrom** parameter with the correct path and name of your installation
 medium. You might also want to change **--ram** or **--vcpus** depending on your available resources. When starting the
-virtual machine, make sure to name your primary user **hystck**.
+virtual machine, make sure to name your primary user **hystck**. During your initial setup, you will be asked for your
+user credentials. On this screen, it is important to choose the option **Log in automatically**. This is required for
+hystck, so no manual user inputs are needed on the guest side when synthesizing traffic. If your auto login does not
+work, `this guide <https://help.ubuntu.com/stable/ubuntu-help/user-autologin.html.en>`_ will help you activate it after
+setting up your host machine.
+
 
 Once you are able to start the virtual machine and the OS has been installed and initialized, you should eject the installation medium.
 
