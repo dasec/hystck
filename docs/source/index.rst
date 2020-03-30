@@ -27,14 +27,21 @@ Contents
    :caption: Contents:
 
    architecture/index
+   architecture/framework_architecture
+   architecture/generator
+   architecture/service_vm
    installation/index
    installation/config
    installation/host
    installation/guest
    installation/service_vm
-   functions/index
-   firstrun/index
-   implementing/index
+   installation/firstrun
+   developer/index
+   developer/functions
+   developer/implementing
+   .. functions/index
+   .. firstrun/index
+..   implementing/index
 
 
 
