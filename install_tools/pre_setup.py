@@ -6,7 +6,6 @@ import logging
 import json
 import subprocess
 import platform
-import getpass
 
 
 class Installer:
@@ -255,7 +254,11 @@ Comment=
             self.logger.info("[+] Added network interfaces.")
 
     def checkuser(self):
-        username = getpass.getuser()
+        import os
+
+        username = os.environ.get("SUDO_USER")
+
+        #TODO: version using getpass.getuser currently only returns root -> is there an alternative within getpass?
 
         if username != self.general['user']:
             self.logger.info("[X] Wrong user logged in. Check configuration in config.json. Logged in user: "+username)
