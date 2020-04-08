@@ -258,7 +258,7 @@ Comment=
         username = getpass.getuser()
 
         if username != self.general['user']:
-            self.logger.info("[X] Wrong user logged in. Check configuration in config.json.")
+            self.logger.info("[X] Wrong user logged in. Check configuration in config.json. Logged in user: "+username)
             sys.exit(1)
         else:
             self.logger.info("[+] User name checked. Proceeding with installation.")

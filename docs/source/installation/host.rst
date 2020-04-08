@@ -20,6 +20,7 @@ First, make sure the name of the user and your chosen paths for the virtual mach
 repository and the path to your tcpdump binary you want to install hystck on is correctly configured in **config.json**.
 This is important, since the setup script later adds this user to the libvirtd-group,
 which is required to create clones of the virtual guest machines.
+
 .. TODO adduser to sudo; change paths and username in config.json; make sure to download & install with correct user
 .. TODO check if user is correct through linux installation -> error if not correct
 .. TODO Clone into correct users' paths
