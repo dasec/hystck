@@ -139,9 +139,11 @@ Multiple common *Botnet simulation attacks* such as Mariposa, Zeus, Asprox or Wa
 hystck to generate network dumps of an attack from the victim's side. It is also possible to add new attack variants.
 
 
-*SMB file transfer*
+*SMB file transfer* uses the tool **Samba** to move data to a network drive. This drive is located on the service VM. Since
+SMB file transfers are usually not encrypted, the traffic and content can be easily analyzed.
 
-*IPP print job*
+*IPP print job* is a simulation of an attack in which confidential documents are printed through a network printer.
+For this, the service VM is set up with **ippserver** as a virtual network printer.
 
 .. TODO: add some explanation to SMB file transfer & IPP print job?
 

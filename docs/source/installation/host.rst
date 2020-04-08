@@ -16,13 +16,38 @@ Installation Host -- scripted
 
 The partially automated installation requires just a few steps to set up the host components of hystck.
 
-First, create a user named **hystck**. This is important, since the setup script later adds this user to the libvirtd-group,
-which is required to create clones of the virtual guest machines. (`A different user could be used by altering`
-**config.json** `in the` **install_tools** `folder.`)
+First, make sure the name of the user and your chosen paths for the virtual machine data, the location of your cloned hystck
+repository and the path to your tcpdump binary you want to install hystck on is correctly configured in **config.json**.
+This is important, since the setup script later adds this user to the libvirtd-group,
+which is required to create clones of the virtual guest machines.
+.. TODO adduser to sudo; change paths and username in config.json; make sure to download & install with correct user
+.. TODO check if user is correct through linux installation -> error if not correct
+.. TODO Clone into correct users' paths
+.. TODO second setup.py for automated install ../src/hystck path instead of src/hystck change call in presetup, ../utility in setup py or src hystck utility
+.. TODO skip pywin32 in linux
+.. TODO mkdir backing folder; change section in installation#
+.. TODO backing and pool path in constants and config need to be adjusted to same -> manual sudo mkdir backing
+.. TODO  ?? qemu config add user etc libvirt qemuconf dynamic ownership 0 ??
+.. TODO give access to new user to use GUI echo $DISPLAY is blank - error with installation?
+.. TODO hystck pool user change
+.. TODO libvirt user privileges, login needed after reboot??? -> libvirt and libvirtd privileges for new user
+.. TODO logout/exit restart terminal sessions instead of reboot
+
+A new user can be added with the following command:
 
 .. code-block:: console
 
-    $ sudo adduser hystck --disabled-login --no-create-home
+    $ sudo adduser hystck
+
+If you want to install hystck on a new user, please create that user **before** running any part of the installation process.
+Additionally, it is imperative to give the new user root permissions as the installation script has to be called with sudo.
+
+.. code-block:: console
+
+    $ sudo usermod -a -G sudo hystck
+
+
+In these two examples replace **hystck** with a username of your choice. Make sure it matches the username in **config.json**.
 
 
 To run the following commands, you will need to download hystck now.
@@ -45,6 +70,8 @@ script will then install all necessary packages including the appropriate Python
 This then runs the **pre_setup.py** with the  **host** parameter to start installing all
 necessary packages and python modules. You can also start this script by hand if you choose to do so, although it would
 require a manual installation of Python beforehand.
+
+.. TODO Part of linux installation script
 
 .. code-block:: console
 

@@ -48,7 +48,7 @@ follow the simple steps in the list below.
 #. open the folder *hystck/install*
 #. start windows_installation.bat
 
-In-depth instructions can be found in :ref:`hostinstall`.
+In-depth instructions can be found in :ref:`guestinstall`.
 
 
 Linux
@@ -62,7 +62,7 @@ follow the simple steps in the list below.
 #. open the folder *hystck/install*
 #. start linux_installation.sh
 
-In-depth instructions can be found in :ref:`hostinstall`.
+In-depth instructions can be found in :ref:`guestinstall`.
 
 
 Installation Service VM

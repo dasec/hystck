@@ -6,6 +6,7 @@ import logging
 import json
 import subprocess
 import platform
+import getpass
 
 
 class Installer:
@@ -177,7 +178,7 @@ Comment=
         """
         self.logger.info("[~] Installing hystck framework...")
         try:
-            prepCmd = "python ../setup.py install --user"
+            prepCmd = "python setup.py install --user"
             subprocess.call(prepCmd.split(), stdout=subprocess.PIPE)
         except OSError, e:
             self.logger.info("[X] Error while installing hystck framework.")
@@ -216,7 +217,10 @@ Comment=
                                                                                     self.virtpools['name']),
                         "virsh pool-build {}".format(self.virtpools['name']),
                         "virsh pool-start {}".format(self.virtpools['name']),
-                        "virsh pool-autostart {}".format(self.virtpools['name'])]
+                        "virsh pool-autostart {}".format(self.virtpools['name']),
+                        "mkdir {}/{}/backing".format(self.virtpools['path'],
+                                                     self.virtpools['name']),
+                        "usermod -a -G libvirt {}".format(self.general['user'])]
             for command in commands:
                 prepCmd = command.strip()
                 subprocess.call(prepCmd.split(), stdout=subprocess.PIPE)
@@ -250,6 +254,15 @@ Comment=
         else:
             self.logger.info("[+] Added network interfaces.")
 
+    def checkuser(self):
+        username = getpass.getuser()
+
+        if username != self.general['user']:
+            self.logger.info("[X] Wrong user logged in. Check configuration in config.json.")
+            sys.exit(1)
+        else:
+            self.logger.info("[+] User name checked. Proceeding with installation.")
+
     def run(self):
         """
         Here all functions for a full installation are called.
@@ -258,6 +271,7 @@ Comment=
 
         # Preparations
         self.load_config()
+        self.checkuser()
 
         # Installs
         self.install_sys_dep()

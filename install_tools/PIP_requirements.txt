@@ -10,3 +10,4 @@ enum34
 protobuf==2.5.0
 mozrunner
 mozprofile
+getpass
