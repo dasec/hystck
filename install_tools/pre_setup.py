@@ -274,7 +274,8 @@ Comment=
 
         # Preparations
         self.load_config()
-        self.checkuser()
+        if self.param == "host":   #OS LINUX, FUNKTION FÜR WINDOWS & LINUX
+            self.checkuser()
 
         # Installs
         self.install_sys_dep()
