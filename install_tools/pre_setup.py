@@ -274,7 +274,7 @@ Comment=
 
         # Preparations
         self.load_config()
-        if self.param == "host":   #OS LINUX, FUNKTION FÜR WINDOWS & LINUX
+        if platform.system() == "Linux":   #OS LINUX, FUNKTION FÜR WINDOWS & LINUX
             self.checkuser()
 
         # Installs

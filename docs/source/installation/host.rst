@@ -35,7 +35,13 @@ which is required to create clones of the virtual guest machines.
 .. TODO logout/exit restart terminal sessions instead of reboot
 
 .. TODO: gui privileges: xauth, reboot???, xhost +, echo $DISPLAY, su - user, export DISPLAY=[result of echo]
-.. TODO: xauth xhost variant only temp: edit .bashrc -> add export DISPLAY=:0 or equivalent (echo $DISPLAY)
+.. TODO: xauth xhost variant only temp: edit .bashrc -> add export DISPLAY=:0 or equivalent (echo $DISPLAY) -> add to presetup
+    -> add to config.json WHICH display :0 default -> still needs xauth & xhost + beforehand FIND PERMANENT SOLUTION
+    -> xauth, exit, xhost +, su - user
+
+.. TODO: terminal restart statt reboot
+
+.. TODO: skip pywin32 on platform linux
 
 .. TODO: If... Else pre setup (if installation aborts -> pre setup aborted etc)
 

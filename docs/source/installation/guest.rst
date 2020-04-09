@@ -11,6 +11,11 @@ an installation of a Windows 10 guest requires some additional work. Similar to 
 to check :ref:`config` for any needed adjustments **before** starting one of the automated install scripts.
 
 
+.. TODO: install vcc via pre setup and python via batch script -> install & dl msi packages via python like apt install?
+
+.. TODO: Windows unattended install for virt manager
+
+.. TODO: Which windows version? pro/home/???
 
 #################
 Windows 10 Guest
@@ -44,7 +49,7 @@ or simply copying the command seen below:
 
 
 Either method would require you to adapt the **--cdrom** parameter with the correct path and name of your installation
-medium. You might also want to change **--ram** or **--vcpus** depending on your available resources. When starting the
+medium. You might also want to change **--ram**, **disk space (size)** or **--vcpus** depending on your available resources. When starting the
 virtual machine, make sure to name your primary user **hystck**. Additionally, it is important **not** to set a password
 when first starting the guest component. Otherwise, hystck will be unable to log into the default chosen user. If, for any
 reason the auto login does not work with your Windows 10 guest component,
