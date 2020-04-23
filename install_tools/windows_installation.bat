@@ -1,5 +1,8 @@
 @echo off
+pushd %~dp0
+
 TITLE hystck Installation
+
 
 echo Administrative permissions required. Detecting permissions...
 net session >nul 2>&1
@@ -41,3 +44,5 @@ echo Installation finished.
 
 :END
 cmd /k
+
+popd

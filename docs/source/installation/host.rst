@@ -45,6 +45,8 @@ which is required to create clones of the virtual guest machines.
 
 .. TODO: If... Else pre setup (if installation aborts -> pre setup aborted etc)
 
+.. TODO: LIBVIRT FOLDER RIGHTS CANT CREATE BACKING IMAGES
+
 A new user can be added with the following command:
 
 .. code-block:: console
