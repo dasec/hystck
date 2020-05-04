@@ -25,6 +25,9 @@ which is required to create clones of the virtual guest machines.
 - LIBVIRT QEMU ODER CURRENT USER? LIBVIRT QEMU HAT FUNKTIONIERT, JETZT CURRENT USER) EVTL ÜBER POOL XML?
 -add changes to /etc/qemu.conf (uncomment root user & group?) -> separate trouble shooting section?
 
+.. TODO Backing als xml oder als mkdir und dann chown -r beide varianten in presetup, bei xml varianten müssen cmö von hystck
+pool und backing pool um usernamen ergänzt werden
+
 .. TODO image chown OR TEST VIA QEMU.CONF dynamic ownership usw
 
 .. TODO hystck-pool.xml UPLOAD/ÜBERTRAGEN VON UBUNTU LAPTOP UND IN PRESETUP EINBINDEN UND HIER NÖTIGE ANPASSUNGEN ERWÄHNEN/BZW AUTOMATISIEREN ÜBER CONFIG UND id -u user
