@@ -21,6 +21,16 @@ repository and the path to your tcpdump binary you want to install hystck on is 
 This is important, since the setup script later adds this user to the libvirtd-group,
 which is required to create clones of the virtual guest machines.
 
+.. TODO BACKING FOLDER MANUELL/NICHT ALS SUDO??? DANN CHOWN AUF KREEIRTE IMAGES(IN GUEST SEITE UNTERBRINGEN
+- LIBVIRT QEMU ODER CURRENT USER? LIBVIRT QEMU HAT FUNKTIONIERT, JETZT CURRENT USER) EVTL ÜBER POOL XML?
+-add changes to /etc/qemu.conf (uncomment root user & group?) -> separate trouble shooting section?
+
+.. TODO image chown OR TEST VIA QEMU.CONF dynamic ownership usw
+
+.. TODO hystck-pool.xml UPLOAD/ÜBERTRAGEN VON UBUNTU LAPTOP UND IN PRESETUP EINBINDEN UND HIER NÖTIGE ANPASSUNGEN ERWÄHNEN/BZW AUTOMATISIEREN ÜBER CONFIG UND id -u user
+
+.. TODO => chown jetzt in presetup; need one more chown AFTER template creation (virt install scripts via python?)
+
 .. TODO adduser to sudo; change paths and username in config.json; make sure to download & install with correct user
 .. TODO check if user is correct through linux installation -> error if not correct
 .. TODO Clone into correct users' paths

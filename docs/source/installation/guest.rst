@@ -33,6 +33,10 @@ to check :ref:`config` for any needed adjustments **before** starting one of the
 
 .. TODO: python installation etc
 
+.. TODO: WINDOWS PRO; HOME HAS NO OFFLINE ACCOUNT OPTION WHEN INSTALLING
+
+.. TODO: install.bat has to run twice because python not installed first time -> ??? solution refresh session ???
+
 #################
 Windows 10 Guest
 #################
