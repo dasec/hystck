@@ -176,28 +176,15 @@ Comment=
         :return:
         """
         self.logger.info("[~] Installing hystck framework...")
-        if platform.system() == "Linux":
-            try:
-                prepCmd = "python setup.py install --user"
-                subprocess.call(prepCmd.split(), stdout=subprocess.PIPE)
-            except OSError, e:
-                self.logger.info("[X] Error while installing hystck framework.")
-                self.logger.error(e)
-                sys.exit(1)
-            else:
-                self.logger.info("[+] hystck Framework installed successfully.")
-        if platform.system() == "Windows":
-            try:
-                import os
-                os.system('python setup.py install --user')
-            except OSError, e:
-                self.logger.info("[X] Error while installing hystck framework.")
-                self.logger.error(e)
-                sys.exit(1)
-            else:
-                self.logger.info("[+] hystck Framework installed successfully.")
-
-
+        try:
+            prepCmd = "python setup.py install --user"
+            subprocess.call(prepCmd.split(), stdout=subprocess.PIPE)
+        except OSError, e:
+            self.logger.info("[X] Error while installing hystck framework.")
+            self.logger.error(e)
+            sys.exit(1)
+        else:
+            self.logger.info("[+] hystck Framework installed successfully.")
 
     def setup_tcpdump(self):
         """
@@ -225,15 +212,17 @@ Comment=
             commands = ["groupadd libvirtd",
                         "usermod -a -G libvirtd {}".format(self.general['user']),
                         "mkdir {}".format(self.virtpools['path']),
+                        #"virsh pool-define hystck-pool.xml",
                         "virsh pool-define-as hystck-pool dir - - - - {}/{}".format(self.virtpools['path'],
                                                                                     self.virtpools['name']),
-                        #"virsh pool define hystck-pool.xml",
                         "virsh pool-build {}".format(self.virtpools['name']),
                         "virsh pool-start {}".format(self.virtpools['name']),
                         "virsh pool-autostart {}".format(self.virtpools['name']),
-               #         "mkdir {}/{}/backing".format(self.virtpools['path'],
-                #                                     self.virtpools['name']),
-                        "usermod -a -G libvirt {}".format(self.general['user'])]
+                        "mkdir {}/{}/backing".format(self.virtpools['path'],
+                                                     self.virtpools['name']),
+                        "usermod -a -G libvirt {}".format(self.general['user']),
+                        "chown -R {} {}".format(self.general['user'],
+                                                self.virtpools['path'])]
             for command in commands:
                 prepCmd = command.strip()
                 subprocess.call(prepCmd.split(), stdout=subprocess.PIPE)
