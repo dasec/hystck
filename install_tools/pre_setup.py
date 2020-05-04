@@ -212,17 +212,22 @@ Comment=
             commands = ["groupadd libvirtd",
                         "usermod -a -G libvirtd {}".format(self.general['user']),
                         "mkdir {}".format(self.virtpools['path']),
-                        #"virsh pool-define hystck-pool.xml",
-                        "virsh pool-define-as hystck-pool dir - - - - {}/{}".format(self.virtpools['path'],
-                                                                                    self.virtpools['name']),
+                        "virsh pool-define hystck-pool.xml",
+                       # "virsh pool-define-as hystck-pool dir - - - - {}/{}".format(self.virtpools['path'],
+                                                    #                                self.virtpools['name']),
                         "virsh pool-build {}".format(self.virtpools['name']),
                         "virsh pool-start {}".format(self.virtpools['name']),
                         "virsh pool-autostart {}".format(self.virtpools['name']),
-                        "mkdir {}/{}/backing".format(self.virtpools['path'],
-                                                     self.virtpools['name']),
-                        "usermod -a -G libvirt {}".format(self.general['user']),
-                        "chown -R {} {}".format(self.general['user'],
-                                                self.virtpools['path'])]
+                       # "mkdir {}/{}/backing".format(self.virtpools['path'],
+                                      #               self.virtpools['name']),
+                        "virsh pool-define backing-pool.xml",
+                        "virsh pool-build backing",
+                        "virsh pool-start backing",
+                        "virsh pool-autostart backing"]
+
+                       # "usermod -a -G libvirt {}".format(self.general['user']),
+                       # "chown -R {} {}".format(self.general['user'],
+                        #                        self.virtpools['path'])]
             for command in commands:
                 prepCmd = command.strip()
                 subprocess.call(prepCmd.split(), stdout=subprocess.PIPE)
