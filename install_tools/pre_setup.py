@@ -277,7 +277,8 @@ Comment=
 
         # Preparations
         self.load_config()
-        self.checkuser()
+        if platform.system() == "Linux":   #OS LINUX, FUNKTION FUER WINDOWS & LINUX
+            self.checkuser()
 
         # Installs
         self.install_sys_dep()

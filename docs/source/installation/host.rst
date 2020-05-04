@@ -17,7 +17,7 @@ Installation Host -- scripted
 The partially automated installation requires just a few steps to set up the host components of hystck.
 
 First, make sure the name of the user and your chosen paths for the virtual machine data, the location of your cloned hystck
-repository and the path to your tcpdump binary you want to install hystck on is correctly configured in **config.json**.
+repository and the path to your tcpdump binary you want to install hystck on is correctly configured in **config.json** (:ref.
 This is important, since the setup script later adds this user to the libvirtd-group,
 which is required to create clones of the virtual guest machines.
 
@@ -33,6 +33,19 @@ which is required to create clones of the virtual guest machines.
 .. TODO hystck pool user change
 .. TODO libvirt user privileges, login needed after reboot??? -> libvirt and libvirtd privileges for new user
 .. TODO logout/exit restart terminal sessions instead of reboot
+
+.. TODO: gui privileges: xauth, reboot???, xhost +, echo $DISPLAY, su - user, export DISPLAY=[result of echo]
+.. TODO: xauth xhost variant only temp: edit .bashrc -> add export DISPLAY=:0 or equivalent (echo $DISPLAY) -> add to presetup
+    -> add to config.json WHICH display :0 default -> still needs xauth & xhost + beforehand FIND PERMANENT SOLUTION
+    -> xauth, exit, xhost +, su - user
+
+.. TODO: terminal restart statt reboot
+
+.. TODO: skip pywin32 on platform linux
+
+.. TODO: If... Else pre setup (if installation aborts -> pre setup aborted etc)
+
+.. TODO: LIBVIRT FOLDER RIGHTS CANT CREATE BACKING IMAGES
 
 A new user can be added with the following command:
 

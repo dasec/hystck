@@ -11,6 +11,27 @@ an installation of a Windows 10 guest requires some additional work. Similar to 
 to check :ref:`config` for any needed adjustments **before** starting one of the automated install scripts.
 
 
+.. TODO: install vcc via pre setup and python via batch script -> install & dl msi packages via python like apt install?
+
+.. TODO: Windows unattended install for virt manager -> kickstart file cfg or xml?
+
+.. TODO: Which windows version? pro/home/???
+
+.. TODO: searching for python/ vcc for python via reg query -> paths, commands? datei reg kann nicht gefunden werden
+
+.. TODO: TASKSCHEDULERS
+
+.. TODO: setup py not called??
+
+.. TODO: PATHING WINDOWS install.bat, pre-setup for setup, setup for installation
+
+.. TODO: installing hystck framework... takes long time/app hang?
+
+.. TODO: navigate to installtools in bash script then execute (or navigate there before and start script via cmd)
+
+.. TODO: download python 2.7 & vcc for python (links) and move to install_tools folder, then run install.bat
+
+.. TODO: python installation etc
 
 #################
 Windows 10 Guest
@@ -44,7 +65,7 @@ or simply copying the command seen below:
 
 
 Either method would require you to adapt the **--cdrom** parameter with the correct path and name of your installation
-medium. You might also want to change **--ram** or **--vcpus** depending on your available resources. When starting the
+medium. You might also want to change **--ram**, **disk space (size)** or **--vcpus** depending on your available resources. When starting the
 virtual machine, make sure to name your primary user **hystck**. Additionally, it is important **not** to set a password
 when first starting the guest component. Otherwise, hystck will be unable to log into the default chosen user. If, for any
 reason the auto login does not work with your Windows 10 guest component,
@@ -107,6 +128,7 @@ The final step requires you to manipulate the Windows Task Scheduler to run **st
 will start the **guestAgent.py** script, both located in **guest_tools**. This script manages the communication between
 your host and guest instances.
 
+.. TODO: tutorial taskschd.msc -> edit task -> actions -> start in parameter -> make sure path in bat is correct -> schedule task at login, highest privileges
 
 .. TODO automation: task scheduler
 
@@ -219,6 +241,8 @@ setting up your host machine.
 Once you are able to start the virtual machine and the OS has been installed and initialized, you should eject the installation medium.
 
 .. TODO skip login?
+
+.. TODO: pre setup does not install hystck?
 
 Ubuntu installation - automated
 ###################################
