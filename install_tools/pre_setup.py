@@ -223,9 +223,9 @@ Comment=
                         "virsh pool-define backing-pool.xml",
                         "virsh pool-build backing",
                         "virsh pool-start backing",
-                        "virsh pool-autostart backing"]
+                        "virsh pool-autostart backing",
 
-                       # "usermod -a -G libvirt {}".format(self.general['user']),
+                        "usermod -a -G libvirt {}".format(self.general['user'])]
                        # "chown -R {} {}".format(self.general['user'],
                         #                        self.virtpools['path'])]
             for command in commands:
