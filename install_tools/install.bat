@@ -15,8 +15,12 @@ if %errorLevel% == 0 (
 	echo "Installing Visual C++ Python Compiler"
 	start /wait msiexec.exe /i %~dp0VCForPython27.msi /passive /L*V "C:\msilog2.log"
 	
-	echo "TODO run prereq hystck script"
+	echo "run prereq hystck script"
 	python %~dp0pre_setup.py
+
+	echo installing hystck sources.
+        python %~dp0pre_setup.py
+        echo Installation finished.
 	
 	echo "Installation finished"
 	pause > nul
@@ -27,6 +31,7 @@ if %errorLevel% == 0 (
 	pause > nul
 	exit
 )
+
 
 cmd /k
 
