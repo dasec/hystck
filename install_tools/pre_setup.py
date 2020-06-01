@@ -129,7 +129,8 @@ Comment=
             # create link in autostart folder, or scheduled task for guestAgent.py
             domain = os.environ['userdomain']
             user = getpass.getuser()
-            prepCmd = "schtasks /create /U {} /RU SYSTEM /SC BEIMSTART /TN adminAgent /TR C:\\Windows\\System32\\cmd.exe python {}".format(os.path.join(domain, user), os.path.join(self.general['hystck-path'], "guest_tools/guestAgent.py"))
+            #prepCmd = "schtasks /create /U {} /RU SYSTEM /SC BEIMSTART /TN adminAgent /TR C:\\Windows\\System32\\cmd.exe python {}".format(os.path.join(domain, user), os.path.join(self.general['hystck-path'], "guest_tools/guestAgent.py"))
+            prepCmd = "schtasks /create /sc ONLOGON /tn hystck /tr %HOMEPATH%\Desktop\hystck\guest_tools\startGuestAgent.bat /f"
             subprocess.call(prepCmd.split(), stdout=subprocess.PIPE)
             self.logger.info("doing something...")
         except OSError, e:
