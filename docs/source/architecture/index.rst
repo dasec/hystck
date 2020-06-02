@@ -22,7 +22,6 @@ prepared templates (see :ref:`guestinstall`). By using a network bridge created 
 management layer and virtual machine layer (or guest/s), function calls are fed from the host to the the guest machine/s,
 executing the traffic generation scenario created and executed at the beginning.
 
-.. TODO expand
 
 .. figure:: ../../figures/architecture.png
        :alt: Graphic of hystck's layered architecture.
@@ -42,7 +41,6 @@ network drive (SMB).
 
 For a more in--depth explanation of the service VM and the services included you can refer to :ref:`service`.
 
-.. TODO expand refer etc
 
 Generator
 ####################

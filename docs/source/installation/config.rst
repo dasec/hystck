@@ -20,6 +20,7 @@ config.json
 
 
 
+
 * **pip-requirements**: No adjustments are needed here. The required python modules will remain the same regardless of your system.
 
 
@@ -59,5 +60,3 @@ config.json
 * **network-interfaces -> private-interface-name**: This value can be changed **if** you alter the corresponding public interface config file. It is recommended to keep the default value.
 
 
-
-.. TODO: update with new config data (hystck path, ....)

@@ -10,32 +10,18 @@ component. While a similar approach to the host installation can be taken if Ubu
 an installation of a Windows 10 guest requires some additional work. Similar to the host installation, it is recommended
 to check :ref:`config` for any needed adjustments **before** starting one of the automated install scripts.
 
+**NOTE**: No matter what guest installation methods you choose, as of right now you will need to change the image's permissions
+with the following command. A workaround is currently not accessible.
+
+.. code-block:: console
+
+    $ sudo chmod 775 [template-name]
+
 
 .. TODO: install vcc via pre setup and python via batch script -> install & dl msi packages via python like apt install?
 
-.. TODO: Windows unattended install for virt manager -> kickstart file cfg or xml?
-
-.. TODO: Which windows version? pro/home/???
-
-.. TODO: searching for python/ vcc for python via reg query -> paths, commands? datei reg kann nicht gefunden werden
-
-.. TODO: TASKSCHEDULERS
-
-.. TODO: setup py not called??
-
-.. TODO: PATHING WINDOWS install.bat, pre-setup for setup, setup for installation
-
-.. TODO: installing hystck framework... takes long time/app hang?
-
-.. TODO: navigate to installtools in bash script then execute (or navigate there before and start script via cmd)
-
 .. TODO: download python 2.7 & vcc for python (links) and move to install_tools folder, then run install.bat
 
-.. TODO: python installation etc
-
-.. TODO: WINDOWS PRO; HOME HAS NO OFFLINE ACCOUNT OPTION WHEN INSTALLING
-
-.. TODO: install.bat has to run twice because python not installed first time -> ??? solution refresh session ???
 
 #################
 Windows 10 Guest
@@ -76,8 +62,6 @@ reason the auto login does not work with your Windows 10 guest component,
 `this link <https://support.microsoft.com/en-us/help/324737/how-to-turn-on-automatic-logon-in-windows>`_ should guide you
 through the process of (re-)enabling auto login.
 
-.. TODO skip login?
-
 Windows installation - automated
 ####################################
 While most of the installation of the Windows guest can be automated, a few steps have to be done manually.
@@ -109,10 +93,12 @@ Furthermore, you will need to install the Visual C++ Compiler for Python 2.7. Th
 from
 `Microsoft's web presence <https://download.microsoft.com/download/7/9/6/796EF2E4-801B-4FC4-AB28-B59FBF6D907B/VCForPython27.msi>`_.
 
+These two steps can be included into the automated installation process by copying the respective .msi files of the latest Python 2.7 release (2.7.16) and
+VCC for Python into the **install_tools** folder (in case they are not present already), adjusting the names of the files either themselves or inside
+**install.bat**, then running **install.bat** as an administrator.
+
 Next, you will want to install all applications used to generate traffic. Both Firefox and Thunderbird are the default
 mail and browsing applications used by hystck.
-
-.. TODO pidgin??
 
 Afterwards, simply run **windows_installation.bat** with admin privileges. This will check if Python and the Visual C++
 Compiler for Python are installed and follow up by installing all necessary python modules by calling **pre_setup.py**.
@@ -128,13 +114,23 @@ is fully prepared. First, navigate into the hystck folder and install hystck:
 
     C:\Users\user\hystck\Desktop\hystck> python setup.py install
 
+
+Generally, this should be done by the executed pre_setup.py scripted.
+
+
 The final step requires you to manipulate the Windows Task Scheduler to run **startGuestAgent.bat**, which in turn
 will start the **guestAgent.py** script, both located in **guest_tools**. This script manages the communication between
-your host and guest instances.
+your host and guest instances. This is handled by the following line in the pre_setup.py script:
 
-.. TODO: tutorial taskschd.msc -> edit task -> actions -> start in parameter -> make sure path in bat is correct -> schedule task at login, highest privileges
+.. code-block:: python
 
-.. TODO automation: task scheduler
+    prepCmd = "schtasks /create /sc ONLOGON /tn hystck /tr %HOMEPATH%\Desktop\hystck\guest_tools\startGuestAgent.bat /f"
+    subprocess.call(prepCmd.split(), stdout=subprocess.PIPE)
+
+
+In case the command above is not executed or does not create the task as expected, please follow the instructions in the Windows manual instructions section
+below.
+
 
 Windows installation - manual
 #################################
@@ -170,8 +166,6 @@ mail and browsing applications used by hystck. Finally, you will need to install
 installed Python as recommended above, you will simply be able to use the **pip install** command to install the following
 packages:
 
-.. TODO pidgin??
-
 .. code-block:: console
 
     C:\Users\user\hystck\Desktop> pip install -U pywinauto==0.6.0
@@ -187,11 +181,43 @@ packages:
     C:\Users\user\hystck\Desktop> pip install -U mozprofile
     C:\Users\user\hystck\Desktop> pip install -U mozrunner
 
-.. TODO task scheduler for agent -> spice?? pidgin??
-
 Now you need to manipulate the Windows Task Scheduler to run **startGuestAgent.bat**, which in turn
 will start the **guestAgent.py** script, both located in **guest_tools**. This script manages the communication between
-your host and guest instances.
+your host and guest instances. The following screenshots will guide you through the process of creating the task.
+
+1. Start task scheduler.
+
+.. figure:: ../../figures/tasksched1.PNG
+    :alt: Task Scheduler step 1
+
+
+2. Select create task.
+
+.. figure:: ../../figures/tasksched2.PNG
+    :alt: Task Scheduler step 2
+
+
+3. Select a name for the task. As a precaution, tick the box to execute the task with highest privileges.
+
+.. figure:: ../../figures/tasksched3.PNG
+    :alt: Task Scheduler step 3
+
+
+4. Select the trigger tab, and add a new trigger (on log on, all users).
+
+.. figure:: ../../figures/tasksched4.PNG
+    :alt: Task Scheduler step 4
+
+
+5. Select the actions tab and add a new action by browsing to the hystck folder located on your desktop. Select the startGuestAgent.bat file.
+
+.. figure:: ../../figures/tasksched5.PNG
+    :alt: Task Scheduler step 5
+
+
+Alternatively, you can move a link of the startGuestAgent.bat script to the autostart folder located in **C:/Users/hystck/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup**.
+
+
 
 The only thing left to do to make this Windows guest template operational is to install hystck.
 
@@ -244,10 +270,6 @@ setting up your host machine.
 
 Once you are able to start the virtual machine and the OS has been installed and initialized, you should eject the installation medium.
 
-.. TODO skip login?
-
-.. TODO: pre setup does not install hystck?
-
 Ubuntu installation - automated
 ###################################
 
@@ -259,8 +281,6 @@ It can be found `here <https://github.com/dasec/hystck>`_.
 
 Next, you will want to install all applications used to generate traffic. Both Firefox and Thunderbird are the default
 mail and browsing applications used by hystck.
-
-.. Todo pidgin??
 
 After hystck has been downloaded and your traffic generating application have been installed, simply navigate into **install_tools** and run **linux_installation.sh** and choose the option
 for the guest installation.
@@ -302,8 +322,6 @@ It can be found `here <https://github.com/dasec/hystck>`_.
 Next, you will want to install all applications used to generate traffic. Both Firefox and Thunderbird are the default
 mail and browsing applications used by hystck.
 
-.. Todo pidgin??
-
 After hystck has been downloaded and your traffic generating application have been installed, you need to install a few
 packages and Python modules. First, install the Python and Python-Pip packages.
 
@@ -320,8 +338,6 @@ Make sure the default Python version is a variation of 2.7
 
 If this command returns a Python version higher than 2.7, refer to :ref:`hostinstall` for a guide on how to
 change the default Python version.
-
-.. TODO add section update alternatives to host installation
 
 Next, you will need to install the required Python modules. Simply use the **pip install -U** commands listed below.
 

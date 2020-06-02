@@ -13,7 +13,3 @@ Installation of Service VM
 
 
 
-Deprecated - DHCP server installation
-##########################################
-
-.. TODO install instructions
