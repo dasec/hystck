@@ -17,6 +17,8 @@ with the following command. A workaround is currently not accessible.
 
     $ sudo chmod 775 [template-name]
 
+.. TODO: SETFACL -Rdm OWNER=USER TO HYSTCK IN AUTOMATION ->  qemu.conf dynamic ownership 0, root root, systemctl start stop INSTEAD OF CHMOD; CHMOD as "workaround" in case of issues
+
 
 .. TODO: install vcc via pre setup and python via batch script -> install & dl msi packages via python like apt install?
 

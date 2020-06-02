@@ -212,7 +212,7 @@ the libvirtd group. After creating the group, we can add the hystck user to it.
     $ sudo usermod -a -G libvirt hystck
 
 Following the installation of all necessary packages, we need to create the virtual machine pools. This is were our
-guest components original and instanced images are stored. To do so navigate into **install_toold** and run the following four commands:
+guest components original and instanced images are stored. To do so navigate into **install_tools** and run the following four commands:
 
 .. code-block:: console
 
@@ -223,8 +223,17 @@ guest components original and instanced images are stored. To do so navigate int
 
 The path **/data/** may have to be created manually beforehand. After running the commands above, you might
 want to add a directory named **backing** into **/data/hystck-pool** - this is where the clones of our guest images
-are going to be stored. This can be achieved by either simply creating a folder called **backing** or running the same 4 commands
-but replacing **hystck-pool** with **backing** and **hystck-pool.xml** with **backing-pool.xml**. You can check your pools with the following commands:
+are going to be stored. This can be achieved by simply running the same 4 commands
+but replacing **hystck-pool** with **backing** and **hystck-pool.xml** with **backing-pool.xml**.
+
+.. code-block:: console
+
+    $ virsh pool-define backing-pool.xml
+    $ virsh pool-build backing
+    $ virsh pool-start hystck-pool
+    $ virsh pool-autostart hystck-pool
+
+You can check your pools with the following commands:
 
 .. code-block:: console
 
