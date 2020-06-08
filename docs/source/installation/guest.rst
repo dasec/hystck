@@ -10,8 +10,9 @@ component. While a similar approach to the host installation can be taken if Ubu
 an installation of a Windows 10 guest requires some additional work. Similar to the host installation, it is recommended
 to check :ref:`config` for any needed adjustments **before** starting one of the automated install scripts.
 
-**NOTE**: No matter what guest installation methods you choose, as of right now you will need to change the image's permissions
-with the following command. A workaround is currently not accessible.
+**NOTE**: No matter what guest installation methods you choose, you might need to change the image's permissions
+with the following command. This is a workaround to a common issue concerning the template's rights management. Generally,
+this should not be necessary if the steps layed out in :ref:`hostinstall` are followed. .. TODO ADD STEPS in hostinstall
 
 .. code-block:: console
 

@@ -11,6 +11,9 @@ scripts and make adjustments where necessary. If you are using a different Ubunt
 
 .. Regardless of what method you choose, you first need to install python.
 
+.. TODO: SETFACL -Rdm OWNER=USER TO HYSTCK IN AUTOMATION ->  qemu.conf dynamic ownership 0, root root, systemctl start stop INSTEAD OF CHMOD; CHMOD as "workaround" in case of issues
+
+
 Installation Host -- scripted
 ####################################
 
