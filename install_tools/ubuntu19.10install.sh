@@ -1,4 +1,4 @@
-virt-install --name linux-template \
+virt-install --connect=qemu:///session --name linux-template \
 --ram 4096 \
 --vcpus sockets=1,cores=2,threads=1 \
 --disk pool=hystck-pool,bus=sata,size=40,format=qcow2 \
@@ -8,3 +8,6 @@ virt-install --name linux-template \
 --graphics spice,listen=0.0.0.0 \
 --noautoconsole \
 -v
+
+
+chown $SUDO_USER /data/hystck-pool/linux-template.qcow2

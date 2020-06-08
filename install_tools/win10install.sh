@@ -7,4 +7,6 @@ virt-install --name windows-template \
 --network network=private \
 --graphics spice,listen=0.0.0.0 \
 --noautoconsole \
--v
+-v \
+
+chown $SUDO_USER /data/hystck-pool/windows-template.qcow2
