@@ -6,13 +6,16 @@ Host Installation
 
 The installation of the host component of hystck can be done automatically using **pre_setup.py** and the corresponding
 **config.json** located in the install_tools folder. Please check :ref:`config` before you start any of the installation
-scripts and make adjustments where necessary. If you are using a different Ubuntu distribution than recommended in
+scripts and make adjustments where necessary. Please also adjust **hystck-pool.xml** and **backing-pool.xml** if necessary. If you are using a different Ubuntu distribution than recommended in
 :ref:`installindex`, you might need to tweak either file or run a completely manual installation of the host component.
 
 .. Regardless of what method you choose, you first need to install python.
 
-.. TODO: SETFACL -Rdm OWNER=USER TO HYSTCK IN AUTOMATION ->  qemu.conf dynamic ownership 0, root root, systemctl start stop INSTEAD OF CHMOD; CHMOD as "workaround" in case of issues
-
+.. TODO: SETFACL -Rdm OWNER=USER TO HYSTCK IN AUTOMATION ->  qemu.conf dynamic ownership 0, root root, systemctl start stop INSTEAD OF CHMOD; CHMOD as "workaround" in case of issues X
+.. TODO BACKING POOL INSTALL SCRIPTS PATHS & NAMES (VIRT INSTALL) X
+.. TODO QEMU CONF CHOWN  RIGHT MANAGEMENT SECTION GUEST     X
+.. TODO INSTALLBAT ANPASSEN + TESTEN      X
+.. TODO WIKI GITLAB ÜBERNEHMEN
 
 Installation Host -- scripted
 ####################################
@@ -20,7 +23,7 @@ Installation Host -- scripted
 The partially automated installation requires just a few steps to set up the host components of hystck.
 
 First, make sure the name of the user and your chosen paths for the virtual machine data, the location of your cloned hystck
-repository and the path to your tcpdump binary you want to install hystck on is correctly configured in **config.json** (:ref.
+repository and the path to your tcpdump binary you want to install hystck on is correctly configured in **config.json**
 This is important, since the setup script later adds this user to the libvirtd-group,
 which is required to create clones of the virtual guest machines.
 
@@ -279,6 +282,44 @@ Lastly, hystck needs to be installed. Navigate into the folder and then run:
     $ python setup.py install --user
 
 
+
+
+Template Rights Management
+###################################
+
+After installing the host side of hystck, you need alter the **/etc/libvirt/qemu.conf**. First, you need to stop the libvirt service:
+
+.. code-block:: console
+
+    $ systemctl stop libvirtd.service
+
+Then, find the following section in the config file mentioned above and change the parameters **user**, **group** and **dynamic_ownership**
+to look like this:
+
+.. code-block:: console
+
+    # Some examples of valid values are:
+    #
+    #       user = "qemu"   # A user named "qemu"
+    #       user = "+0"     # Super user (uid=0)
+    #       user = "100"    # A user named "100" or a user with uid=100
+    #
+    user = "root"
+
+    # The group for QEMU processes run by the system instance. It can be
+    # specified in a similar way to user.
+    group = "root"
+
+    # Whether libvirt should dynamically change file ownership
+    # to match the configured user/group above. Defaults to 1.
+    # Set to 0 to disable file ownership changes.
+    dynamic_ownership = 0
+
+The last step is reactivating the libvirt service.
+
+.. code-block:: console
+
+    $ systemctl start libvirtd.service
 
 
 

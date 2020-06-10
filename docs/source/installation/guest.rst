@@ -39,7 +39,7 @@ install script found in the **install_tools** folder
 
 .. code-block:: console
 
-       $ ./win10install.sh
+       $ sudo ./win10install.sh
 
 or simply copying the command seen below:
 
@@ -55,6 +55,8 @@ or simply copying the command seen below:
         --graphics spice,listen=0.0.0.0 \
         --noautoconsole \
         -v
+
+      $ sudo chown [user] [path-to-pool]windows-template.qcow2
 
 
 Either method would require you to adapt the **--cdrom** parameter with the correct path and name of your installation
@@ -72,17 +74,10 @@ While most of the installation of the Windows guest can be automated, a few step
 First and foremost, hystck has to be downloaded and moved or copied to your desktop.
 It can be found `here <https://github.com/dasec/hystck>`_.
 
-Next, you will need to download and install a few prerequisites before being able
-to install python packages and hystck itself.
+Next, you simply have to run **install.bat** with admin privileges. It is located in the **install_tools** folder. This will install first call two .msi files
+located in the same folder.
 
-The first is Python 2.7 and can be `downloaded here <https://www.python.org/ftp/python/2.7.17/python-2.7.17.amd64.msi>`_.
-During installation, make sure Python is added to PATH and pip is installed alongside Python.
-
-.. image:: ../../figures/pythonpathandpip.PNG
-
-These options should be turned on by default. If needed, both options can be performed after the actual installation.
-
-A useful, short guide on how to add Python to your PATH can be found `at this link <https://geek-university.com/python/add-python-to-the-windows-path/>`_.
+The first is Python 2.7 and can be `downloaded here <https://www.python.org/ftp/python/2.7.17/python-2.7.17.amd64.msi>`_ in case it is missing.
 
 If you need to install pip after the fact, download the `get-pip.py script here <https://bootstrap.pypa.io/get-pip.py>`_
 and run the following command in your command line:
@@ -92,26 +87,11 @@ and run the following command in your command line:
     C:\Users\user\hystck\Downloads> python get-pip.py
 
 
-Furthermore, you will need to install the Visual C++ Compiler for Python 2.7. The compiler can be downloaded directly
+The second .msi ist the Visual C++ Compiler for Python 2.7. The compiler can be downloaded directly
 from
 `Microsoft's web presence <https://download.microsoft.com/download/7/9/6/796EF2E4-801B-4FC4-AB28-B59FBF6D907B/VCForPython27.msi>`_.
 
-These two steps can be included into the automated installation process by copying the respective .msi files of the latest Python 2.7 release (2.7.16) and
-VCC for Python into the **install_tools** folder (in case they are not present already), adjusting the names of the files either themselves or inside
-**install.bat**, then running **install.bat** as an administrator.
-
-Next, you will want to install all applications used to generate traffic. Both Firefox and Thunderbird are the default
-mail and browsing applications used by hystck.
-
-Afterwards, simply run **windows_installation.bat** with admin privileges. This will check if Python and the Visual C++
-Compiler for Python are installed and follow up by installing all necessary python modules by calling **pre_setup.py**.
-
-.. code-block:: console
-
-    C:\Users\user\hystck\Desktop\hystck\install_tools> windows_installation.bat
-
-After all of the presetup is done, you have two more tasks to fulfill until the Windows guest template
-is fully prepared. First, navigate into the hystck folder and install hystck:
+After all of the presetup is done, hystck is installed using the following command:
 
 .. code-block:: console
 
@@ -121,7 +101,7 @@ is fully prepared. First, navigate into the hystck folder and install hystck:
 Generally, this should be done by the executed pre_setup.py scripted.
 
 
-The final step requires you to manipulate the Windows Task Scheduler to run **startGuestAgent.bat**, which in turn
+The final step manipulates the Windows Task Scheduler to run **startGuestAgent.bat**, which in turn
 will start the **guestAgent.py** script, both located in **guest_tools**. This script manages the communication between
 your host and guest instances. This is handled by the following line in the pre_setup.py script:
 
@@ -133,6 +113,9 @@ your host and guest instances. This is handled by the following line in the pre_
 
 In case the command above is not executed or does not create the task as expected, please follow the instructions in the Windows manual instructions section
 below.
+
+Next, you will want to install all applications used to generate traffic. Both Firefox and Thunderbird are the default
+mail and browsing applications used by hystck.
 
 
 Windows installation - manual
@@ -244,7 +227,7 @@ install script found in the **install_tools** folder
 
 .. code-block:: console
 
-       $ ./ubuntu19.10install.sh
+       $ sudo ./ubuntu19.10install.sh
 
 or simply copying the command seen below:
 
@@ -260,6 +243,9 @@ or simply copying the command seen below:
         --graphics spice,listen=0.0.0.0 \
         --noautoconsole \
         -v
+
+      $ sudo chown [user] [path-to-pool]linux-template.qcow2
+
 
 
 Either method would require you to adapt the **--cdrom** parameter with the correct path and name of your installation
