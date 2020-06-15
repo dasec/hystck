@@ -29,6 +29,3 @@ INET_LOCAL_ADDR = "192.168.102.0"
 INET_LOCAL_MASK = "255.255.255.0"
 
 
-def dummy(self):
-
-	exit(0)
