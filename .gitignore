@@ -1,5 +1,5 @@
 # doc build folder
-docs/src/_build/**
+#docs/src/_build/**
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -12,7 +12,7 @@ __pycache__/
 # Distribution / packaging
 .Python
 env/
-build/
+#build/
 develop-eggs/
 dist/
 downloads/
