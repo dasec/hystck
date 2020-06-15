@@ -9,6 +9,20 @@ using only the most necessary of resources is preferred. Since this VM will most
 using SSH.
 
 
+.. code-block:: console
+
+    $ virt-install
+    --name service_vm
+    --ram 512
+    --disk path=/var/lib/libvirt/images/service_vm.qcow2,bus=virtio,size=10,format=qcow2
+    --cdrom <iso-file-of-linux-distribution>
+    --network bridge=br0
+    --network bridge=br1
+    --graphics vnc,listen=0.0.0.0
+    --noautoconsole -v
+
+
+
 
 
 Print Service
@@ -79,7 +93,142 @@ Make sure to adjust any of the above parameters to your preferences.
 Mail Server
 ................
 
-Instructions will follow here shortly.
+First we will start with the SMTP server which is primarily responsible for forwarding and storing of mails.
+
+
+.. code-block:: console
+
+    $ sudo apt-get update
+    $ sudo apt-get install install postfix
+
+Next, edit the Postfix config files.
+Edit /etc/postfix/main.cf:
+
+.. code-block:: console
+
+    $ myhostname = localhost
+    $
+    $ mydomain = hystck.local
+    $
+    $ myorigin = $mydomain
+    $
+    $ inet_interfaces = all
+    $
+    $ inet_protocols = all
+    $
+    $ mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
+    $
+    $ mynetworks = 192.168.1.0/24, 127.0.0.0/8
+    $
+    $ home_mailbox = Maildir/
+
+Restart postfix to apply the changes:
+
+.. code-block:: console
+
+    $ systemctl restart postfix
+
+Now, create a test user called "hystck":
+
+.. code-block:: console
+
+    $ /usr/sbin/adduser hystck
+    $ passwd <type_a_password_of_your_choice>
+
+Next we will install the IMAP/POP3 server:
+
+.. code-block:: console
+
+    $ sudo apt-get install dovecot
+
+Similarly to the SMTP installation, we will need to edit the dovecot config files.
+
+First /etc/dovecot/dovecot.conf:
+
+.. code-block:: console
+
+    $ protocols = imap pop3 lmtp
+
+Next, edit /etc/dovecot/conf.d/10-mail.conf:
+
+.. code-block:: console
+
+    $ mail_location = maildir:~/Maildir
+
+Finally, add the following lines to the unix_listener auth-userdb bracket in /etc/dovecot/conf.d/10-master.conf:
+
+.. code-block:: console
+
+    $ user = postfix
+    $ group = postfix
+
+Restart the service.
+
+.. code-block:: console
+
+    $ systemctl restart postfix
+
+
+
+You can also set up a NFS-server.
+
+Host side installation:
+
+.. code-block:: console
+
+    $ sudo apt-get install nfs-kernel-server
+    $ sudo systemctl start nfs-server
+
+Then add the following line to /etc/exports/:
+
+.. code-block:: console
+
+    $ <path_to_your_nfs_directory> *(rw,sync,no_root_squash,subtree_check,nohide)
+
+Apply changes and restart service:
+
+.. code-block:: console
+
+    $ sudo exportfs -a
+    $ sudo systemctl restart nfs-server
+
+
+Client side installation:
+
+Mount the directory on Windows client:
+
+.. code-block:: console
+
+    C:\ mount -o nolock <ip_host_vm>:/<mnt_path_host_vm> z:
+
+
+(Optional) Enable write permission on windows client:
+
+- Open "regedit".
+- Browse to "HKEY_LOCAL_MACHINESOFTWAREMicrosoftClientForNFSCurrentVersionDefault".
+- Create a new "New DWORD (32-bit) Value" inside the "Default" folder named "AnonymousUid" and assign the value 0.
+- Create a new "New DWORD (32-bit) Value" inside the "Default" folder named "AnonymousGid" and assign the value 0.
+- Reboot the machine.
+
+Auto startup on windows:
+
+- Press Windows+R, then type "shell:startup"
+- Create a .bat file containing following commands:
+
+.. code-block:: console
+
+    @echo off
+    net use z:  \\<ip_host_vm>\<mnt_path_host_vm>
+
+
+
+Mount directory on Linux client:
+
+.. code-block:: console
+
+    $ sudo mount -t nfs4 -o proto=tcp,port=2049 <ip_host_vm>:/<mnt_path_host_vm> <mnt_path_guest_machine>
+
+
 
 
 
