@@ -29,6 +29,6 @@ The **ippserver** is installed, configured and run using **Docker**.
 SMB Network Drive
 ++++++++++++++++++++
 
-The Service VM also provides an **SMB** service. SMB is a protocol generally used to share access of network drives or other utilities.
+The Service VM also provides an **SMB** service. **SMB** is a protocol generally used to share access of network drives or other utilities.
 Similarly to the the mail communication, the **SMB** communication remains unencrypted by default to maximize the amount of analyzable data.
 
