@@ -51,6 +51,36 @@ After completing the steps above you have to simple start the service.
     $ docker exec -it ippserver bash -c "ippserver -v -p 631 -C /config"
 
 
+SMB Service
+...............
+
+To install the SMB server, two steps need to be followed:
+
+1. Install **samba** packet.
+
+.. code-block:: console
+
+    $ apt-get install samba
+
+2. Create a **samba** user.
+
+.. code-block:: console
+
+    comment = samba
+    path = /home/samba_share
+    read only = no
+    browsable = yes
+
+Make sure to adjust any of the above parameters to your preferences.
+
+
+
+
+Mail Server
+................
+
+Instructions will follow here shortly.
+
 
 
 .. TODO install instruction service VM including DHCP server
