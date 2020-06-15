@@ -11,6 +11,12 @@ The hystck-framework has to do some management stuff and therefor uses this netw
 
 The public network interface will only be used for the "real" traffic and has to have a internet-connection. This could also be done by a second bridge with an attached interface eth1. The interface eth1 is internet-ready.
 
+Possibly you need to remove the default network that virsh installs:
+
+::
+
+$ virsh net-destroy default
+$ virsh net-undefine default
 
 Use the following command from the hystck base directory to create the network interface from the template:
 
@@ -56,39 +62,12 @@ $ virsh net-update NETWORK_NAME
 DHCP
 ====
 
-Here comes a quick introduction to create a linux based dhcp server using dnsmasq, which will be handy if you have no existing DHCP-Server or keeping things separatly.
+Having a DHCP-Server in place can be handy if you have no existing DHCP-Server or for keeping things separatly.
+The DHCP-Server is part of the Service-VM and thus is documented in the according section.
 
-1. Create DHCP-VM:
-::
-	virt-install
-	--name ubuntu_dhcp
-	--ram 512
-	--disk path=/var/lib/libvirt/images/ubuntu_dhcp.qcow2,bus=virtio,size=10,format=qcow2
-	--cdrom ~/Downloads/ubuntu-14.04.3-desktop-amd64.iso
-	--network bridge=br0
-	--network bridge=br1
-	--graphics vnc,listen=0.0.0.0
-	--noautoconsole -v
 
-2. Configure dnsmasq
 
-Edit the configuration file accordingly:
 
-::
-	$ cat /etc/dnsmasq.conf
-
-	...
-	interface=eth0
-	interface=eth1
-	...
-	dhcp-range=eth0,192.168.2.10-192.168.2.254,12h
-	dhcp-range=eth1,192.168.3.10-192.168.3.254,12h
-	...
-
-	$ sudo ifconfig eth0 192.168.2.2
-	$ sudo ifconfig eth1 192.168.3.2
-
-	$ sudo service dnsmasq restart
 
 Sample Network Layout
 =====================

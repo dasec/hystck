@@ -40,8 +40,23 @@ Run the ``pre_setup.py`` as admin with the following command to install the syst
 
 .. _Download here: http://aka.ms/vcpython27
 
+Configure KVM
+=============
+
+There are several permission related settings to adjust in order to be able to run hystck without root permissions.
+
+For all created/cloned VMs you should verify that the owner of the files is "libvirt-qemu" and the usergroup is "kvm".
+
+Furthermore you should adjust the permissions of qemu by editing /etc/qemu.conf.
+Change the following parameters.
+
+::
+
+$ User = "libvirt-qemu"
+$ Group = "kvm"
+
 Installing Tcpdump
-=============================
+==================
 
 In order to dump the network activity performed by the application during
 execution, you'll need a network sniffer properly configured to capture
@@ -68,30 +83,8 @@ Or otherwise (**not recommended**) do::
 
 .. _tcpdump: http://www.tcpdump.org
 
+Further the folder where tcpdump places the .pcap files should be owned by the user who is running hystck.
 
-Installing NFS-Server (optional)
-================================
-Hystck does not depend on specific implementation of a shared filesystem, but it will assume all template image files being available on all server, which can be easily achived by a shared filesystem.
-::
-
-    $ sudo apt-get install nfs-kernel-server
-    $ cat /etc/exports
-    ...
-    /export       141.100.55.0/24(rw,sync,no_root_squash,subtree_check)
-    /export/hystck 141.100.55.0/24(rw,sync,no_root_squash,subtree_check,nohide)
-    ...
-
-    $ sudo mount --bind ~/hystck_data /export/hystck
-
-Where ~/hystck_data is the original storage pool for image templates.
-
-
-On every other system, where you would like to mount the NFS, you have to:
-::
-
-    $ sudo mount -t nfs4 -o proto=tcp,port=2049 141.100.55.74:/ /mnt/hystck
-
-Where 141.100.55.74 has to be replaced the by NFS-Server-IP. See https://help.ubuntu.com/community/SettingUpNFSHowTo for detailed instructions.
 
 
 Installing Spice (optional)

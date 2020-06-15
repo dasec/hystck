@@ -27,8 +27,8 @@ or other application using the libvirt API.
   <devices>
     <emulator>/usr/bin/kvm</emulator>
     <disk type='file' device='disk'>
-      <driver name='qemu' type='qcow2'/>
-      <source file='/var/lib/libvirt/images/windows-template.qcow2'/>
+      <driver name='qemu' type='img'/>
+      <source file='/data/images/win10.img'/>
       <target dev='hda' bus='ide'/>
       <address type='drive' controller='0' bus='0' unit='0'/>
     </disk>

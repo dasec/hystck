@@ -152,8 +152,7 @@ def gen_common():
 
 
 def gen_imap_account(account_number, server_number, smtp_number, imap_server, smtp_server, email_address, username,
-                     full_name="John Doe",
-                     smtp_description="Google Mail", socket_type=3, auth_method=3, socket_type_smtp=3, auth_method_smtp=3):
+                     full_name="John Doe", socket_type=3, socket_type_smtp=2, auth_method_smtp=3):
     """ Generates entries for an imap account.
 
     :param account_number: refers to the id section
@@ -167,7 +166,6 @@ def gen_imap_account(account_number, server_number, smtp_number, imap_server, sm
     :param smtp_description: description for the smtp server
     :param socket_type: 0 No SSL, 1 StartTLS, 2 SSL/TLS
     :param socket_type_smtp: same as socket_type
-    :param auth_method: corresponds to the password exchange method
     :param auth_method_smtp: corresponds to the password exchange method for smtp
     :return: dictionary containing the config
     """
@@ -222,7 +220,7 @@ def gen_imap_account(account_number, server_number, smtp_number, imap_server, sm
         "mail.identity.id" + str(no) + ".tmpl_folder_picker_mode": "0",
         "mail.identity.id" + str(no) + ".useremail": email,
         "mail.identity.id" + str(no) + ".valid": True,
-        "mail.server.server" + str(serverno) + ".authMethod": auth_method,
+        # "mail.server.server" + str(serverno) + ".authMethod": auth_method,
         "mail.server.server" + str(serverno) + ".check_new_mail": True,
         "mail.server.server" + str(serverno) + ".directory": tb_imap_mail_server_folder,
         # probably not needed and will be auto generated
@@ -237,24 +235,26 @@ def gen_imap_account(account_number, server_number, smtp_number, imap_server, sm
         "mail.server.server" + str(serverno) + ".type": "imap",
         "mail.server.server" + str(serverno) + ".userName": username,
         "mail.smtpserver.smtp" + str(smtpno) + ".authMethod": auth_method_smtp,
-        "mail.smtpserver.smtp" + str(smtpno) + ".description": smtp_description,
         "mail.smtpserver.smtp" + str(smtpno) + ".hostname": smtp_server,
         #"mail.smtpserver.smtp" + str(smtpno) + ".port": 465,
         "mail.smtpserver.smtp" + str(smtpno) + ".try_ssl": socket_type_smtp,
         "mail.smtpserver.smtp" + str(smtpno) + ".username": username,
         "mail.smtpservers": "smtp" + str(smtpno),
-        # "mail.winsearch.firstRunDone": True,
+        "mail.shell.checkDefaultClient": False,
+        "mail.winsearch.firstRunDone": True,
+        "mail.startup.enabledMailCheckOnce": True,
+        "mail.warn_on_send_accel_key": False
         # "mail.shell.checkDefaultClient": False,
     }
     if socket_type == 0:
         account["mail.server.server" + str(serverno) + ".port"] = 143
-        account["mail.smtpserver.smtp" + str(smtpno) + ".port"] = 587
+        account["mail.smtpserver.smtp" + str(smtpno) + ".port"] = 25
     elif socket_type == 2:
         account["mail.server.server" + str(serverno) + ".port"] = 143
         account["mail.smtpserver.smtp" + str(smtpno) + ".port"] = 587
     elif socket_type == 3:
         account["mail.server.server" + str(serverno) + ".port"] = 993
-        account["mail.smtpserver.smtp" + str(smtpno) + ".port"] = 465
+        account["mail.smtpserver.smtp" + str(smtpno) + ".port"] = 587
     return account
 
 

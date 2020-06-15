@@ -7,7 +7,7 @@ import platform
 pip_requ_file = "PIP_requirements.txt"
 packet_requ_file = "packet_requirements.txt"
 
-#requ = "."
+requ = "."
 #requ = "Y:\Dokumente\git\hystck"            # just for development stuff
 
 # is current script user an admin / root
@@ -35,21 +35,20 @@ def main():
     # stop script if you are no admin
     if not isAdmin():
         logger.critical("You are not an admin. Run the installation as admin.")
-        sys.exit(1)
+	sys.exit(1)
         
     # Install required packages
-    #aptCmd = "apt-get --yes install {}"
-    #packetDepFile = os.path.join(requ, packet_requ_file)
-    #with open(packetDepFile, "r") as file:
-    #    for line in file:
-    #        prepCmd = aptCmd.format(line.strip())
-    #        logger.debug("Running: {}".format(prepCmd))
-    #        os.system(prepCmd)
+    aptCmd = "apt-get --yes install {}"
+    packetDepFile = os.path.join(requ, packet_requ_file)
+    with open(packetDepFile, "r") as file:
+        for line in file:
+            prepCmd = aptCmd.format(line.strip())
+            logger.debug("Running: {}".format(prepCmd))
+            os.system(prepCmd)
     
     # Install pip dependencies
     pipCmd = "pip install -U {}"
-    #pipDepFile = os.path.join(requ, pip_requ_file)
-    pipDepFile = os.path.join(sys.path[0], pip_requ_file)
+    pipDepFile = os.path.join(requ, pip_requ_file)
     with open(pipDepFile, "r") as file:
         for line in file:
             prepCmd = pipCmd.format(line.strip())
