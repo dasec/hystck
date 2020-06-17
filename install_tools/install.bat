@@ -5,6 +5,7 @@ pushd %~dp0
 net session >nul 2>&1
 if %errorLevel% == 0 (
 	echo "Installation begins:"
+	@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command " [System.Net.ServicePointManager]::SecurityProtocol = 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
 	
 	echo "Installing Python 2.7"
 	start /wait msiexec.exe /i %~dp0python.msi /passive /L*V "C:\msilog.log" ADDLOCAL=ALL ALLUSERS=1
@@ -18,9 +19,9 @@ if %errorLevel% == 0 (
 	echo "run prereq hystck script"
 	python %~dp0pre_setup.py
 
-	echo installing hystck sources.
-        python %~dp0pre_setup.py
-        echo Installation finished.
+	REM echo installing hystck sources.
+    REM    python %~dp0pre_setup.py
+    REM   echo Installation finished.
 	
 	echo "Installation finished"
 	pause > nul

@@ -66,45 +66,54 @@ While most of the installation of the Windows guest can be automated, a few step
 First and foremost, hystck has to be downloaded and moved or copied to your desktop.
 It can be found `here <https://github.com/dasec/hystck>`_.
 
-Next, you simply have to run **install.bat** with admin privileges. It is located in the **install_tools** folder. This will install first call two .msi files
+Next, you simply have to run **install.bat** with admin privileges. It is located in the **install_tools** folder. This will install two .msi files
 located in the same folder.
 
-The first is Python 2.7 and can be `downloaded here <https://www.python.org/ftp/python/2.7.17/python-2.7.17.amd64.msi>`_ in case it is missing.
+.. TODO RUNS PRESETUP SCRIPT
+.. TODO install chocolatey to refresh env variables
 
-If you need to install pip after the fact, download the `get-pip.py script here <https://bootstrap.pypa.io/get-pip.py>`_
-and run the following command in your command line:
-
-.. code-block:: console
-
-    C:\Users\user\hystck\Downloads> python get-pip.py
+The following steps are included in the **install.bat** and are only mentioned for transparency. ::
 
 
-The second .msi ist the Visual C++ Compiler for Python 2.7. The compiler can be downloaded directly
-from
-`Microsoft's web presence <https://download.microsoft.com/download/7/9/6/796EF2E4-801B-4FC4-AB28-B59FBF6D907B/VCForPython27.msi>`_.
+    The first is Python 2.7 and can be `downloaded here <https://www.python.org/ftp/python/2.7.17/python-2.7.17.amd64.msi>`_ in case it is missing.
 
-After all of the presetup is done, hystck is installed using the following command:
+    If you need to install pip in case the automatic installation skips it, download the `get-pip.py script here <https://bootstrap.pypa.io/get-pip.py>`_
+    and run the following command in your command line:
 
-.. code-block:: console
+    .. code-block:: console
 
-    C:\Users\user\hystck\Desktop\hystck> python setup.py install
-
-
-Generally, this should be done by the executed pre_setup.py scripted.
+        C:\Users\user\hystck\Downloads> python get-pip.py
 
 
-The final step manipulates the Windows Task Scheduler to run **startGuestAgent.bat**, which in turn
-will start the **guestAgent.py** script, both located in **guest_tools**. This script manages the communication between
-your host and guest instances. This is handled by the following line in the pre_setup.py script:
-
-.. code-block:: python
-
-    prepCmd = "schtasks /create /sc ONLOGON /tn hystck /tr %HOMEPATH%\Desktop\hystck\guest_tools\startGuestAgent.bat /f"
-    subprocess.call(prepCmd.split(), stdout=subprocess.PIPE)
+    The second msi file ist the Visual C++ Compiler for Python 2.7. The compiler can be downloaded directly
+    from
+    `Microsoft's web presence <https://download.microsoft.com/download/7/9/6/796EF2E4-801B-4FC4-AB28-B59FBF6D907B/VCForPython27.msi>`_.
 
 
-In case the command above is not executed or does not create the task as expected, please follow the instructions in the Windows manual instructions section
-below.
+
+
+    After all of the presetup is done, hystck is installed using the following command:
+
+    .. code-block:: console
+
+        C:\Users\user\hystck\Desktop\hystck> python setup.py install
+
+
+    Generally, this should be done by the executed pre_setup.py script.
+
+
+    The final step manipulates the Windows Task Scheduler to run **startGuestAgent.bat**, which in turn
+    will start the **guestAgent.py** script, both located in **guest_tools**. This script manages the communication between
+    your host and guest instances. This is handled by the following line in the pre_setup.py script:
+
+    .. code-block:: python
+
+        prepCmd = "schtasks /create /sc ONLOGON /tn hystck /tr %HOMEPATH%\Desktop\hystck\guest_tools\startGuestAgent.bat /f"
+        subprocess.call(prepCmd.split(), stdout=subprocess.PIPE)
+
+
+    In case the command above is not executed or does not create the task as expected, please follow the instructions in the Windows manual instructions section
+    below.
 
 Next, you will want to install all applications used to generate traffic. Both Firefox and Thunderbird are the default
 mail and browsing applications used by hystck.
