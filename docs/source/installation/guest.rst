@@ -72,7 +72,7 @@ located in the same folder.
 .. TODO RUNS PRESETUP SCRIPT
 .. TODO install chocolatey to refresh env variables
 
-The following steps are included in the **install.bat** and are only mentioned for transparency. ::
+The following steps are included in the **install.bat** and are only mentioned for transparency.
 
 
     The first is Python 2.7 and can be `downloaded here <https://www.python.org/ftp/python/2.7.17/python-2.7.17.amd64.msi>`_ in case it is missing.

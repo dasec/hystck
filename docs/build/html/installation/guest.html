@@ -81,47 +81,31 @@ It can be found <a class="reference external" href="https://github.com/dasec/hys
 <p>Next, you simply have to run <strong>install.bat</strong> with admin privileges. It is located in the <strong>install_tools</strong> folder. This will install two .msi files
 located in the same folder.</p>
 <p>The following steps are included in the <strong>install.bat</strong> and are only mentioned for transparency.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>The first is Python 2.7 and can be `downloaded here &lt;https://www.python.org/ftp/python/2.7.17/python-2.7.17.amd64.msi&gt;`_ in case it is missing.
-
-If you need to install pip in case the automatic installation skips it, download the `get-pip.py script here &lt;https://bootstrap.pypa.io/get-pip.py&gt;`_
-and run the following command in your command line:
-
-.. code-block:: console
-
-    C:\Users\user\hystck\Downloads&gt; python get-pip.py
-
-
-The second msi file ist the Visual C++ Compiler for Python 2.7. The compiler can be downloaded directly
-from
-`Microsoft&#39;s web presence &lt;https://download.microsoft.com/download/7/9/6/796EF2E4-801B-4FC4-AB28-B59FBF6D907B/VCForPython27.msi&gt;`_.
-
-
-
-
-After all of the presetup is done, hystck is installed using the following command:
-
-.. code-block:: console
-
-    C:\Users\user\hystck\Desktop\hystck&gt; python setup.py install
-
-
-Generally, this should be done by the executed pre_setup.py script.
-
-
-The final step manipulates the Windows Task Scheduler to run **startGuestAgent.bat**, which in turn
-will start the **guestAgent.py** script, both located in **guest_tools**. This script manages the communication between
-your host and guest instances. This is handled by the following line in the pre_setup.py script:
-
-.. code-block:: python
-
-    prepCmd = &quot;schtasks /create /sc ONLOGON /tn hystck /tr %HOMEPATH%\Desktop\hystck\guest_tools\startGuestAgent.bat /f&quot;
-    subprocess.call(prepCmd.split(), stdout=subprocess.PIPE)
-
-
-In case the command above is not executed or does not create the task as expected, please follow the instructions in the Windows manual instructions section
-below.
+<blockquote>
+<div><p>The first is Python 2.7 and can be <a class="reference external" href="https://www.python.org/ftp/python/2.7.17/python-2.7.17.amd64.msi">downloaded here</a> in case it is missing.</p>
+<p>If you need to install pip in case the automatic installation skips it, download the <a class="reference external" href="https://bootstrap.pypa.io/get-pip.py">get-pip.py script here</a>
+and run the following command in your command line:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">C:\Users\user\hystck\Downloads&gt; python get-pip.py</span>
 </pre></div>
 </div>
+<p>The second msi file ist the Visual C++ Compiler for Python 2.7. The compiler can be downloaded directly
+from
+<a class="reference external" href="https://download.microsoft.com/download/7/9/6/796EF2E4-801B-4FC4-AB28-B59FBF6D907B/VCForPython27.msi">Microsoft’s web presence</a>.</p>
+<p>After all of the presetup is done, hystck is installed using the following command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">C:\Users\user\hystck\Desktop\hystck&gt; python setup.py install</span>
+</pre></div>
+</div>
+<p>Generally, this should be done by the executed pre_setup.py script.</p>
+<p>The final step manipulates the Windows Task Scheduler to run <strong>startGuestAgent.bat</strong>, which in turn
+will start the <strong>guestAgent.py</strong> script, both located in <strong>guest_tools</strong>. This script manages the communication between
+your host and guest instances. This is handled by the following line in the pre_setup.py script:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">prepCmd</span> <span class="o">=</span> <span class="s2">&quot;schtasks /create /sc ONLOGON /tn hystck /tr %HOMEPATH%\Desktop\hystck\guest_tools\startGuestAgent.bat /f&quot;</span>
+<span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">prepCmd</span><span class="o">.</span><span class="n">split</span><span class="p">(),</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In case the command above is not executed or does not create the task as expected, please follow the instructions in the Windows manual instructions section
+below.</p>
+</div></blockquote>
 <p>Next, you will want to install all applications used to generate traffic. Both Firefox and Thunderbird are the default
 mail and browsing applications used by hystck.</p>
 </div>
