@@ -41,12 +41,6 @@ both automatically via a set of scripts or manually. A major difference in the i
 component. While a similar approach to the host installation can be taken if Ubuntu is chosen as a guest platform,
 an installation of a Windows 10 guest requires some additional work. Similar to the host installation, it is recommended
 to check <a class="reference internal" href="config.html#config"><span class="std std-ref">Configuration of installation options</span></a> for any needed adjustments <strong>before</strong> starting one of the automated install scripts.</p>
-<p><strong>NOTE</strong>: No matter what guest installation methods you choose, you might need to change the image’s permissions
-with the following command. This is a workaround to a common issue concerning the template’s rights management. Generally,
-this should not be necessary if the steps layed out in <a class="reference internal" href="host.html#hostinstall"><span class="std std-ref">Host Installation</span></a> are followed. .. TODO ADD STEPS in hostinstall</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> sudo chmod <span class="m">775</span> <span class="o">[</span>template-name<span class="o">]</span>
-</pre></div>
-</div>
 <div class="section" id="windows-10-guest">
 <h2>Windows 10 Guest<a class="headerlink" href="#windows-10-guest" title="Permalink to this headline">¶</a></h2>
 <p>The first step in creating your virtual Windows 10 guest is creating the virtual machine. To do this, you will need to
