@@ -17,5 +17,6 @@ Contents
     introduction/index
     installation/index
     usage/index
+    generator/index
     indepth/index
     autodoc/index

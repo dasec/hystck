@@ -12,3 +12,4 @@ reference system for the commands examples.
     requirements
     installation
     network
+    service_vm
