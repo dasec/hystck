@@ -67,6 +67,8 @@
     <span class="kn">from</span> <span class="nn">hystck.application.application</span> <span class="k">import</span> <span class="n">ApplicationGuestSide</span>
     <span class="kn">from</span> <span class="nn">hystck.application.application</span> <span class="k">import</span> <span class="n">ApplicationGuestSideCommands</span>
     <span class="kn">from</span> <span class="nn">hystck.utility.line</span> <span class="k">import</span> <span class="n">lineno</span>
+    <span class="kn">from</span> <span class="nn">hystck.utility.io</span> <span class="k">import</span> <span class="n">parse_attachment_string</span>
+    <span class="kn">from</span> <span class="nn">hystck.utility.io</span> <span class="k">import</span> <span class="n">escape_password_string</span>
 
     <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Windows&quot;</span><span class="p">:</span>
         <span class="kn">import</span> <span class="nn">pywinauto</span>
@@ -83,7 +85,7 @@
 <span class="c1">###############################################################################</span>
 <span class="c1"># Host side implementation</span>
 <span class="c1">###############################################################################</span>
-<div class="viewcode-block" id="MailClientThunderbirdVmmSide"><a class="viewcode-back" href="../../../developer/functions.html#hystck.application.mailClientThunderbird.MailClientThunderbirdVmmSide">[docs]</a><span class="k">class</span> <span class="nc">MailClientThunderbirdVmmSide</span><span class="p">(</span><span class="n">ApplicationVmmSide</span><span class="p">):</span>
+<div class="viewcode-block" id="MailClientThunderbirdVmmSide"><a class="viewcode-back" href="../../../functions/index.html#hystck.application.mailClientThunderbird.MailClientThunderbirdVmmSide">[docs]</a><span class="k">class</span> <span class="nc">MailClientThunderbirdVmmSide</span><span class="p">(</span><span class="n">ApplicationVmmSide</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This class is a remote control on the host-side to control a real &lt;MailClient&gt;</span>
 <span class="sd">    running on a guest.</span>
@@ -107,7 +109,7 @@
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">lineno</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot; Error: MailClientThunderbirdHostSide::__init__ &quot;</span>
                             <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">guest_obj</span><span class="o">.</span><span class="n">guestname</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
 
-<div class="viewcode-block" id="MailClientThunderbirdVmmSide.open"><a class="viewcode-back" href="../../../developer/functions.html#hystck.application.mailClientThunderbird.MailClientThunderbirdVmmSide.open">[docs]</a>    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MailClientThunderbirdVmmSide.open"><a class="viewcode-back" href="../../../functions/index.html#hystck.application.mailClientThunderbird.MailClientThunderbirdVmmSide.open">[docs]</a>    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Sends a command to open a MailClient on the associated guest.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
@@ -117,7 +119,7 @@
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;error MailClientVmmSide::open: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="MailClientThunderbirdVmmSide.close"><a class="viewcode-back" href="../../../developer/functions.html#hystck.application.mailClientThunderbird.MailClientThunderbirdVmmSide.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MailClientThunderbirdVmmSide.close"><a class="viewcode-back" href="../../../functions/index.html#hystck.application.mailClientThunderbird.MailClientThunderbirdVmmSide.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Sends a command to close a MailClient on the associated guest.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
@@ -126,7 +128,7 @@
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;error MailClientThunderbirdVmmSide:close()&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="MailClientThunderbirdVmmSide.set_session_password"><a class="viewcode-back" href="../../../developer/functions.html#hystck.application.mailClientThunderbird.MailClientThunderbirdVmmSide.set_session_password">[docs]</a>    <span class="k">def</span> <span class="nf">set_session_password</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+<div class="viewcode-block" id="MailClientThunderbirdVmmSide.set_session_password"><a class="viewcode-back" href="../../../functions/index.html#hystck.application.mailClientThunderbird.MailClientThunderbirdVmmSide.set_session_password">[docs]</a>    <span class="k">def</span> <span class="nf">set_session_password</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Set password for password dialogs in current session.</span>
 
 <span class="sd">            Note: Call this as the first method after opening the mail plugin to prevent profile generation issues.</span>
@@ -144,7 +146,7 @@
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;error mailer::set_session_password: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="MailClientThunderbirdVmmSide.run_for"><a class="viewcode-back" href="../../../developer/functions.html#hystck.application.mailClientThunderbird.MailClientThunderbirdVmmSide.run_for">[docs]</a>    <span class="k">def</span> <span class="nf">run_for</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="p">):</span>
+<div class="viewcode-block" id="MailClientThunderbirdVmmSide.run_for"><a class="viewcode-back" href="../../../functions/index.html#hystck.application.mailClientThunderbird.MailClientThunderbirdVmmSide.run_for">[docs]</a>    <span class="k">def</span> <span class="nf">run_for</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Run Thunderbird for a limited amount of time to generate folders and files or to receive mail.</span>
 <span class="sd">            Call this after making changes to the profile config.</span>
 
@@ -161,7 +163,7 @@
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;error mailer::run_for: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="MailClientThunderbirdVmmSide.add_pop3_account"><a class="viewcode-back" href="../../../developer/functions.html#hystck.application.mailClientThunderbird.MailClientThunderbirdVmmSide.add_pop3_account">[docs]</a>    <span class="k">def</span> <span class="nf">add_pop3_account</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pop_server</span><span class="p">,</span> <span class="n">smtp_server</span><span class="p">,</span> <span class="n">email_address</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">full_name</span><span class="p">,</span> <span class="n">smtp_description</span><span class="p">,</span>
+<div class="viewcode-block" id="MailClientThunderbirdVmmSide.add_pop3_account"><a class="viewcode-back" href="../../../functions/index.html#hystck.application.mailClientThunderbird.MailClientThunderbirdVmmSide.add_pop3_account">[docs]</a>    <span class="k">def</span> <span class="nf">add_pop3_account</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pop_server</span><span class="p">,</span> <span class="n">smtp_server</span><span class="p">,</span> <span class="n">email_address</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">full_name</span><span class="p">,</span> <span class="n">smtp_description</span><span class="p">,</span>
                          <span class="n">socket_type</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">auth_method</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">socket_type_smtp</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">auth_method_smtp</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Adds a pop3 account to the profile.</span>
 
@@ -194,8 +196,8 @@
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;error mailer::add_pop3_account: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="MailClientThunderbirdVmmSide.add_imap_account"><a class="viewcode-back" href="../../../developer/functions.html#hystck.application.mailClientThunderbird.MailClientThunderbirdVmmSide.add_imap_account">[docs]</a>    <span class="k">def</span> <span class="nf">add_imap_account</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">imap_server</span><span class="p">,</span> <span class="n">smtp_server</span><span class="p">,</span> <span class="n">email_address</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">full_name</span><span class="p">,</span> <span class="n">smtp_description</span><span class="p">,</span>
-                         <span class="n">socket_type</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">auth_method</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">socket_type_smtp</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">auth_method_smtp</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+<div class="viewcode-block" id="MailClientThunderbirdVmmSide.add_imap_account"><a class="viewcode-back" href="../../../functions/index.html#hystck.application.mailClientThunderbird.MailClientThunderbirdVmmSide.add_imap_account">[docs]</a>    <span class="k">def</span> <span class="nf">add_imap_account</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">imap_server</span><span class="p">,</span> <span class="n">smtp_server</span><span class="p">,</span> <span class="n">email_address</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">full_name</span><span class="p">,</span>
+                         <span class="n">socket_type</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">socket_type_smtp</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">auth_method_smtp</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Adds a imap account to the profile.</span>
 
 <span class="sd">            :param imap_server: address of the pop3 mailserver</span>
@@ -203,7 +205,6 @@
 <span class="sd">            :param email_address: the accounts email address</span>
 <span class="sd">            :param username: username of the mail server, usually the email address</span>
 <span class="sd">            :param full_name: the account owners full name</span>
-<span class="sd">            :param smtp_description: desription for the smpt server</span>
 <span class="sd">            :param socket_type: 0 No SSL, 1 StartTLS, 2 SSL/TLS</span>
 <span class="sd">            :param auth_method: corresponds to the password exchange method, has the same methods for smtp</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -213,9 +214,7 @@
                   <span class="s2">&quot;email_address&quot;</span><span class="p">:</span> <span class="n">email_address</span><span class="p">,</span>
                   <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="n">username</span><span class="p">,</span>
                   <span class="s2">&quot;full_name&quot;</span><span class="p">:</span> <span class="n">full_name</span><span class="p">,</span>
-                  <span class="s2">&quot;smtp_description&quot;</span><span class="p">:</span> <span class="n">smtp_description</span><span class="p">,</span>
                   <span class="s2">&quot;socket_type&quot;</span><span class="p">:</span> <span class="n">socket_type</span><span class="p">,</span>
-                  <span class="s2">&quot;auth_method&quot;</span><span class="p">:</span> <span class="n">auth_method</span><span class="p">,</span>
                   <span class="s2">&quot;socket_type_smtp&quot;</span><span class="p">:</span> <span class="n">socket_type_smtp</span><span class="p">,</span>
                   <span class="s2">&quot;auth_method_smtp&quot;</span><span class="p">:</span> <span class="n">auth_method_smtp</span><span class="p">}</span>
             <span class="n">pcl_ac</span> <span class="o">=</span> <span class="n">ph</span><span class="o">.</span><span class="n">base64pickle</span><span class="p">(</span><span class="n">ac</span><span class="p">)</span>
@@ -226,7 +225,7 @@
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;error mailer::add_imap_account: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="MailClientThunderbirdVmmSide.send_mail"><a class="viewcode-back" href="../../../developer/functions.html#hystck.application.mailClientThunderbird.MailClientThunderbirdVmmSide.send_mail">[docs]</a>    <span class="k">def</span> <span class="nf">send_mail</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">receiver</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+<div class="viewcode-block" id="MailClientThunderbirdVmmSide.send_mail"><a class="viewcode-back" href="../../../functions/index.html#hystck.application.mailClientThunderbird.MailClientThunderbirdVmmSide.send_mail">[docs]</a>    <span class="k">def</span> <span class="nf">send_mail</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">receiver</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">attachment_path_list</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Send an email via the mailClient.</span>
 
 <span class="sd">           Note: A bug prevents this from working inside an open thunderbird application.</span>
@@ -235,6 +234,7 @@
 <span class="sd">        @param receiver: Receiver for this email.</span>
 <span class="sd">        @param subject: Subject for this email.</span>
 <span class="sd">        @param message: Message for this email.</span>
+<span class="sd">        @param attachment_path_list: (Optional) list of paths for files to attach to the mail.</span>
 
 <span class="sd">        @return: No return value.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -242,6 +242,11 @@
             <span class="n">m</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;receiver&quot;</span><span class="p">:</span> <span class="n">receiver</span><span class="p">,</span>
                  <span class="s2">&quot;subject&quot;</span><span class="p">:</span> <span class="n">subject</span><span class="p">,</span>
                  <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="n">message</span><span class="p">}</span>
+            <span class="c1"># check if attachment_string is added</span>
+            <span class="k">if</span> <span class="n">attachment_path_list</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">attachment_string</span> <span class="o">=</span> <span class="n">parse_attachment_string</span><span class="p">(</span><span class="n">attachment_path_list</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">attachment_string</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">m</span><span class="p">[</span><span class="s2">&quot;attachment_string&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">attachment_string</span>
             <span class="n">pcl_m</span> <span class="o">=</span> <span class="n">ph</span><span class="o">.</span><span class="n">base64pickle</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
             <span class="n">send_mail_command</span> <span class="o">=</span> <span class="s2">&quot;application mailClientThunderbird &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">window_id</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; send_mail &quot;</span> <span class="o">+</span> <span class="n">pcl_m</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">is_busy</span> <span class="o">=</span> <span class="kc">True</span>
@@ -250,6 +255,7 @@
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;error mailer::sendMail: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></div>
 
     <span class="k">def</span> <span class="nf">loadMailboxData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">from_name</span><span class="p">,</span> <span class="n">from_ad</span><span class="p">,</span> <span class="n">to_name</span><span class="p">,</span> <span class="n">to_ad</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">server</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="c1"># TODO attachment</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">m</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="nb">type</span><span class="p">,</span>
                  <span class="s2">&quot;from_name&quot;</span><span class="p">:</span> <span class="n">from_name</span><span class="p">,</span>
@@ -376,8 +382,8 @@
         <span class="n">serno</span> <span class="o">=</span> <span class="n">tbs</span><span class="o">.</span><span class="n">find_next_free_server_id</span><span class="p">()</span>
         <span class="n">smtpno</span> <span class="o">=</span> <span class="n">tbs</span><span class="o">.</span><span class="n">find_next_free_smtp_id</span><span class="p">()</span>
         <span class="n">acd</span> <span class="o">=</span> <span class="n">tbs</span><span class="o">.</span><span class="n">gen_imap_account</span><span class="p">(</span><span class="n">acno</span><span class="p">,</span> <span class="n">serno</span><span class="p">,</span> <span class="n">smtpno</span><span class="p">,</span> <span class="n">ai</span><span class="p">[</span><span class="s2">&quot;imap_server&quot;</span><span class="p">],</span> <span class="n">ai</span><span class="p">[</span><span class="s2">&quot;smtp_server&quot;</span><span class="p">],</span> <span class="n">ai</span><span class="p">[</span><span class="s2">&quot;email_address&quot;</span><span class="p">],</span>
-                                   <span class="n">ai</span><span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">],</span> <span class="n">ai</span><span class="p">[</span><span class="s2">&quot;full_name&quot;</span><span class="p">],</span> <span class="n">ai</span><span class="p">[</span><span class="s2">&quot;smtp_description&quot;</span><span class="p">],</span> <span class="n">ai</span><span class="p">[</span><span class="s2">&quot;socket_type&quot;</span><span class="p">],</span>
-                                   <span class="n">ai</span><span class="p">[</span><span class="s2">&quot;auth_method&quot;</span><span class="p">],</span> <span class="n">ai</span><span class="p">[</span><span class="s2">&quot;socket_type_smtp&quot;</span><span class="p">],</span> <span class="n">ai</span><span class="p">[</span><span class="s2">&quot;auth_method_smtp&quot;</span><span class="p">])</span>
+                                   <span class="n">ai</span><span class="p">[</span><span class="s2">&quot;username&quot;</span><span class="p">],</span> <span class="n">ai</span><span class="p">[</span><span class="s2">&quot;full_name&quot;</span><span class="p">],</span> <span class="n">ai</span><span class="p">[</span><span class="s2">&quot;socket_type&quot;</span><span class="p">],</span> <span class="n">ai</span><span class="p">[</span><span class="s2">&quot;socket_type_smtp&quot;</span><span class="p">],</span>
+                                   <span class="n">ai</span><span class="p">[</span><span class="s2">&quot;auth_method_smtp&quot;</span><span class="p">])</span>
         <span class="n">tbs</span><span class="o">.</span><span class="n">add_account_config_to_profile</span><span class="p">(</span><span class="n">acd</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Done creating Imap account&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">agent_object</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;application &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">module_name</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">imParent</span><span class="o">.</span><span class="n">window_id</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; ready&quot;</span><span class="p">)</span>
@@ -477,16 +483,21 @@
             <span class="k">return</span>
 
             <span class="c1"># some information about the mailClient state</span>
-        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="c1"># app = application.Application()</span>
             <span class="n">password_window</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;.*Passwort&quot;</span><span class="p">,</span> <span class="s2">&quot;.*password&quot;</span><span class="p">,</span> <span class="s2">&quot;.*[sS]erver&quot;</span><span class="p">]:</span> <span class="c1"># possible names for the password window, try them all</span>
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="n">password_window</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">thunderbird_app</span><span class="o">.</span><span class="n">window_</span><span class="p">(</span><span class="n">title_re</span><span class="o">=</span><span class="n">r</span><span class="p">)</span>
-                    <span class="k">break</span>
-                <span class="k">except</span><span class="p">:</span>
-                    <span class="k">pass</span>
+            <span class="c1">#TODO Needs to be refactored</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">password_window</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">thunderbird_app</span><span class="o">.</span><span class="n">window_</span><span class="p">(</span><span class="n">title_re</span><span class="o">=</span><span class="s1">&#39;Mail Server Password Required&#39;</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="c1">#for r in [&quot;.*Passwort&quot;, &quot;.*password&quot;, &quot;.*[sS]erver&quot;]: # possible names for the password window, try them all</span>
+            <span class="c1">#    try:</span>
+            <span class="c1">#        password_window = self.thunderbird_app.window_(title_re=r)</span>
+            <span class="c1">#        break</span>
+            <span class="c1">#    except:</span>
+            <span class="c1">#        pass</span>
             <span class="k">if</span> <span class="n">password_window</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Tried all combinations for password window, giving up&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;password window = &quot;</span><span class="p">)</span>
@@ -494,7 +505,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;password window appeared&quot;</span><span class="p">)</span>
             <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;self.password: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="p">))</span>
-            <span class="n">send_key_string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">password</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="si">{TAB}</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="si">{SPACE}</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="si">{ENTER}</span><span class="s2">&quot;</span>
+            <span class="n">escaped_password</span> <span class="o">=</span> <span class="n">escape_password_string</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="p">)</span>
+            <span class="n">send_key_string</span> <span class="o">=</span> <span class="n">escaped_password</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="si">{TAB}</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="si">{SPACE}</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="si">{ENTER}</span><span class="s2">&quot;</span>
             <span class="n">password_window</span><span class="o">.</span><span class="n">TypeKeys</span><span class="p">(</span><span class="n">send_key_string</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;the password should now be inserted&quot;</span><span class="p">)</span>
             <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
@@ -533,6 +545,8 @@
 <span class="sd">        @param receiver - Email address.</span>
 <span class="sd">        @param subject - Subject of the email.</span>
 <span class="sd">        @param message - Message of the email.</span>
+<span class="sd">        @param attachment_path_list: (Optional) list of paths for files to attach to the mail.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;function: MailClientThunderbirdGuestSide::send_mail&quot;</span><span class="p">)</span>
@@ -550,18 +564,38 @@
             <span class="n">message</span> <span class="o">=</span> <span class="n">ad</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;message &quot;</span> <span class="o">+</span> <span class="n">message</span><span class="p">)</span>
 
+            <span class="n">attachment_string</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="s1">&#39;attachment_string&#39;</span> <span class="ow">in</span> <span class="n">ad</span><span class="p">:</span>
+                <span class="n">attachment_string</span> <span class="o">=</span> <span class="n">ad</span><span class="p">[</span><span class="s2">&quot;attachment_string&quot;</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;attachment_string &quot;</span> <span class="o">+</span> <span class="n">attachment_string</span><span class="p">)</span>
+
+
             <span class="c1">################</span>
             <span class="c1"># to = receiver # search if to, cc, bcc is in reciever and split</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;open email window&quot;</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;c:\Program files (x86)\Mozilla Thunderbird\Thunderbird.exe&quot;</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">thunderbird_app</span> <span class="o">=</span> <span class="n">pywinauto</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">Application</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span>
-                    <span class="sa">r</span><span class="s1">&#39;c:\Program files (x86)\Mozilla Thunderbird\Thunderbird.exe -compose &quot;to=</span><span class="si">%s</span><span class="s1">,subject=</span><span class="si">%s</span><span class="s1">,body=</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span>
-                        <span class="n">receiver</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">message</span><span class="p">))</span>
-            <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;c:\Program Files\Mozilla Thunderbird\Thunderbird.exe&quot;</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">thunderbird_app</span> <span class="o">=</span> <span class="n">pywinauto</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">Application</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span>
-                    <span class="sa">r</span><span class="s1">&#39;c:\Program Files\Mozilla Thunderbird\Thunderbird.exe -compose &quot;to=</span><span class="si">%s</span><span class="s1">,subject=</span><span class="si">%s</span><span class="s1">,body=</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span>
-                        <span class="n">receiver</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">message</span><span class="p">))</span>
+            <span class="n">thunderbird_x86_path</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;c:\Program files (x86)\Mozilla Thunderbird\Thunderbird.exe&quot;</span>
+            <span class="n">thunderbird_path</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;c:\Program Files\Mozilla Thunderbird\Thunderbird.exe&quot;</span>
+
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">thunderbird_x86_path</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">attachment_string</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">thunderbird_app</span> <span class="o">=</span> <span class="n">pywinauto</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">Application</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span>
+                        <span class="n">thunderbird_x86_path</span> <span class="o">+</span> <span class="s1">&#39; -p default -compose &quot;to=</span><span class="si">%s</span><span class="s1">,subject=</span><span class="se">\&#39;</span><span class="si">%s</span><span class="se">\&#39;</span><span class="s1">,body=</span><span class="se">\&#39;</span><span class="si">%s</span><span class="se">\&#39;</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span>
+                            <span class="n">receiver</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">message</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">thunderbird_app</span> <span class="o">=</span> <span class="n">pywinauto</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">Application</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span>
+                        <span class="n">thunderbird_x86_path</span> <span class="o">+</span> <span class="s1">&#39; -p default -compose &quot;to=</span><span class="si">%s</span><span class="s1">,subject=</span><span class="se">\&#39;</span><span class="si">%s</span><span class="se">\&#39;</span><span class="s1">,body=</span><span class="se">\&#39;</span><span class="si">%s</span><span class="se">\&#39;</span><span class="s1">,attachment=</span><span class="se">\&#39;</span><span class="si">%s</span><span class="se">\&#39;</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span>
+                            <span class="n">receiver</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">attachment_string</span><span class="p">))</span>
+
+            <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">thunderbird_path</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">attachment_string</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">thunderbird_app</span> <span class="o">=</span> <span class="n">pywinauto</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">Application</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span>
+                        <span class="n">thunderbird_path</span> <span class="o">+</span> <span class="s1">&#39; -p default -compose &quot;to=</span><span class="si">%s</span><span class="s1">,subject=</span><span class="se">\&#39;</span><span class="si">%s</span><span class="se">\&#39;</span><span class="s1">,body=</span><span class="se">\&#39;</span><span class="si">%s</span><span class="se">\&#39;</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span>
+                            <span class="n">receiver</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">message</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">thunderbird_app</span> <span class="o">=</span> <span class="n">pywinauto</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">Application</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span>
+                        <span class="n">thunderbird_path</span> <span class="o">+</span> <span class="s1">&#39; -p default -compose &quot;to=</span><span class="si">%s</span><span class="s1">,subject=</span><span class="se">\&#39;</span><span class="si">%s</span><span class="se">\&#39;</span><span class="s1">,body=</span><span class="se">\&#39;</span><span class="si">%s</span><span class="se">\&#39;</span><span class="s1">,attachment=</span><span class="se">\&#39;</span><span class="si">%s</span><span class="se">\&#39;</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span>
+                            <span class="n">receiver</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">attachment_string</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
                     <span class="s2">&quot;Thundebird is not installed into the standard path c:\Program files (x86)\Mozilla &quot;</span> <span class="o">+</span> <span class="s2">&quot;Thunderbird\Thunderbird.exe or c:\Program Files\Mozilla &quot;</span> <span class="o">+</span> <span class="s2">&quot;Thunderbird\Thunderbird.exe&quot;</span><span class="p">)</span>
@@ -574,13 +608,13 @@
             <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">thunderbird_app</span><span class="o">.</span><span class="n">windows_</span><span class="p">():</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;if case&quot;</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">thunderbird_window</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">thunderbird_app</span><span class="o">.</span><span class="n">window_</span><span class="p">(</span><span class="n">title_re</span><span class="o">=</span><span class="s2">&quot;.*</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">subject</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">thunderbird_window</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">thunderbird_app</span><span class="o">.</span><span class="n">window_</span><span class="p">(</span><span class="n">title_re</span><span class="o">=</span><span class="s2">&quot;.*</span><span class="si">%s</span><span class="s2">.*&quot;</span> <span class="o">%</span> <span class="n">subject</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;else case&quot;</span><span class="p">)</span>
-                <span class="n">app</span> <span class="o">=</span> <span class="n">pywinauto</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">Application</span><span class="p">()</span><span class="o">.</span><span class="n">connect_</span><span class="p">(</span><span class="n">title_re</span><span class="o">=</span><span class="s2">&quot;.*</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">subject</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">thunderbird_window</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">window_</span><span class="p">(</span><span class="n">title_re</span><span class="o">=</span><span class="s2">&quot;.*</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">subject</span><span class="p">)</span>
+                <span class="n">app</span> <span class="o">=</span> <span class="n">pywinauto</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">Application</span><span class="p">()</span><span class="o">.</span><span class="n">connect_</span><span class="p">(</span><span class="n">title_re</span><span class="o">=</span><span class="s2">&quot;.*</span><span class="si">%s</span><span class="s2">.*&quot;</span> <span class="o">%</span> <span class="n">subject</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">thunderbird_window</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">window_</span><span class="p">(</span><span class="n">title_re</span><span class="o">=</span><span class="s2">&quot;.*</span><span class="si">%s</span><span class="s2">.*&quot;</span> <span class="o">%</span> <span class="n">subject</span><span class="p">)</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">thunderbird_window</span><span class="o">.</span><span class="n">TypeKeys</span><span class="p">(</span><span class="s2">&quot;^</span><span class="si">{ENTER}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="c1"># bug: for some reason this does not work, probably the wrong base window is used</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">thunderbird_window</span><span class="o">.</span><span class="n">TypeKeys</span><span class="p">(</span><span class="s2">&quot;^</span><span class="si">{ENTER}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">lineno</span><span class="p">()</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
 
@@ -589,14 +623,14 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Press enter to send the message&quot;</span><span class="p">)</span>
-            <span class="n">SendKeys</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{ENTER}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">SendKeys</span><span class="p">(</span><span class="s2">&quot;^</span><span class="si">{ENTER}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">pass</span>
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">lineno</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;MailClientThunderbird::sendMail: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;wait 10 second for the smtp pasword window to appear&quot;</span><span class="p">)</span>
-        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
         <span class="c1"># Enter password into window</span>
         <span class="k">try</span><span class="p">:</span>  <span class="c1"># check for thunderbird window</span>
             <span class="c1"># mozilla is one of those applications that use existing windows</span>
@@ -614,17 +648,17 @@
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;MailClientThunderbird::open No window named &#39;.*Mozilla Thunderbird&#39;&quot;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">agent_object</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;application &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">module_name</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">imParent</span><span class="o">.</span><span class="n">window_id</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; error&quot;</span><span class="p">)</span>
-            <span class="k">return</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;MailClientThunderbird::open SMTP password may have been entered previously&quot;</span><span class="p">)</span>
 
         <span class="c1"># if window appears</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">password_window</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;.*Passwort&quot;</span><span class="p">,</span> <span class="s2">&quot;.*password&quot;</span><span class="p">,</span> <span class="s2">&quot;.*[sS]erver&quot;</span><span class="p">]:</span> <span class="c1"># possible names for the password window, try them all</span>
+            <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;.*Password.*&quot;</span><span class="p">,</span> <span class="s2">&quot;.*Passwort.*&quot;</span><span class="p">,</span> <span class="s2">&quot;.*[sS]erver&quot;</span><span class="p">]:</span> <span class="c1"># possible names for the password window, try them all</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">password_window</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">thunderbird_app</span><span class="o">.</span><span class="n">window_</span><span class="p">(</span><span class="n">title_re</span><span class="o">=</span><span class="n">r</span><span class="p">)</span>
                     <span class="k">break</span>
                 <span class="k">except</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Password window not found!&quot;</span><span class="p">)</span>
                     <span class="k">pass</span>
             <span class="k">if</span> <span class="n">password_window</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Tried all combinations for password window, giving up&quot;</span><span class="p">)</span>
@@ -632,9 +666,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;password window = &quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">password_window</span><span class="p">)</span>
             <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-            <span class="nb">print</span> <span class="s2">&quot;self password&quot;</span>
-            <span class="nb">print</span> <span class="bp">self</span><span class="o">.</span><span class="n">password</span>
-            <span class="n">sendkeystring</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">password</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="si">{TAB}</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="si">{SPACE}</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="si">{ENTER}</span><span class="s2">&quot;</span>
+            <span class="n">escaped_password</span> <span class="o">=</span> <span class="n">escape_password_string</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="p">)</span>
+            <span class="n">sendkeystring</span> <span class="o">=</span> <span class="n">escaped_password</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="si">{TAB}</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="si">{SPACE}</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="si">{ENTER}</span><span class="s2">&quot;</span>
             <span class="n">password_window</span><span class="o">.</span><span class="n">TypeKeys</span><span class="p">(</span><span class="n">sendkeystring</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;the password should now be inserted&quot;</span><span class="p">)</span>
             <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
@@ -709,6 +742,7 @@
         <span class="n">mbox</span><span class="o">.</span><span class="n">lock</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;testing mail manipulation on &quot;</span> <span class="o">+</span> <span class="n">mboxfile</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># TODO Proof if attachment is also &#39;submittable&#39; here</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="n">mailbox</span><span class="o">.</span><span class="n">mboxMessage</span><span class="p">()</span>
             <span class="n">msg</span><span class="o">.</span><span class="n">set_unixfrom</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
             <span class="n">msg</span><span class="p">[</span><span class="s1">&#39;From&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">from_addr</span>
@@ -828,6 +862,7 @@
 <span class="sd">        @param receiver - Email address.</span>
 <span class="sd">        @param subject - Subject of the email.</span>
 <span class="sd">        @param message - Message of the email.</span>
+<span class="sd">        @param attachment_path_list: (Optional) list of paths for files to attach to the mail.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;function: MailClientThunderbirdGuestSide::send_mail&quot;</span><span class="p">)</span>
@@ -845,12 +880,24 @@
             <span class="n">message</span> <span class="o">=</span> <span class="n">ad</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;message &quot;</span> <span class="o">+</span> <span class="n">message</span><span class="p">)</span>
 
+            <span class="n">attachment_string</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="s1">&#39;attachment_string&#39;</span> <span class="ow">in</span> <span class="n">ad</span><span class="p">:</span>
+                <span class="n">attachment_string</span> <span class="o">=</span> <span class="n">ad</span><span class="p">[</span><span class="s2">&quot;attachment_string&quot;</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;attachment_string &quot;</span> <span class="o">+</span> <span class="n">attachment_string</span><span class="p">)</span>
+
             <span class="c1">################</span>
             <span class="c1"># to = receiver # search if to, cc, bcc is in reciever and split</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;open email window&quot;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">window_manager</span><span class="o">.</span><span class="n">start</span><span class="p">(</span>
-                <span class="s1">&#39;thunderbird&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;-compose&#39;</span><span class="p">,</span> <span class="s1">&#39;to=</span><span class="si">%s</span><span class="s1">,subject=</span><span class="si">%s</span><span class="s1">,body=</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">receiver</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">message</span><span class="p">)]</span>
-            <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">attachment_string</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">window_manager</span><span class="o">.</span><span class="n">start</span><span class="p">(</span>
+                    <span class="s1">&#39;thunderbird&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;-compose&#39;</span><span class="p">,</span> <span class="s1">&#39;&quot;to=</span><span class="si">%s</span><span class="s1">,subject=</span><span class="se">\&#39;</span><span class="si">%s</span><span class="se">\&#39;</span><span class="s1">,body=</span><span class="se">\&#39;</span><span class="si">%s</span><span class="se">\&#39;</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">receiver</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">message</span><span class="p">)]</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">window_manager</span><span class="o">.</span><span class="n">start</span><span class="p">(</span>
+                    <span class="s1">&#39;thunderbird&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;-compose&#39;</span><span class="p">,</span> <span class="s1">&#39;&quot;to=</span><span class="si">%s</span><span class="s1">,subject=</span><span class="se">\&#39;</span><span class="si">%s</span><span class="se">\&#39;</span><span class="s1">,body=</span><span class="se">\&#39;</span><span class="si">%s</span><span class="se">\&#39;</span><span class="s1">,attachment=</span><span class="se">\&#39;</span><span class="si">%s</span><span class="se">\&#39;</span><span class="s1">&quot;&#39;</span> <span class="o">%</span>
+                                         <span class="p">(</span><span class="n">receiver</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">attachment_string</span><span class="p">)]</span>
+                <span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;email window is here&quot;</span><span class="p">)</span>
 
@@ -886,8 +933,6 @@
         <span class="c1"># - Insert Password</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;password window appeared&quot;</span><span class="p">)</span>
-            <span class="nb">print</span> <span class="s2">&quot;self password&quot;</span>
-            <span class="nb">print</span> <span class="bp">self</span><span class="o">.</span><span class="n">password</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">window_manager</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="s1">&#39;SMTP Server Password Required&#39;</span><span class="p">,</span> <span class="s1">&#39;txt0&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">window_manager</span><span class="o">.</span><span class="n">focus</span><span class="p">(</span><span class="s1">&#39;SMTP Server Password Required&#39;</span><span class="p">)</span>
             <span class="n">keys_combo</span> <span class="o">=</span> <span class="s2">&quot;&lt;tab&gt;&quot;</span> <span class="o">+</span> <span class="s2">&quot;&lt;space&gt;&quot;</span> <span class="o">+</span> <span class="s2">&quot;&lt;enter&gt;&quot;</span>
@@ -974,6 +1019,8 @@
 <span class="sd">        @param receiver - Email address.</span>
 <span class="sd">        @param subject - Subject of the email.</span>
 <span class="sd">        @param message - Message of the email.</span>
+<span class="sd">        @param attachment_path_list: (Optional) list of paths for files to attach to the mail.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mailClientApp</span><span class="o">.</span><span class="n">send_mail</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 
@@ -1129,7 +1176,7 @@
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2020, Thomas Schäfer.
+      &copy;2020, Thomas Schäfer, Thomas Göbel, Jan Türr.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>

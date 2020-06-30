@@ -44,7 +44,7 @@
     <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Error while loading modules: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
 
 
-<div class="viewcode-block" id="Reporter"><a class="viewcode-back" href="../../../developer/functions.html#hystck.core.reporter.Reporter">[docs]</a><span class="k">class</span> <span class="nc">Reporter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Reporter"><a class="viewcode-back" href="../../../functions/index.html#hystck.core.reporter.Reporter">[docs]</a><span class="k">class</span> <span class="nc">Reporter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; This class is responsible for the creation of a report for a case</span>
 <span class="sd">    added by Thomas Schaefer in 2019</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -67,7 +67,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="s2">&quot;root&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%m-</span><span class="si">%d</span><span class="s1">-%Y %H:%M&#39;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Reporter.add"><a class="viewcode-back" href="../../../developer/functions.html#hystck.core.reporter.Reporter.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+<div class="viewcode-block" id="Reporter.add"><a class="viewcode-back" href="../../../functions/index.html#hystck.core.reporter.Reporter.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Adding the given text to the tag-array in order to later add them to the ElementTree.</span>
 <span class="sd">        :param tag: XML tag name</span>
@@ -95,7 +95,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;unknown tag.&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Reporter.generateTags"><a class="viewcode-back" href="../../../developer/functions.html#hystck.core.reporter.Reporter.generateTags">[docs]</a>    <span class="k">def</span> <span class="nf">generateTags</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Reporter.generateTags"><a class="viewcode-back" href="../../../functions/index.html#hystck.core.reporter.Reporter.generateTags">[docs]</a>    <span class="k">def</span> <span class="nf">generateTags</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Adding the needed tags and values to the ElementTree (ET) to write them to a file.</span>
 <span class="sd">        :return:</span>
@@ -124,7 +124,7 @@
         <span class="k">for</span> <span class="n">cont</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">container</span><span class="p">:</span>
             <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="p">,</span> <span class="s2">&quot;veracrypt&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">cont</span></div>
 
-<div class="viewcode-block" id="Reporter.generate"><a class="viewcode-back" href="../../../developer/functions.html#hystck.core.reporter.Reporter.generate">[docs]</a>    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Reporter.generate"><a class="viewcode-back" href="../../../functions/index.html#hystck.core.reporter.Reporter.generate">[docs]</a>    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Writing ElementTree (ET) to an XML file and changing rights to the file. This file can then be viewed</span>
 <span class="sd">        with report.html.</span>
@@ -205,7 +205,7 @@
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2020, Thomas Schäfer.
+      &copy;2020, Thomas Schäfer, Thomas Göbel, Jan Türr.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>

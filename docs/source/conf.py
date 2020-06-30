@@ -20,8 +20,8 @@ import sys
 # -- Project information -----------------------------------------------------
 
 project = u'hystck'
-copyright = u'2020, Thomas Schäfer'
-author = u'Thomas Schäfer'
+copyright = u'2020, Thomas Schäfer, Thomas Göbel, Jan Türr'
+author = u'Thomas Schäfer, Thomas Göbel, Jan Türr'
 
 # The short X.Y version
 version = u''

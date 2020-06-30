@@ -1,13 +1,29 @@
+path="$1"
+
+poolpath=($(jq -r '.path' config.json))
+poolname=($(jq -r '.name' config.json))
+publicname=($(jq -r '.public-interface-name' config.json))
+privatename=($(jq -r '.private-interface-name' config.json))
+
+if [ "$EUID" -ne 0 ]
+    then echo "Script not executed as root"
+    exit
+fi
+
+if [ ! -f "$path" ]; then
+    echo "File not found!"
+    exit
+fi
+
 virt-install --connect=qemu:///session --name linux-template \
 --ram 4096 \
 --vcpus sockets=1,cores=2,threads=1 \
---disk pool=hystck-pool,bus=sata,size=40,format=qcow2 \
---cdrom /home/test/Downloads/ubuntu-19.10-desktop-amd64.iso \
---network network=public \
---network network=private \
+--disk pool="$poolname",bus=sata,size=40,format=qcow2 \
+--cdrom "$path" \
+--network network="$publicname" \
+--network network="$privatename" \
 --graphics spice,listen=0.0.0.0 \
 --noautoconsole \
 -v
 
-
-chown $SUDO_USER /data/hystck-pool/linux-template.qcow2
+chown $SUDO_USER "$poolpath"/"$poolname"/linux-template.qcow2

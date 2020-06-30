@@ -6,16 +6,28 @@ net session >nul 2>&1
 if %errorLevel% == 0 (
 	echo "Installation begins:"
 	@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command " [System.Net.ServicePointManager]::SecurityProtocol = 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
+
+	refreshenv
 	
 	echo "Installing Python 2.7"
-	start /wait msiexec.exe /i %~dp0python.msi /passive /L*V "C:\msilog.log" ADDLOCAL=ALL ALLUSERS=1
+	REM start /wait msiexec.exe /i %~dp0python.msi /passive /L*V "C:\msilog.log" ADDLOCAL=ALL ALLUSERS=1
+	choco install python2 -y
 
 	REM echo "Installing pip via get-pip.py python script - pip might already be installed via Python 2.7 installation"
 	REM python %~dp0get-pip.py
 
 	echo "Installing Visual C++ Python Compiler"
-	start /wait msiexec.exe /i %~dp0VCForPython27.msi /passive /L*V "C:\msilog2.log"
-	
+	REM start /wait msiexec.exe /i %~dp0VCForPython27.msi /passive /L*V "C:\msilog2.log"
+	choco install vcpython27 -y
+
+	echo "Installing Firefox"
+	choco install firefox -y
+
+	echo "Installing Thunderbird"
+	choco install thunderbird -y
+
+	refreshenv
+
 	echo "run prereq hystck script"
 	python %~dp0pre_setup.py
 

@@ -71,6 +71,7 @@ located in the same folder.
 
 .. TODO RUNS PRESETUP SCRIPT
 .. TODO install chocolatey to refresh env variables
+.. TODO TEST CHOCOLATEY
 
 The following steps are included in the **install.bat** and are only mentioned for transparency.
 

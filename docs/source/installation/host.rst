@@ -10,7 +10,8 @@ scripts and make adjustments where necessary. Please also adjust **hystck-pool.x
 :ref:`installindex`, you might need to tweak either file or run a completely manual installation of the host component.
 
 .. Regardless of what method you choose, you first need to install python.
-
+.. TODO PRESETUP -> SETUP PY NOT AS USER    -> SUDO USER ANGEBEN IRGENDWIE -> EXECUTE AS SUDO USER
+.. TODO GENERATOR INSTALLATION ?
 .. TODO: SETFACL -Rdm OWNER=USER TO HYSTCK IN AUTOMATION ->  qemu.conf dynamic ownership 0, root root, systemctl start stop INSTEAD OF CHMOD; CHMOD as "workaround" in case of issues X
 .. TODO BACKING POOL INSTALL SCRIPTS PATHS & NAMES (VIRT INSTALL) X
 .. TODO QEMU CONF CHOWN  RIGHT MANAGEMENT SECTION GUEST     X

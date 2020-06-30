@@ -161,6 +161,12 @@ Comment=
             pipDepFile = os.path.join(self.requ, self.general['pip-requirements'])
             with open(pipDepFile, "r") as file:
                 for line in file:
+                    if platform.system() == "Linux" and "pywin32" in line:
+                        self.logger.info("Pywin32 skipped on Linux distro")
+                        continue
+                    elif platform.system() == "Windows" and "libvirt-python" in line:
+                        self.logger.info("libvirt-python skipped on Windows")
+                        continue
                     prepCmd = pipCmd.format(line.strip())
                     self.logger.debug("Running: {}".format(prepCmd))
                     subprocess.call(prepCmd.split(), stdout=subprocess.PIPE)

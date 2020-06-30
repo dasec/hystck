@@ -68,7 +68,7 @@
 <span class="c1">###############################################################################</span>
 <span class="c1"># Host side implementation</span>
 <span class="c1">###############################################################################</span>
-<div class="viewcode-block" id="UserManagementVmmSide"><a class="viewcode-back" href="../../../developer/functions.html#hystck.application.userManagement.UserManagementVmmSide">[docs]</a><span class="k">class</span> <span class="nc">UserManagementVmmSide</span><span class="p">(</span><span class="n">ApplicationVmmSide</span><span class="p">):</span>
+<div class="viewcode-block" id="UserManagementVmmSide"><a class="viewcode-back" href="../../../functions/index.html#hystck.application.userManagement.UserManagementVmmSide">[docs]</a><span class="k">class</span> <span class="nc">UserManagementVmmSide</span><span class="p">(</span><span class="n">ApplicationVmmSide</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This class is a remote control on the host-side to control a real &lt;userManagement&gt;</span>
 <span class="sd">    running on a guest.</span>
@@ -88,7 +88,7 @@
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">lineno</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot; Error: UserManagementHostSide::__init__ &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">guest_obj</span><span class="o">.</span><span class="n">guestname</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
 
-<div class="viewcode-block" id="UserManagementVmmSide.open"><a class="viewcode-back" href="../../../developer/functions.html#hystck.application.userManagement.UserManagementVmmSide.open">[docs]</a>    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="UserManagementVmmSide.open"><a class="viewcode-back" href="../../../functions/index.html#hystck.application.userManagement.UserManagementVmmSide.open">[docs]</a>    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Sends a command to open a userManagement on the associated guest.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
@@ -101,7 +101,7 @@
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;error UserManagementVmmSide::open: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="UserManagementVmmSide.close"><a class="viewcode-back" href="../../../developer/functions.html#hystck.application.userManagement.UserManagementVmmSide.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="UserManagementVmmSide.close"><a class="viewcode-back" href="../../../functions/index.html#hystck.application.userManagement.UserManagementVmmSide.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Sends a command to close a &lt;userManagement&gt; on the associated guest.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
@@ -110,7 +110,7 @@
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;error UserManagementVmmSide:close()&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="UserManagementVmmSide.addUser"><a class="viewcode-back" href="../../../developer/functions.html#hystck.application.userManagement.UserManagementVmmSide.addUser">[docs]</a>    <span class="k">def</span> <span class="nf">addUser</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_name</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+<div class="viewcode-block" id="UserManagementVmmSide.addUser"><a class="viewcode-back" href="../../../functions/index.html#hystck.application.userManagement.UserManagementVmmSide.addUser">[docs]</a>    <span class="k">def</span> <span class="nf">addUser</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_name</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creating a User on the guest system</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
@@ -408,7 +408,7 @@
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2020, Thomas Schäfer.
+      &copy;2020, Thomas Schäfer, Thomas Göbel, Jan Türr.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>

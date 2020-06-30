@@ -212,7 +212,7 @@ webBrowserFirefox_guest_side.</p>
 running on a guest.</p>
 <dl class="method">
 <dt id="hystck.application.mailClientThunderbird.MailClientThunderbirdVmmSide.add_imap_account">
-<code class="descname">add_imap_account</code><span class="sig-paren">(</span><em>imap_server</em>, <em>smtp_server</em>, <em>email_address</em>, <em>username</em>, <em>full_name</em>, <em>smtp_description</em>, <em>socket_type=3</em>, <em>auth_method=3</em>, <em>socket_type_smtp=3</em>, <em>auth_method_smtp=3</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hystck/application/mailClientThunderbird.html#MailClientThunderbirdVmmSide.add_imap_account"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hystck.application.mailClientThunderbird.MailClientThunderbirdVmmSide.add_imap_account" title="Permalink to this definition">¶</a></dt>
+<code class="descname">add_imap_account</code><span class="sig-paren">(</span><em>imap_server</em>, <em>smtp_server</em>, <em>email_address</em>, <em>username</em>, <em>full_name</em>, <em>socket_type=3</em>, <em>socket_type_smtp=2</em>, <em>auth_method_smtp=3</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hystck/application/mailClientThunderbird.html#MailClientThunderbirdVmmSide.add_imap_account"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hystck.application.mailClientThunderbird.MailClientThunderbirdVmmSide.add_imap_account" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a imap account to the profile.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -224,7 +224,6 @@ running on a guest.</p>
 <li><strong>email_address</strong> – the accounts email address</li>
 <li><strong>username</strong> – username of the mail server, usually the email address</li>
 <li><strong>full_name</strong> – the account owners full name</li>
-<li><strong>smtp_description</strong> – desription for the smpt server</li>
 <li><strong>socket_type</strong> – 0 No SSL, 1 StartTLS, 2 SSL/TLS</li>
 <li><strong>auth_method</strong> – corresponds to the password exchange method, has the same methods for smtp</li>
 </ul>
@@ -292,7 +291,7 @@ running on a guest.</p>
 
 <dl class="method">
 <dt id="hystck.application.mailClientThunderbird.MailClientThunderbirdVmmSide.send_mail">
-<code class="descname">send_mail</code><span class="sig-paren">(</span><em>receiver</em>, <em>subject</em>, <em>message</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hystck/application/mailClientThunderbird.html#MailClientThunderbirdVmmSide.send_mail"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hystck.application.mailClientThunderbird.MailClientThunderbirdVmmSide.send_mail" title="Permalink to this definition">¶</a></dt>
+<code class="descname">send_mail</code><span class="sig-paren">(</span><em>receiver</em>, <em>subject</em>, <em>message</em>, <em>attachment_path_list=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hystck/application/mailClientThunderbird.html#MailClientThunderbirdVmmSide.send_mail"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hystck.application.mailClientThunderbird.MailClientThunderbirdVmmSide.send_mail" title="Permalink to this definition">¶</a></dt>
 <dd><p>Send an email via the mailClient.</p>
 <blockquote>
 <div><dl class="docutils">
@@ -302,7 +301,8 @@ running on a guest.</p>
 </div></blockquote>
 <p>&#64;param receiver: Receiver for this email.
 &#64;param subject: Subject for this email.
-&#64;param message: Message for this email.</p>
+&#64;param message: Message for this email.
+&#64;param attachment_path_list: (Optional) list of paths for files to attach to the mail.</p>
 <p>&#64;return: No return value.</p>
 </dd></dl>
 
@@ -520,7 +520,7 @@ with report.html.
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2020, Thomas Schäfer.
+      &copy;2020, Thomas Schäfer, Thomas Göbel, Jan Türr.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
