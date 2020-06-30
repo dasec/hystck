@@ -1,6 +1,6 @@
 {
     "general":{
-        "user":"test",
+        "user":"hystck",
         "pip-requirements":"PIP_requirements.txt",
         "packet-requirements":"packet_requirements.txt",
         "hystck-path":"~/hystck"

@@ -10,8 +10,8 @@
     <path>/data/hystck-pool</path>
     <permissions>
       <mode>0755</mode>
-      <owner>1003</owner>
-      <group>1003</group>
+      <owner>1000</owner>
+      <group>1000</group>
     </permissions>
   </target>
 </pool>

@@ -1,9 +1,15 @@
+#!/bin/bash
+
 path="$1"
 
-poolpath=($(jq -r '.path' config.json))
-poolname=($(jq -r '.name' config.json))
-publicname=($(jq -r '.public-interface-name' config.json))
-privatename=($(jq -r '.private-interface-name' config.json))
+poolpath=$(jq -r '.["libvirt-pools"].path' config.json)
+echo "$poolpath"
+poolname=$(jq -r '.["libvirt-pools"].name' config.json)
+echo "$poolname"
+publicname=$(jq -r '.["network-interfaces"]["public-interface-name"]' config.json)
+echo "$publicname"
+privatename=$(jq -r '.["network-interfaces"]["private-interface-name"]' config.json)
+echo "$privatename"
 
 if [ "$EUID" -ne 0 ]
     then echo "Script not executed as root"
