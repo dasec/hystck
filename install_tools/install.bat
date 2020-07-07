@@ -18,7 +18,7 @@ if %errorLevel% == 0 (
 
 	echo "Installing Visual C++ Python Compiler"
 	REM start /wait msiexec.exe /i %~dp0VCForPython27.msi /passive /L*V "C:\msilog2.log"
-	choco install vcpython27 -y
+	choco install vcpython27 -y --ignore-dependencies
 
 	echo "Installing Firefox"
 	choco install firefox -y
