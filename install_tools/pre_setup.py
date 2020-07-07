@@ -57,7 +57,7 @@ class Installer:
                 self.linux_autostart()
         elif platform.system() == "Windows":
             self.logger.debug("Windows OS found.")
-            self.install_msi()
+            #self.install_msi()
             if self.param == "vm":
                 self.windows_autostart()
         else:
