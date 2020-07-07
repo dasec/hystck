@@ -185,7 +185,8 @@ Comment=
         self.logger.info("[~] Installing hystck framework...")
         try:
             prepCmd = "python setup.py install --user"
-            subprocess.call(prepCmd.split(), stdout=subprocess.PIPE)
+            tmp = os.getcwd() + "\setup.py"
+            subprocess.check_call([sys.executable, tmp, "install", "--user"])
         except OSError, e:
             self.logger.info("[X] Error while installing hystck framework.")
             self.logger.error(e)
