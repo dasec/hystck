@@ -414,9 +414,9 @@ class Generator(object):
                 files = entry['files']
             else:
                 if len(collection) > 0:
-                    files = random.choice(collection)
+                    files = [random.choice(collection)]
                 else:
-                    files = random.choice(self.collections['smb']['default'])
+                    files = [random.choice(self.collections['smb']['default'])]
 
             actions.append({'type': 'smb',
                             'application': entry['application'],
