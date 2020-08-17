@@ -514,38 +514,38 @@ class Generator(object):
                     self.collections['printer'][key] = []
 
         # Load default fallback collections for http.
-        with open('./generator/http_default_urls.txt', 'r') as f:
+        with open('./generator/collections/http_default_urls.txt', 'r') as f:
             self.collections['http']['default'] = f.read().splitlines()
 
         # Load default fallback collections for mails.
-        with open('./generator/mail_default_recipients.txt', 'r') as f:
+        with open('./generator/collections/mail_default_recipients.txt', 'r') as f:
             self.collections['mail']['default']['recipients'] = f.read().splitlines()
 
-        with open('./generator/mail_default_subjects.txt', 'r') as f:
+        with open('./generator/collections/mail_default_subjects.txt', 'r') as f:
             self.collections['mail']['default']['subjects'] = f.read().splitlines()
 
-        with open('./generator/mail_default_messages.txt', 'r') as f:
+        with open('./generator/collections/mail_default_messages.txt', 'r') as f:
             self.collections['mail']['default']['messages'] = f.read().splitlines()
 
-        with open('./generator/general_default_attachments.txt', 'r') as f:
+        with open('./generator/collections/general_default_attachments.txt', 'r') as f:
             self.collections['mail']['default']['attachments'] = f.read().splitlines()
 
         # Load default fallback collections for chat.
-        with open('./generator/chat_default_recipients.txt', 'r') as f:
+        with open('./generator/collections/chat_default_recipients.txt', 'r') as f:
             self.collections['chat']['default']['recipients'] = f.read().splitlines()
 
-        with open('./generator/chat_default_messages.txt', 'r') as f:
+        with open('./generator/collections/chat_default_messages.txt', 'r') as f:
             self.collections['chat']['default']['messages'] = f.read().splitlines()
 
-        with open('./generator/general_default_attachments.txt', 'r') as f:
+        with open('./generator/collections/general_default_attachments.txt', 'r') as f:
             self.collections['chat']['default']['attachments'] = f.read().splitlines()
 
         # Load default fallback collections for printer.
-        with open('./generator/printer_default_documents.txt', 'r') as f:
+        with open('./generator/collections/printer_default_documents.txt', 'r') as f:
             self.collections['printer']['default'] = f.read().splitlines()
 
         # Load default fallback collections for SMB.
-        with open('./generator/general_default_attachments.txt', 'r') as f:
+        with open('./generator/collections/general_default_attachments.txt', 'r') as f:
             self.collections['smb']['default'] = f.read().splitlines()
 
     def _setup_applications(self):
