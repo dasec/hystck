@@ -57,13 +57,16 @@ def main():
     # Create virtual machine.
     macs_in_use = []
     guests = []
+    threads = []
 
     guest_listener = GuestListener(guests, logger_core)
     virtual_machine_monitor = Vmm(macs_in_use, guests, logger_core)
-
     for index in range(0, args.parallel):
         thread = threading.Thread(target=start_guest, args=(index, virtual_machine_monitor, args))
         thread.start()
+        threads.append(thread)
+
+    for thread in threads:
         thread.join()
 
 

@@ -32,4 +32,4 @@ hay:
     collection: c-smb-0
 needles:
 scripts:
-  - ../utils/generator-validator/validation.sh @dump @config
+  - ../utils/generator-validator/validator.sh @dump @config
