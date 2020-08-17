@@ -72,7 +72,14 @@ class Generator(object):
         self._logger.info('[~] Generating randomized action suite.')
 
         # Collect actions used for the hay and needle(s).
-        for key, entry in self.config['hay'].items() + self.config['needles'].items():
+        items = []
+        if self.config['hay']:
+            items.extend(self.config['hay'].items())
+
+        if self.config['needles']:
+            items.extend(self.config['needles'].items())
+
+        for key, entry in items:
             # Generate action with specified parameters and generated missing parameters if needed.
             self.actions.extend(self._generate_action(key, entry))
             self._logger.info('\t Created %s set.', key)
