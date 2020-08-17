@@ -104,7 +104,7 @@ class Generator(object):
             self._logger.info('[~] Executing %s.', action)
             self._execute_action(action)
 
-        if self.config['scripts']:
+        if 'scripts' in self.config and self.config['scripts']:
             for script in self.config['scripts']:
                 # Replace place-holder arguments with real values.
                 script.replace('@config', self.path)
@@ -131,7 +131,14 @@ class Generator(object):
             self._execute_action_smb(action)
 
         # Wait for a randomized interval.
-        time.sleep(random.randint(1, 5))
+        wait_duration = random.randint(1, 5)
+        if 'settings' in self.config and self.config['settings']:
+            if 'minimum_wait_duration' in self.config['settings']:
+                wait_duration = random.randint(self.config['settings']['minimum_wait_duration'],
+                                               int(self.config['settings']['minimum_wait_duration'] * 1.2))
+
+        self._logger.info('[~] Waiting %d seconds before next action.', wait_duration)
+        time.sleep(wait_duration)
 
     def _execute_action_http(self, action):
         """
