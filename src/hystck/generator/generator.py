@@ -564,10 +564,12 @@ class Generator(object):
         """
         Create network printer required by the config file.
         """
-        for key, application in self.config['applications'].items():
-            if application['type'] == 'printer':
-                self.printers[application['hostname']] = self.guest.application("windowsPrinter",
-                                                                                {'hostname': application['hostname']})
+        if self.config['applications']:
+            for key, application in self.config['applications'].items():
+                if application['type'] == 'printer':
+                    self.printers[application['hostname']] = self.guest.application("windowsPrinter",
+                                                                                    {'hostname': application[
+                                                                                        'hostname']})
 
     def _get_browser(self):
         """
