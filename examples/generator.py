@@ -19,9 +19,7 @@ def start_guest(index, virtual_machine_monitor, args):
     # Waiting to connect to guest.
     logger_generator.info('[~] Trying to connect to guest {}.'.format(index))
 
-    while guest.state != "connected":
-        logger_generator.debug(".")
-        time.sleep(1)
+    guest.waitTillAgentIsConnected()
 
     logger_generator.info('[+] Connected to %s', guest.guestname)
 
@@ -35,7 +33,10 @@ def start_guest(index, virtual_machine_monitor, args):
     generator.shutdown()
 
     # Shutdown virtual machine but keep the disk.
-    guest.shutdown('keep')
+    if args.store:
+        guest.shutdown('keep')
+    else:
+        guest.shutdown('clean')
 
 
 def main():
@@ -48,6 +49,8 @@ def main():
                         default=None)
     parser.add_argument('--parallel', type=int, help='amount of virtual machines running parallel', nargs='?',
                         default=1)
+    parser.add_argument('--store', type=bool, help='store the virtual machine disk after shutdown', nargs='?',
+                        default=False)
 
     args = parser.parse_args()
 

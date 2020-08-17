@@ -5,7 +5,7 @@ seed: 1234
 collections:
   c-smb-0:
     type: smb
-    files: ../collections/general_default_attachments.txt
+    files: ./generator/collections/general_default_attachments.txt
 settings:
   host_nfs_path: /data/hystck_data
   guest_nfs_path: Z:\\

@@ -5,18 +5,18 @@ seed: 1234
 collections:
   c-http-0:
     type: http
-    urls: ../collections/friendly_urls.txt
+    urls: ./generator/collections/friendly_urls.txt
   c-mail-0:
     type: mail
-    recipients: ../collections/friendly_recipients.txt
-    subjects: ../collections/friendly_subjects.txt
-    messages: ../collections/friendly_messages.txt
+    recipients: ./generator/collections/friendly_recipients.txt
+    subjects: ./generator/collections/friendly_subjects.txt
+    messages: ./generator/collections/friendly_messages.txt
   c-print-0:
     type: printer
-    files: ../collections/printer_default_documents.txt
+    files: ./generator/collections/printer_default_documents.txt
   c-smb-0:
     type: smb
-    files: ../collections/general_default_attachments.txt
+    files: ./generator/collections/general_default_attachments.txt
 settings:
   host_nfs_path: /data/hystck_data
   guest_nfs_path: Z:\\

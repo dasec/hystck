@@ -390,7 +390,7 @@ class Guest(object):
         try:
             network_dump_hypervisor_path = join(constants.FILEPATH_NETWORK_DUMPS, self.hypervisor_ip)
             network_dump_guest_path = join(network_dump_hypervisor_path, self.guestname)
-            self.network_dump_file_path = join(network_dump_guest_path, str(int(time.time())) + ".pcap")
+            network_dump_file_path = join(network_dump_guest_path, str(int(time.time())) + ".pcap")
 
             ############################################################################################################
             # Own machine hypervisor                                                                                   #
@@ -413,6 +413,9 @@ class Guest(object):
 
                 subprocess.Popen([self.sniffer, "-i", internetInterface, "-w", network_dump_file_path, "-s0"])
                 self.logger.info("sniffer started")
+
+                # Store for generator to use
+                self.network_dump_file_path = network_dump_file_path
 
             ############################################################################################################
             # Other machine hypervisor                                                                                 #

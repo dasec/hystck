@@ -5,7 +5,7 @@ seed: 1234
 collections:
   c-http-0:
     type: http
-    urls: ../collections/friendly_urls.txt
+    urls: ./generator/collections/friendly_urls.txt
 settings:
   host_nfs_path: /data/hystck_data
   guest_nfs_path: Z:\\

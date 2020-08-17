@@ -5,7 +5,7 @@ seed: 1234
 collections:
   c-print-0:
     type: printer
-    files: ../collections/printer_default_documents.txt
+    files: ./generator/collections/printer_default_documents.txt
 settings:
   host_nfs_path: /data/hystck_data
   guest_nfs_path: Z:\\
