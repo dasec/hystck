@@ -5,6 +5,7 @@ import logging
 import random
 import sys
 import time
+import subprocess
 
 import yaml
 
@@ -34,6 +35,7 @@ class Generator(object):
         self.settings = {}
 
         self.browser = None
+        self.printers = {}
 
         if self._logger is None:
             self._logger = create_logger('generator', logging.DEBUG)
@@ -94,6 +96,15 @@ class Generator(object):
         for action in self.actions:
             self._logger.info('[~] Executing %s.', action)
             self._execute_action(action)
+
+        if self.config['scripts']:
+            for script in self.config['scripts']:
+                # Replace place-holder arguments with real values.
+                script.replace('@config', self.path)
+                script.replace('@dump', self.guest.network_dump_file_path)
+
+                self._logger.info('[~] Calling "%s".', script)
+                subprocess.call(script, shell=True)
 
     def _execute_action(self, action):
         """
@@ -174,9 +185,8 @@ class Generator(object):
         :param action:
         :return:
         """
-        # TODO: Refactor printing functionality to own "Printer" class. How to properly address the printer which should
-        # be used? Do we want to initialize different printers?
-        self.guest.shellExec('notepad.exe /p "{}"'.format(action['file']))
+        printer = self.config['applications'][action['application']]
+        self.printers[printer['hostname']].print_document(action['file'])
         self._logger.info('[+] Printer: Send file %s to printer.', action['file'])
         time.sleep(5)
 
@@ -546,24 +556,16 @@ class Generator(object):
             self.settings['nfs'] = NFSSettings(host_vm_nfs_path=self.config['settings']['host_nfs_path'],
                                                guest_vm_nfs_path=self.config['settings']['guest_nfs_path'])
 
-        self._setup_printer()
+        self._setup_printers()
 
-    def _setup_printer(self):
+    def _setup_printers(self):
         """
         Create network printer required by the config file.
         """
         for key, application in self.config['applications'].items():
             if application['type'] == 'printer':
-                self.guest.shellExec(
-                    'rundll32 printui.dll,PrintUIEntry /if /b IPPTool-Printer /m "Generic / Text Only" /r "{}"'.format(
-                        application['hostname']))
-                time.sleep(3)
-                self.guest.shellExec('rundll32 printui.dll,PrintUIEntry /y /n IPPTool-Printer')
-                time.sleep(3)
-                self.guest.shellExec(
-                    'REG ADD "HKCU\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Windows" /t REG_DWORD /v LegacyDefaultPrinterMode /d 1 /f')
-                time.sleep(5)
-                self._logger.info('[~] Created new printer %s.', key)
+                self.printers[application['hostname']] = self.guest.application("windowsPrinter",
+                                                                                {'hostname': application['hostname']})
 
     def _get_browser(self):
         """

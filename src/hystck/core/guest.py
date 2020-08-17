@@ -111,6 +111,8 @@ class Guest(object):
             self.mac2 = mac2
             self.macsInUse = macsInUse
 
+            self.network_dump_file_path = None
+
             # set hypervisor
             if hypervisor is "kvm":
                 if hypervisor_ip == "127.0.0.1":
@@ -388,7 +390,7 @@ class Guest(object):
         try:
             network_dump_hypervisor_path = join(constants.FILEPATH_NETWORK_DUMPS, self.hypervisor_ip)
             network_dump_guest_path = join(network_dump_hypervisor_path, self.guestname)
-            network_dump_file_path = join(network_dump_guest_path, str(int(time.time())) + ".pcap")
+            self.network_dump_file_path = join(network_dump_guest_path, str(int(time.time())) + ".pcap")
 
             ############################################################################################################
             # Own machine hypervisor                                                                                   #
