@@ -552,9 +552,11 @@ class Generator(object):
         """
         Setups needed settings (and objects) for the applications to run later on.
         """
-        if 'host_nfs_path' in self.config['settings'] and 'guest_nfs_path' in self.config['settings']:
-            self.settings['nfs'] = NFSSettings(host_vm_nfs_path=self.config['settings']['host_nfs_path'],
-                                               guest_vm_nfs_path=self.config['settings']['guest_nfs_path'])
+        if 'settings' in self.config:
+            # Setup NFS share.
+            if 'host_nfs_path' in self.config['settings'] and 'guest_nfs_path' in self.config['settings']:
+                self.settings['nfs'] = NFSSettings(host_vm_nfs_path=self.config['settings']['host_nfs_path'],
+                                                   guest_vm_nfs_path=self.config['settings']['guest_nfs_path'])
 
         self._setup_printers()
 
