@@ -108,8 +108,8 @@ class Generator(object):
         if 'scripts' in self.config and self.config['scripts']:
             for script in self.config['scripts']:
                 # Replace place-holder arguments with real values.
-                script.replace('@config', self.path)
-                script.replace('@dump', self.guest.network_dump_file_path)
+                script = script.replace('@config', self.path)
+                script = script.replace('@dump', self.guest.network_dump_file_path)
 
                 self._logger.info('[~] Calling "%s".', script)
                 subprocess.call(script, shell=True)

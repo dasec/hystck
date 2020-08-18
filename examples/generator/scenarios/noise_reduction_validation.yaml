@@ -8,7 +8,7 @@ collections:
     files: ./generator/collections/printer_default_documents.txt
   c-smb-0:
     type: smb
-    files: ./generator/collections/general_default_attachments.txt
+    files: ./generator/collections/printer_default_documents.txt
 settings:
   host_nfs_path: /data/hystck_data
   guest_nfs_path: Z:\\
