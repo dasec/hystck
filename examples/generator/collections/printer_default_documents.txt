@@ -1,2 +1,1 @@
-./generator/files/blue.pdf
-./generator/files/document.pdf
+C:\Users\hystck\Documents\top_secret.txt

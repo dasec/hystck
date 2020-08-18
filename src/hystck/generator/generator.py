@@ -28,6 +28,7 @@ class Generator(object):
         :param logger:
         """
         self.guest = guest
+        self.path = path
         self._logger = logger
         self.actions = []
         self.collections = {'mail': {'default': {}}, 'chat': {'default': {}},
