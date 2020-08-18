@@ -542,7 +542,7 @@ class Generator(object):
         with open('./generator/collections/mail_default_messages.txt', 'r') as f:
             self.collections['mail']['default']['messages'] = f.read().splitlines()
 
-        with open('./generator/collections/general_default_attachments.txt', 'r') as f:
+        with open('./generator/collections/mail_default_attachments.txt', 'r') as f:
             self.collections['mail']['default']['attachments'] = f.read().splitlines()
 
         # Load default fallback collections for chat.
@@ -552,7 +552,7 @@ class Generator(object):
         with open('./generator/collections/chat_default_messages.txt', 'r') as f:
             self.collections['chat']['default']['messages'] = f.read().splitlines()
 
-        with open('./generator/collections/general_default_attachments.txt', 'r') as f:
+        with open('./generator/collections/smb_default_attachments.txt', 'r') as f:
             self.collections['chat']['default']['attachments'] = f.read().splitlines()
 
         # Load default fallback collections for printer.
@@ -560,7 +560,7 @@ class Generator(object):
             self.collections['printer']['default'] = f.read().splitlines()
 
         # Load default fallback collections for SMB.
-        with open('./generator/collections/general_default_attachments.txt', 'r') as f:
+        with open('./generator/collections/smb_default_attachments.txt', 'r') as f:
             self.collections['smb']['default'] = f.read().splitlines()
 
     def _setup_applications(self):
@@ -585,6 +585,7 @@ class Generator(object):
                     self.printers[application['hostname']] = self.guest.application("windowsPrinter",
                                                                                     {'hostname': application[
                                                                                         'hostname']})
+                    self._logger.info('[~] Creating network printer %s', application['hostname'])
 
     def _get_browser(self):
         """
