@@ -145,8 +145,6 @@ class Generator(object):
         :param action:
         :return:
         """
-        action['time'] = int(time.time())
-
         if action['type'] == 'http':
             self._execute_action_http(action)
         elif action['type'] == 'mail':
@@ -157,6 +155,8 @@ class Generator(object):
             self._execute_action_printer(action)
         elif action['type'] == 'smb':
             self._execute_action_smb(action)
+
+        action['time'] = int(time.time())
 
         # Wait for a randomized interval.
         wait_duration = random.randint(1, 5)
@@ -182,6 +182,8 @@ class Generator(object):
         while browser.is_busy is True:
             self._logger.debug("[~] Firefox is busy.")
             time.sleep(1)
+
+        browser.close()
 
         self._logger.info('[+] HTTP: Opened URL %s.', action['url'])
         time.sleep(5)

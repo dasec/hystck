@@ -1,13 +1,16 @@
-name: haystack approximate matching dataset
+name: haystack machine learning dataset
 description: A example action suite to generate a haystack (traffic)
 author: MPSE Group
 collections:
   c-http-0:
     type: http
-    urls: ./generator/collections/am_http_hay.txt
+    urls: ./generator/collections/friendly_urls.txt
   c-http-1:
     type: http
-    urls: ./generator/collections/am_http_needles.txt
+    urls: ./generator/collections/friendly_vimeo_videos.txt
+  c-http-2:
+    type: http
+    urls: ./generator/collections/friendly_youtube_videos.txt
   c-mail-0:
     type: mail
     recipients: ./generator/collections/friendly_recipients.txt
@@ -19,6 +22,7 @@ collections:
 settings:
   host_nfs_path: /data/hystck_data
   guest_nfs_path: Z:\\
+  minimum_wait_duration: 20
 applications:
   mail-0:
     type: mail
@@ -39,8 +43,12 @@ applications:
 hay:
   h-http-0:
     application: http
-    amount: 100
-    collection: c-http-0
+    amount: 10
+    collection: c-http-1
+  h-http-1:
+    application: http
+    amount: 10
+    collection: c-http-2
   h-mail-0:
     application: mail-0
     amount: 5
@@ -54,4 +62,4 @@ needles:
   n-http-0:
     application: http
     amount: 20
-    collection: c-http-1
+    collection: c-http-0
