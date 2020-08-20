@@ -6,6 +6,7 @@ import random
 import sys
 import time
 import subprocess
+import json
 
 import yaml
 
@@ -28,12 +29,16 @@ class Generator(object):
         :param logger:
         """
         self.guest = guest
-        self.path = path
         self._logger = logger
         self.actions = []
         self.collections = {'mail': {'default': {}}, 'chat': {'default': {}},
                             'http': {'default': []}, 'printer': {'default': []}, 'smb': {'default': []}}
         self.settings = {}
+
+        self.config_path = path
+        self.report_path = None
+
+        self._start_time = None
 
         self.browser = None
         self.printers = {}
@@ -51,11 +56,15 @@ class Generator(object):
 
         # Check if user specified a seed to be used for randomization.
         # Does not override the seed passed as an argument
-        if 'seed' in self.config and seed is None:
+        if seed:
+            self.seed = seed
+        elif 'seed' in self.config:
             self._logger.info('[~] Using the specified seed: %d.', self.config['seed'])
-            seed = self.config['seed']
+            self.seed = self.config['seed']
+        else:
+            self.seed = random.randrange(sys.maxsize)
 
-        random.seed(seed)
+        random.seed(self.seed)
 
         # Check if minimum requirements are fulfilled.
         if 'hay' not in self.config or 'needles' not in self.config:
@@ -101,18 +110,34 @@ class Generator(object):
         """
         Executes the previously generated set of actions.
         """
+        self._start_time = int(time.time())
+
         for action in self.actions:
             self._logger.info('[~] Executing %s.', action)
             self._execute_action(action)
 
+        self._generate_report()
+
         if 'scripts' in self.config and self.config['scripts']:
             for script in self.config['scripts']:
                 # Replace place-holder arguments with real values.
-                script = script.replace('@config', self.path)
+                script = script.replace('@config', self.config_path)
                 script = script.replace('@dump', self.guest.network_dump_file_path)
+                script = script.replace('@report', self.report_path)
 
                 self._logger.info('[~] Calling "%s".', script)
                 subprocess.call(script, shell=True)
+
+    def _generate_report(self):
+        report = {'seed': self.seed, 'actions': self.actions, 'start_time': self._start_time,
+                  'finish_time': int(time.time())}
+
+        self.report_path = self.guest.network_dump_file_path[:self.guest.network_dump_file_path.rfind('/')]
+
+        with open('{}/report.json'.format(self.report_path), 'w') as f:
+            json.dump(report, f, sort_keys=True, indent=4)
+
+        self._logger.info('[+] Created final report (%s).', '{}/report.json'.format(self.report_path))
 
     def _execute_action(self, action):
         """
@@ -120,6 +145,8 @@ class Generator(object):
         :param action:
         :return:
         """
+        action['time'] = int(time.time())
+
         if action['type'] == 'http':
             self._execute_action_http(action)
         elif action['type'] == 'mail':

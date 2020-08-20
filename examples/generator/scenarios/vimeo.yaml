@@ -1,7 +1,6 @@
 name: haystack vimeo example
 description: A example action suite to generate a haystack (traffic)
 author: MPSE Group
-seed: 1234
 collections:
   c-http-0:
     type: http
