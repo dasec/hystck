@@ -183,10 +183,10 @@ class Generator(object):
             self._logger.debug("[~] Firefox is busy.")
             time.sleep(1)
 
-        browser.close()
-
         self._logger.info('[+] HTTP: Opened URL %s.', action['url'])
         time.sleep(5)
+
+        browser.close()
 
     def _execute_action_mail(self, action):
         """

@@ -51,7 +51,7 @@ hay:
     collection: c-http-2
   h-mail-0:
     application: mail-0
-    amount: 5
+    amount: 3
     recipient: sk@hystck.local
     collection: c-mail-0
   h-smb-0:
