@@ -34,8 +34,8 @@ applications:
     auth_method_smtp: 3
   mail-1:
     type: mail
-    imap_hostname: 192.168.103.123
-    smtp_hostname: 192.168.103.123
+    imap_hostname: 192.168.103.144
+    smtp_hostname: 192.168.103.144
     email: sk@hystck.local
     password: hystck
     username: sk
@@ -45,12 +45,12 @@ applications:
     auth_method_smtp: 3
   printer-0:
     type: printer
-    hostname: http://192.168.103.123:631/ipp/print/name
+    hostname: http://192.168.103.144:631/ipp/print/name
   smb-0:
     type: smb
     username: service
     password: hystck
-    destination: \\192.168.103.123\sambashare
+    destination: \\192.168.103.144\sambashare
 hay:
   h-http-0:
     application: http
