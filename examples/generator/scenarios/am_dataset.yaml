@@ -55,3 +55,5 @@ needles:
     application: http
     amount: 20
     collection: c-http-1
+scripts:
+  - /home/mpse/approximate-matching/report.sh @dump @report
