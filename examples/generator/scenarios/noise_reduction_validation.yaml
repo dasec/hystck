@@ -33,3 +33,4 @@ hay:
 needles:
 scripts:
   - ../utils/generator-validator/validator.sh @dump @config
+  - ../utils/noise-filter/noise_filter.sh @dump
