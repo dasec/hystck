@@ -16,10 +16,10 @@ collections:
     files: ./generator/printer_default_documents.txt
   c-smb-0:
     type: smb
-    files: ./generator/general_default_attachments.txt
+    files: ./generator/general_default_attachments_2.txt
 settings:
-  host_nfs_path: /data/hystck_data
-  guest_nfs_path: Z:\\
+    host_nfs_path:
+    guest_nfs_path:
 applications:
   mail-0:
     type: mail
@@ -65,9 +65,6 @@ hay:
     recipient: sk@hystck.local
     subject: a random mail
     message: I'm sending you this mail because of X.
-    attachments:
-      - /data/hystck_data/blue.jpg
-      - /data/hystck_data/document.pdf
     amount: 1
   h-mail-1:
     application: mail-1
@@ -77,19 +74,17 @@ hay:
 needles:
   n-printer-0:
     application: printer-0
-    file: C:\Users\hystck\Documents\top_secret.txt
+    file: C:\Users\hystck\Documents\top_secret_test.txt
     amount: 2
   n-mail-0:
     application: mail-1
     recipient: sk@hystck.local
     subject: a suspicious mail
     content: I've attached said document.
-    attachments:
-      - /data/hystck_data/hda_master.pdf
     amount: 1
   n-smb-0:
     application: smb-0
     amount: 1
     files:
-      - C:\Users\hystck\Documents\top_secret.txt
-      - C:\Users\hystck\Documents\hda_master.pdf
+      - C:\Users\hystck\Documents\top_secret_test.txt
+      - C:\Users\hystck\Documents\hda_master_test.pdf

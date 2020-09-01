@@ -84,18 +84,14 @@ def send_mail(guest_vm, mail_account, mail, nfs_settings=None):
 def _generate_path_list_for_guest_vm(attachment_path_list, guest_vm_nfs_path, host_vm_nfs_path):
     validated_file_list = []
     for file_path in attachment_path_list:
-        if host_vm_nfs_path is None:
-            validated_file_list.append(file_path)
-            #TODO implement check if file exists guest side; weaken/change NFS requirements completely
-        else:
-            if os.path.isfile(file_path):
-                if os.path.dirname(file_path) == host_vm_nfs_path:
-                    guest_vm_file_path = _generate_nfs_path_for_file_on_guest_vm(file_path, guest_vm_nfs_path)
-                    validated_file_list.append(guest_vm_file_path)
-                else:
-                    print "ERROR: " + file_path + "is not located within the host nfs directory: " + host_vm_nfs_path
+        if os.path.isfile(file_path):
+            if os.path.dirname(file_path) == host_vm_nfs_path:
+                guest_vm_file_path = _generate_nfs_path_for_file_on_guest_vm(file_path, guest_vm_nfs_path)
+                validated_file_list.append(guest_vm_file_path)
             else:
-                print "ERROR: " + file_path + " is not a valid file path."
+                print "ERROR: " + file_path + "is not located within the host nfs directory: " + host_vm_nfs_path
+        else:
+            print "ERROR: " + file_path + " is not a valid file path."
     return validated_file_list
 
 
