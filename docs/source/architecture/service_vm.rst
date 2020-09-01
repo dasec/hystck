@@ -5,8 +5,31 @@ Service VM
 ##########################
 
 
+SSH
+----------------------
+The VM has no GUI. Therefore SSH is necessary to install and configure the needed services.
 
-.. TODO SERVICES
+IP: `192.168.103.123`
+
+
+.. TODO AS TABLE
+
+User  Password
+
+------  ------
+
+`root` (disabled via SSH)  `hystck`
+
+`service`  `hystck`
+
+Backup
+--------------
+Clean image (without any installations) was cloned under: /data/images/backup/ using the following command:
+
+.. code-block:: console
+
+    $ virt-clone --original debian_service --name debian_service_backup --file /data/images/backing/debian_service_backup.qcow2
+
 
 
 

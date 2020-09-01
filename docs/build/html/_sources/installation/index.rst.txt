@@ -11,6 +11,8 @@ installation can be done.
 
 Once you have finished the installation process, visit :ref:`firstrun` for some help on getting started with hystck.
 
+It is recommended to install the service VM before you install the guest components.
+
 Configuration of installation paths and values
 #################################################
 

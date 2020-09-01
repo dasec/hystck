@@ -37,6 +37,10 @@ Next, the needed applications are set up and **hay** and **needles** are used to
 Before executing these actions, the parameters are chosen randomly. Once all actions have completed, the guest components
 are stopped and a .*pcap* file is created on the host machine.
 
+
+If you are currently not using a NFS or your NFS server is not located on your host machine, leave the fields **host_nfs_path**
+and **guest_nfs_path** empty - this will allow you to use normal windows or linux paths.
+
 ============================
 YAML-Template
 ============================

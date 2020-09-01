@@ -1,5 +1,8 @@
 .. _guestinstall:
 
+.. TODO install.bat & linux install script to call setup py -> setup py current version with generator in installtools
+.. TODO choco install dotnet usw hangups maybe try with timeout after x secondss
+
 ********************
 Guest Installation
 ********************
@@ -31,7 +34,7 @@ install script found in the **install_tools** folder
 
 .. code-block:: console
 
-       $ sudo ./win10install.sh
+       $ sudo ./win10install.sh path/to/isofile
 
 or simply copying the command seen below:
 
@@ -229,7 +232,7 @@ install script found in the **install_tools** folder
 
 .. code-block:: console
 
-       $ sudo ./ubuntu19.10install.sh
+       $ sudo ./ubuntu19.10install.sh path/to/isofile
 
 or simply copying the command seen below:
 
@@ -393,6 +396,56 @@ and run:
 .. code-block:: console
 
     $ python setup.py install --user
+
+
+Connecting the guest machines to the NFS server
+..................................................
+
+On the Ubuntu guest, start by running the following 3 commands:
+
+.. code-block:: console
+
+    $ sudo apt update
+    $ sudo apt install nfs-common
+    $ sudo mkdir /mnt/remotenfs
+
+This will install NFS and create a folder that will be used to mount the NFS server. You can choose a different location and name.
+
+Next, edit your **/etc/fstab** file to include the following line:
+
+.. code-block:: console
+
+    [ip_address]:/var/nfsroot /mnt/remotenfs nfs rw,async,hard,intr,noexec 0 0
+
+The ip address can be gathered from the service VM by running **ip addr** in a service VM shell. **var/nfsroot** and **mnt/remotenfs** need to be adapted
+to your choice of remote and local folder locations and names.
+
+Finally, mount the filesystem:
+
+.. code-block:: console
+
+    $ sudo mount /mnt/remotenfs
+
+
+On Windows 10, your installation will run differently. We recommend installing the service VM before installing the Windows guest component.
+
+After installing the service VM, start your Windows template. Open your **Control Panel** and select ''Programs and Features**.
+Here, you will have the option to **Turn Windows features on or off** in the sidebar - click it, tick "Services for NFS" in the following
+window and click OK.
+
+As a next step, you need to enable write permissions for this machine. To do this, you need to open **regedit** and find
+**HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\ClientForNFS\CurrentVersion\Default**. Create two new **DWORD** components named **AnonymousUid**
+and **AnonymousGid** and assign the UID and GID values shared by the NFS system.
+Lastly, mount the filesystem by adjusting **mountnfs.bat** with the correct IP address and folder location. If you have already installed the service VM
+or do not mind running **install.bat** a second time, the **mountfs.bat** will be added to the Task Scheduler, mounting the filesystem at launch automatically.
+
+
+
+
+
+
+This method can also be used to connect the NFS server to your host machine.
+
 
 
 ######################################################

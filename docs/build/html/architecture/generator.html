@@ -59,6 +59,8 @@ host and guest is established. Then, the <strong>config.yml</strong> is read and
 Next, the needed applications are set up and <strong>hay</strong> and <strong>needles</strong> are used to generate the actions detailed in the config file.
 Before executing these actions, the parameters are chosen randomly. Once all actions have completed, the guest components
 are stopped and a .*pcap* file is created on the host machine.</p>
+<p>If you are currently not using a NFS or your NFS server is not located on your host machine, leave the fields <strong>host_nfs_path</strong>
+and <strong>guest_nfs_path</strong> empty - this will allow you to use normal windows or linux paths.</p>
 <div class="section" id="yaml-template">
 <h2>YAML-Template<a class="headerlink" href="#yaml-template" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-xml notranslate"><div class="highlight"><pre><span></span>name: haystack-example

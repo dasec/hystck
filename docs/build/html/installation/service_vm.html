@@ -50,6 +50,17 @@ using SSH.</p>
 <span class="go">--noautoconsole -v</span>
 </pre></div>
 </div>
+<p>If you have decided to use the service VM image we provide, you will need to perform a few steps to enable all functionalities.
+First, you will need to add your public and private networks manually. This can be done using <strong>virt-manager</strong>.
+Next, start the VM and log in as <strong>root</strong> with the password <strong>hystck</strong>. Run the commands <strong>dhclient</strong> and <strong>dnsmasq</strong>, then
+<strong>systemctl stop cups</strong>. Finally, run the <strong>Print Service</strong> installation seen below. If you reboot the service VM you will need to perform
+these steps again (with the exception of adding the networks and potentially <strong>dnsmasq</strong>).</p>
+<p>Once you have performed these steps, run <strong>ip addr</strong> to display the service VM’s ip address. This is important since the generator
+needs the address to perform various services. The IP address will look like this: <strong>192.168.103.xxx</strong> with <strong>103</strong> indicating that it
+is an IP address of the <strong>public</strong> network. Naturally, this will change if you decide to configure your networks differently.</p>
+<p><strong>Login data for provided service VM:</strong>
+root - hystck
+service - hystck</p>
 <div class="section" id="print-service">
 <h2>Print Service<a class="headerlink" href="#print-service" title="Permalink to this headline">¶</a></h2>
 <p>To install the virtual printer, only a few steps are necessary. First, clone the <strong>ippsample</strong> tool repository:</p>
@@ -61,7 +72,7 @@ using SSH.</p>
 </pre></div>
 </div>
 <p>Build the container:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> docker build -t ippsample
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> docker build -t ippsample .
 </pre></div>
 </div>
 <p>You may need an updated version of docker to install the print service. Find a guide on how to install the correct docker version <a class="reference external" href="https://docs.docker.com/engine/install/ubuntu/">here</a>.</p>
@@ -193,6 +204,12 @@ Edit /etc/postfix/main.cf:</p>
 <p>Mount directory on Linux client:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> sudo mount -t nfs4 -o <span class="nv">proto</span><span class="o">=</span>tcp,port<span class="o">=</span><span class="m">2049</span> &lt;ip_host_vm&gt;:/&lt;mnt_path_host_vm&gt; &lt;mnt_path_guest_machine&gt;
 </pre></div>
+</div>
+<div class="section" id="installing-nfs-server">
+<h3>Installing NFS server<a class="headerlink" href="#installing-nfs-server" title="Permalink to this headline">¶</a></h3>
+<p>To install an NFS server, a few steps need to be taken.</p>
+<p><strong>Note</strong>: If you want to use the generator’s current functions that use a NFS server to maintain file transfer data, we recommend
+installing an NFS server on your <strong>host machine</strong> or at least connecting your <strong>host</strong> to the NFS server as a client.</p>
 </div>
 </div>
 </div>

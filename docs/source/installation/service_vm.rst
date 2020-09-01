@@ -22,7 +22,20 @@ using SSH.
     --noautoconsole -v
 
 
+If you have decided to use the service VM image we provide, you will need to perform a few steps to enable all functionalities.
+First, you will need to add your public and private networks manually. This can be done using **virt-manager**.
+Next, start the VM and log in as **root** with the password **hystck**. Run the commands **dhclient** and **dnsmasq**, then
+**systemctl stop cups**. Finally, run the **Print Service** installation seen below. If you reboot the service VM you will need to perform
+these steps again (with the exception of adding the networks and potentially **dnsmasq**).
 
+Once you have performed these steps, run **ip addr** to display the service VM's ip address. This is important since the generator
+needs the address to perform various services. The IP address will look like this: **192.168.103.xxx** with **103** indicating that it
+is an IP address of the **public** network. Naturally, this will change if you decide to configure your networks differently.
+
+
+**Login data for provided service VM:**
+root - hystck
+service - hystck
 
 
 Print Service
@@ -44,7 +57,7 @@ Build the container:
 
 .. code-block:: console
 
-    $ docker build -t ippsample
+    $ docker build -t ippsample .
 
 
 You may need an updated version of docker to install the print service. Find a guide on how to install the correct docker version `here <https://docs.docker.com/engine/install/ubuntu/>`_.
@@ -229,6 +242,14 @@ Mount directory on Linux client:
     $ sudo mount -t nfs4 -o proto=tcp,port=2049 <ip_host_vm>:/<mnt_path_host_vm> <mnt_path_guest_machine>
 
 
+Installing NFS server
+-----------------------
+
+To install an NFS server, a few steps need to be taken.
+
+
+**Note**: If you want to use the generator's current functions that use a NFS server to maintain file transfer data, we recommend
+installing an NFS server on your **host machine** or at least connecting your **host** to the NFS server as a client.
 
 
 

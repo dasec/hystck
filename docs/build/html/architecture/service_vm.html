@@ -36,22 +36,38 @@
             
   <div class="section" id="service-vm">
 <span id="service"></span><h1>Service VM<a class="headerlink" href="#service-vm" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="ssh">
+<h2>SSH<a class="headerlink" href="#ssh" title="Permalink to this headline">¶</a></h2>
+<p>The VM has no GUI. Therefore SSH is necessary to install and configure the needed services.</p>
+<p>IP: <cite>192.168.103.123</cite></p>
+<p>User  Password</p>
+<p>——  ——</p>
+<p><cite>root</cite> (disabled via SSH)  <cite>hystck</cite></p>
+<p><cite>service</cite>  <cite>hystck</cite></p>
+</div>
+<div class="section" id="backup">
+<h2>Backup<a class="headerlink" href="#backup" title="Permalink to this headline">¶</a></h2>
+<p>Clean image (without any installations) was cloned under: /data/images/backup/ using the following command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> virt-clone --original debian_service --name debian_service_backup --file /data/images/backing/debian_service_backup.qcow2
+</pre></div>
+</div>
 <div class="section" id="mail-server">
-<h2>Mail Server<a class="headerlink" href="#mail-server" title="Permalink to this headline">¶</a></h2>
+<h3>Mail Server<a class="headerlink" href="#mail-server" title="Permalink to this headline">¶</a></h3>
 <p>The Service VM provides a local installation of an SMTP server via <strong>Postfix</strong> and an IMAP/POP3 server via <strong>Dovecot</strong>. Both
 components are configured to communicate in the specifically set up local network (see <a class="reference internal" href="../installation/host.html#hostinstall"><span class="std std-ref">Host Installation</span></a>). Furthermore, to maximize
 the amount of analyzable data, the communication is entirely unencrypted.</p>
 </div>
 <div class="section" id="printing-system">
-<h2>Printing System<a class="headerlink" href="#printing-system" title="Permalink to this headline">¶</a></h2>
+<h3>Printing System<a class="headerlink" href="#printing-system" title="Permalink to this headline">¶</a></h3>
 <p>To simulate a network connected printer, the Service VM provides an <strong>ippserver</strong>. This allows the simulation of print jobs on a network
 connected printer using the IPP protocol and the UNIX-specific printing system <strong>CUPS</strong>.
 The <strong>ippserver</strong> is installed, configured and run using <strong>Docker</strong>.</p>
 </div>
 <div class="section" id="smb-network-drive">
-<h2>SMB Network Drive<a class="headerlink" href="#smb-network-drive" title="Permalink to this headline">¶</a></h2>
+<h3>SMB Network Drive<a class="headerlink" href="#smb-network-drive" title="Permalink to this headline">¶</a></h3>
 <p>The Service VM also provides an <strong>SMB</strong> service. <strong>SMB</strong> is a protocol generally used to share access of network drives or other utilities.
 Similarly to the the mail communication, the <strong>SMB</strong> communication remains unencrypted by default to maximize the amount of analyzable data.</p>
+</div>
 </div>
 </div>
 
@@ -78,9 +94,8 @@ Similarly to the the mail communication, the <strong>SMB</strong> communication 
 <li class="toctree-l1"><a class="reference internal" href="framework_architecture.html">Framework Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="generator.html">Generator</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Service VM</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#mail-server">Mail Server</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#printing-system">Printing System</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#smb-network-drive">SMB Network Drive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ssh">SSH</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#backup">Backup</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../installation/index.html">Installation of hystck</a></li>

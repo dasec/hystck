@@ -34,8 +34,8 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="guest-installation">
-<span id="guestinstall"></span><h1>Guest Installation<a class="headerlink" href="#guest-installation" title="Permalink to this headline">¶</a></h1>
+  <span class="target" id="guestinstall"></span><div class="section" id="guest-installation">
+<h1>Guest Installation<a class="headerlink" href="#guest-installation" title="Permalink to this headline">¶</a></h1>
 <p>Similarly to the installation of the host component described in <a class="reference internal" href="host.html#hostinstall"><span class="std std-ref">Host Installation</span></a>, the guest can be installed
 both automatically via a set of scripts or manually. A major difference in the installation is the OS of the guest
 component. While a similar approach to the host installation can be taken if Ubuntu is chosen as a guest platform,
@@ -48,7 +48,7 @@ obtain a Windows 10 image. We recommend downloading an ISO-file from an official
 <p>Next, you need to set up the virtual machine.
 While this can be done via the graphical interface of the <strong>virt-manager</strong>, we recommend running the <strong>win10install.sh</strong>
 install script found in the <strong>install_tools</strong> folder</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> sudo ./win10install.sh
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> sudo ./win10install.sh path/to/isofile
 </pre></div>
 </div>
 <p>or simply copying the command seen below:</p>
@@ -194,7 +194,7 @@ the same.</p>
 <p>Next, you need to set up the virtual machine.
 While this can be done via the graphical interface of the <strong>virt-manager</strong>, we recommend running the <strong>ubuntu19.10install.sh</strong>
 install script found in the <strong>install_tools</strong> folder</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> sudo ./ubuntu19.10install.sh
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> sudo ./ubuntu19.10install.sh path/to/isofile
 </pre></div>
 </div>
 <p>or simply copying the command seen below:</p>
@@ -320,6 +320,36 @@ different name), copy and then paste the following text in it:</p>
 and run:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python setup.py install --user
 </pre></div>
+</div>
+<div class="section" id="connecting-the-guest-machines-to-the-nfs-server">
+<h4>Connecting the guest machines to the NFS server<a class="headerlink" href="#connecting-the-guest-machines-to-the-nfs-server" title="Permalink to this headline">¶</a></h4>
+<p>On the Ubuntu guest, start by running the following 3 commands:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> sudo apt update
+<span class="gp">$</span> sudo apt install nfs-common
+<span class="gp">$</span> sudo mkdir /mnt/remotenfs
+</pre></div>
+</div>
+<p>This will install NFS and create a folder that will be used to mount the NFS server. You can choose a different location and name.</p>
+<p>Next, edit your <strong>/etc/fstab</strong> file to include the following line:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">[ip_address]:/var/nfsroot /mnt/remotenfs nfs rw,async,hard,intr,noexec 0 0</span>
+</pre></div>
+</div>
+<p>The ip address can be gathered from the service VM by running <strong>ip addr</strong> in a service VM shell. <strong>var/nfsroot</strong> and <strong>mnt/remotenfs</strong> need to be adapted
+to your choice of remote and local folder locations and names.</p>
+<p>Finally, mount the filesystem:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> sudo mount /mnt/remotenfs
+</pre></div>
+</div>
+<p>On Windows 10, your installation will run differently. We recommend installing the service VM before installing the Windows guest component.</p>
+<p>After installing the service VM, start your Windows template. Open your <strong>Control Panel</strong> and select ‘’Programs and Features**.
+Here, you will have the option to <strong>Turn Windows features on or off</strong> in the sidebar - click it, tick “Services for NFS” in the following
+window and click OK.</p>
+<p>As a next step, you need to enable write permissions for this machine. To do this, you need to open <strong>regedit</strong> and find
+<strong>HKEY_LOCAL_MACHINESOFTWAREMicrosoftClientForNFSCurrentVersionDefault</strong>. Create two new <strong>DWORD</strong> components named <strong>AnonymousUid</strong>
+and <strong>AnonymousGid</strong> and assign the UID and GID values shared by the NFS system.
+Lastly, mount the filesystem by adjusting <strong>mountnfs.bat</strong> with the correct IP address and folder location. If you have already installed the service VM
+or do not mind running <strong>install.bat</strong> a second time, the <strong>mountfs.bat</strong> will be added to the Task Scheduler, mounting the filesystem at launch automatically.</p>
+<p>This method can also be used to connect the NFS server to your host machine.</p>
 </div>
 </div>
 </div>

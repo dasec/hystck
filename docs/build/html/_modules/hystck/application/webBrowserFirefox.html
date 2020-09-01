@@ -77,7 +77,7 @@
 <span class="c1">###############################################################################</span>
 <span class="c1"># Host side implementation</span>
 <span class="c1">###############################################################################</span>
-<div class="viewcode-block" id="WebBrowserFirefoxVmmSide"><a class="viewcode-back" href="../../../functions/index.html#hystck.application.webBrowserFirefox.WebBrowserFirefoxVmmSide">[docs]</a><span class="k">class</span> <span class="nc">WebBrowserFirefoxVmmSide</span><span class="p">(</span><span class="n">ApplicationVmmSide</span><span class="p">):</span>
+<div class="viewcode-block" id="WebBrowserFirefoxVmmSide"><a class="viewcode-back" href="../../../developer/functions.html#hystck.application.webBrowserFirefox.WebBrowserFirefoxVmmSide">[docs]</a><span class="k">class</span> <span class="nc">WebBrowserFirefoxVmmSide</span><span class="p">(</span><span class="n">ApplicationVmmSide</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This class is a remote control on the host-side to control a real browser</span>
 <span class="sd">    running on a guest. Supported browsers on the guest is Mozilla Firefox.</span>
@@ -108,7 +108,7 @@
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
                 <span class="n">lineno</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot; Error: webBrowserFirefoxHostSide::__init__ &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">guest_obj</span><span class="o">.</span><span class="n">guestname</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
 
-<div class="viewcode-block" id="WebBrowserFirefoxVmmSide.open"><a class="viewcode-back" href="../../../functions/index.html#hystck.application.webBrowserFirefox.WebBrowserFirefoxVmmSide.open">[docs]</a>    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
+<div class="viewcode-block" id="WebBrowserFirefoxVmmSide.open"><a class="viewcode-back" href="../../../developer/functions.html#hystck.application.webBrowserFirefox.WebBrowserFirefoxVmmSide.open">[docs]</a>    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Sends a command to open a webBrowserFirefox on the associated guest.</span>
 
 <span class="sd">        @param url: Website to open.</span>
@@ -129,7 +129,7 @@
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;error WebBrowserFirefoxVmmSide::open: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="WebBrowserFirefoxVmmSide.close"><a class="viewcode-back" href="../../../functions/index.html#hystck.application.webBrowserFirefox.WebBrowserFirefoxVmmSide.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="WebBrowserFirefoxVmmSide.close"><a class="viewcode-back" href="../../../developer/functions.html#hystck.application.webBrowserFirefox.WebBrowserFirefoxVmmSide.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Sends a command to close a webBrowserFirefox on the associated guest.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -139,7 +139,7 @@
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;error WebBrowserFirefoxVmmSide:close()&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="WebBrowserFirefoxVmmSide.browse_to"><a class="viewcode-back" href="../../../functions/index.html#hystck.application.webBrowserFirefox.WebBrowserFirefoxVmmSide.browse_to">[docs]</a>    <span class="k">def</span> <span class="nf">browse_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
+<div class="viewcode-block" id="WebBrowserFirefoxVmmSide.browse_to"><a class="viewcode-back" href="../../../developer/functions.html#hystck.application.webBrowserFirefox.WebBrowserFirefoxVmmSide.browse_to">[docs]</a>    <span class="k">def</span> <span class="nf">browse_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Sends a url to the associated webBrowserFirefox running on the guest.</span>
 <span class="sd">        @param url: URL to load.</span>
 
@@ -159,7 +159,7 @@
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;error WebBrowserFirefoxVmmSide::download_from: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
 
-<div class="viewcode-block" id="WebBrowserFirefoxVmmSide.browse_to_link_number"><a class="viewcode-back" href="../../../functions/index.html#hystck.application.webBrowserFirefox.WebBrowserFirefoxVmmSide.browse_to_link_number">[docs]</a>    <span class="k">def</span> <span class="nf">browse_to_link_number</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">link_number</span><span class="p">):</span>
+<div class="viewcode-block" id="WebBrowserFirefoxVmmSide.browse_to_link_number"><a class="viewcode-back" href="../../../developer/functions.html#hystck.application.webBrowserFirefox.WebBrowserFirefoxVmmSide.browse_to_link_number">[docs]</a>    <span class="k">def</span> <span class="nf">browse_to_link_number</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">link_number</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Call the &lt;linkNumber&gt; link on the current website in the browser.</span>
 <span class="sd">        @param link_number: number of the link on this website to call.</span>
 
@@ -172,7 +172,7 @@
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;error WebBrowserFirefoxVmmSide::browse_to_link_number: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="WebBrowserFirefoxVmmSide.send_keys_to_browser_element"><a class="viewcode-back" href="../../../functions/index.html#hystck.application.webBrowserFirefox.WebBrowserFirefoxVmmSide.send_keys_to_browser_element">[docs]</a>    <span class="k">def</span> <span class="nf">send_keys_to_browser_element</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element</span><span class="p">,</span> <span class="n">keys</span><span class="p">):</span>
+<div class="viewcode-block" id="WebBrowserFirefoxVmmSide.send_keys_to_browser_element"><a class="viewcode-back" href="../../../developer/functions.html#hystck.application.webBrowserFirefox.WebBrowserFirefoxVmmSide.send_keys_to_browser_element">[docs]</a>    <span class="k">def</span> <span class="nf">send_keys_to_browser_element</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element</span><span class="p">,</span> <span class="n">keys</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Send keys to a specific element on the currently parsed website.</span>
 <span class="sd">        @param element: element to search for.</span>
 <span class="sd">        @param keys: string for the element</span>
@@ -218,7 +218,7 @@
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;error WebBrowserFirefoxVmmSide::save_as: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
 
-<div class="viewcode-block" id="WebBrowserFirefoxVmmSide.facebook_login"><a class="viewcode-back" href="../../../functions/index.html#hystck.application.webBrowserFirefox.WebBrowserFirefoxVmmSide.facebook_login">[docs]</a>    <span class="k">def</span> <span class="nf">facebook_login</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+<div class="viewcode-block" id="WebBrowserFirefoxVmmSide.facebook_login"><a class="viewcode-back" href="../../../developer/functions.html#hystck.application.webBrowserFirefox.WebBrowserFirefoxVmmSide.facebook_login">[docs]</a>    <span class="k">def</span> <span class="nf">facebook_login</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Sends a command to call facebook.com and login.</span>
 <span class="sd">        @param username: facebook username.</span>
 <span class="sd">        @param password: facebook password.</span>
