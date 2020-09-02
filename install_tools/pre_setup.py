@@ -187,12 +187,14 @@ Comment=
         self.logger.info("[~] Installing hystck framework...")
         try:
             if platform.system() == "Linux":
+                self.logger.info("[~] Installing hystck on Linux machine...")
                 prepCmd = "python setup.py install --user"
                 subprocess.call(prepCmd.split(), stdout=subprocess.PIPE)
                # ltmp = os.getcwd() + "/setup.py"
                # subprocess.check_call([sys.executable, ltmp, "install", "--user"])
                # subprocess.call(['python', 'setup.py', 'install', '--user'])
             elif platform.system() == "Windows":
+                self.logger.info("[~] Installing hystck on Windows machine...")
                 tmp = os.getcwd() + "\setup.py"
                 subprocess.check_call([sys.executable, tmp, "install", "--user"])
         except OSError, e:
