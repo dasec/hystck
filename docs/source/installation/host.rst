@@ -56,13 +56,13 @@ Hystck can be found here: `Github link <https://github.com/dasec/hystck>`_.
 Clone or download the repository and navigate into **/install_tools**.
 
 In this folder, you will find a shell script called **linux_installation.sh**. To install the further parts of hystck's
-host component, run the script with root privileges and choose **h** when the console prompts you to make a choice. The
+host component, run the script initially **without** root privileges (you will be asked to enter your password once the script starts) and choose **h** when the console prompts you to make a choice. The
 script will then install all necessary packages including the appropriate Python version.
 
 
 .. code-block:: console
 
-    $ sudo ./linux_installation.sh
+    $ ./linux_installation.sh
     Please choose if this installation is host (h) or guest (g) side installation:
     Selection: h
     ...

@@ -277,11 +277,12 @@ Next, you will want to install all applications used to generate traffic. Both F
 mail and browsing applications used by hystck.
 
 After hystck has been downloaded and your traffic generating application have been installed, simply navigate into **install_tools** and run **linux_installation.sh** and choose the option
-for the guest installation.
+for the guest installation. You will be asked to enter your password as root privileges are required for parts of the installation. Do not execute the entire script
+as root (with sudo).
 
 .. code-block:: console
 
-    $ sudo ./linux_installation.sh
+    $ ./linux_installation.sh
     Please choose if this installation is host (h) or guest (g) side installation:
     Selection: g
     ...

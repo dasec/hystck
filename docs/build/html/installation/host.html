@@ -66,9 +66,9 @@ new user. This is one of multiple ways of allowing GUI functions for a new user.
 Hystck can be found here: <a class="reference external" href="https://github.com/dasec/hystck">Github link</a>.
 Clone or download the repository and navigate into <strong>/install_tools</strong>.</p>
 <p>In this folder, you will find a shell script called <strong>linux_installation.sh</strong>. To install the further parts of hystck’s
-host component, run the script with root privileges and choose <strong>h</strong> when the console prompts you to make a choice. The
+host component, run the script initially <strong>without</strong> root privileges (you will be asked to enter your password once the script starts) and choose <strong>h</strong> when the console prompts you to make a choice. The
 script will then install all necessary packages including the appropriate Python version.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> sudo ./linux_installation.sh
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> ./linux_installation.sh
 <span class="go">Please choose if this installation is host (h) or guest (g) side installation:</span>
 <span class="go">Selection: h</span>
 <span class="go">...</span>

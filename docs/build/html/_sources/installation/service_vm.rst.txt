@@ -247,6 +247,63 @@ Installing NFS server
 
 To install an NFS server, a few steps need to be taken.
 
+First, run the following commands:
+
+.. code-block:: console
+
+    $ sudo apt update
+    $ sudo apt install nfs-kernel-server
+    $ sudo apt install portmap
+
+
+You can lock the access to the NFS services by adding the following line to /etc/hosts.deny:
+
+.. code-block:: console
+
+    rpcbind mountd nfsd statd lockd rquotad : ALL
+
+Then you can modify /etc/hosts.allow to allow certain IP addresses to access the NFS server.
+
+.. code-block:: console
+
+    rpcbind mountd nfsd statd lockd rquotad : example_IP : allow
+    rpcbind mountd nfsd statd rquotad : ALL : deny
+
+You can skip these two steps since the guest VM ip addresses are currently given random within a range.
+
+Next, create the folder NFS will use and modify the ownership attributes:
+
+.. code-block:: console
+
+    $ sudo mkdir /var/nfsroot
+    $ sudo chown nobody:nogroup /var/nfsroot
+
+The penultimate step is modifying the /etc/exports file by adding an entry with the service VM's ip address.
+
+.. code-block:: console
+
+    /var/nfsroot     192.168.103.[xxx]/17(rw,root_squash,subtree_check)
+
+Next, update the exported file systems:
+
+.. code-block:: console
+
+    $ sudo exportfs -ra
+
+Lastly, restart the NFS service.
+
+.. code-block:: console
+
+    $ sudo systemctl restart nfs-kernel-server
+
+
+
+
+
+
+
+
+
 
 **Note**: If you want to use the generator's current functions that use a NFS server to maintain file transfer data, we recommend
 installing an NFS server on your **host machine** or at least connecting your **host** to the NFS server as a client.

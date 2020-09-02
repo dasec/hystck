@@ -229,8 +229,9 @@ It can be found <a class="reference external" href="https://github.com/dasec/hys
 <p>Next, you will want to install all applications used to generate traffic. Both Firefox and Thunderbird are the default
 mail and browsing applications used by hystck.</p>
 <p>After hystck has been downloaded and your traffic generating application have been installed, simply navigate into <strong>install_tools</strong> and run <strong>linux_installation.sh</strong> and choose the option
-for the guest installation.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> sudo ./linux_installation.sh
+for the guest installation. You will be asked to enter your password as root privileges are required for parts of the installation. Do not execute the entire script
+as root (with sudo).</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> ./linux_installation.sh
 <span class="go">Please choose if this installation is host (h) or guest (g) side installation:</span>
 <span class="go">Selection: g</span>
 <span class="go">...</span>

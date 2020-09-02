@@ -208,6 +208,39 @@ Edit /etc/postfix/main.cf:</p>
 <div class="section" id="installing-nfs-server">
 <h3>Installing NFS server<a class="headerlink" href="#installing-nfs-server" title="Permalink to this headline">¶</a></h3>
 <p>To install an NFS server, a few steps need to be taken.</p>
+<p>First, run the following commands:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> sudo apt update
+<span class="gp">$</span> sudo apt install nfs-kernel-server
+<span class="gp">$</span> sudo apt install portmap
+</pre></div>
+</div>
+<p>You can lock the access to the NFS services by adding the following line to /etc/hosts.deny:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">rpcbind mountd nfsd statd lockd rquotad : ALL</span>
+</pre></div>
+</div>
+<p>Then you can modify /etc/hosts.allow to allow certain IP addresses to access the NFS server.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">rpcbind mountd nfsd statd lockd rquotad : example_IP : allow</span>
+<span class="go">rpcbind mountd nfsd statd rquotad : ALL : deny</span>
+</pre></div>
+</div>
+<p>You can skip these two steps since the guest VM ip addresses are currently given random within a range.</p>
+<p>Next, create the folder NFS will use and modify the ownership attributes:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> sudo mkdir /var/nfsroot
+<span class="gp">$</span> sudo chown nobody:nogroup /var/nfsroot
+</pre></div>
+</div>
+<p>The penultimate step is modifying the /etc/exports file by adding an entry with the service VM’s ip address.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">/var/nfsroot     192.168.103.[xxx]/17(rw,root_squash,subtree_check)</span>
+</pre></div>
+</div>
+<p>Next, update the exported file systems:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> sudo exportfs -ra
+</pre></div>
+</div>
+<p>Lastly, restart the NFS service.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> sudo systemctl restart nfs-kernel-server
+</pre></div>
+</div>
 <p><strong>Note</strong>: If you want to use the generator’s current functions that use a NFS server to maintain file transfer data, we recommend
 installing an NFS server on your <strong>host machine</strong> or at least connecting your <strong>host</strong> to the NFS server as a client.</p>
 </div>
