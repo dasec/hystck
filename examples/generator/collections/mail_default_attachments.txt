@@ -1,7 +1,0 @@
-/data/hystck_data/blue.jpg
-/data/hystck_data/black.jpg
-/data/hystck_data/red.jpg
-/data/hystck_data/yellow.jpg
-/data/hystck_data/white.jpg
-/data/hystck_data/document.pdf
-/data/hystck_data/blue.pdf
