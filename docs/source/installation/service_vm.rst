@@ -66,7 +66,7 @@ Before starting the service, you need to disable encryption. To do so, a few con
 
 .. code-block:: console
 
-    $ docker run --name ippserver -d -rm -it -p 631:631 ippsample /bin/hash
+    $ docker run --name ippserver -d --rm -it -p 631:631 ippsample /bin/hash
 
     $ docker exec -it ippserver bash -c "mkdir -p config/print && echo Encryption Never > config/system.conf && touch config/print/name.conf"
 
