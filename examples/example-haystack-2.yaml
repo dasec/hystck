@@ -34,8 +34,8 @@ applications:
     auth_method_smtp: 3
   mail-1:
     type: mail
-    imap_hostname: 192.168.103.144
-    smtp_hostname: 192.168.103.144
+    imap_hostname: 192.168.103.66
+    smtp_hostname: 192.168.103.66
     email: sk@hystck.local
     password: hystck
     username: sk
@@ -45,12 +45,12 @@ applications:
     auth_method_smtp: 3
   printer-0:
     type: printer
-    hostname: http://192.168.103.144:631/ipp/print/name
+    hostname: http://192.168.103.66:631/ipp/print/name
   smb-0:
     type: smb
     username: service
     password: hystck
-    destination: \\192.168.103.144\sambashare
+    destination: \\192.168.103.66\sambashare
 hay:
   h-http-0:
     application: http
@@ -74,7 +74,7 @@ hay:
 needles:
   n-printer-0:
     application: printer-0
-    file: C:\Users\hystck\Documents\top_secret_test.txt
+    file: C:\Users\hystck\Documents\top_secret_test3.txt
     amount: 2
   n-mail-0:
     application: mail-1
@@ -86,5 +86,5 @@ needles:
     application: smb-0
     amount: 1
     files:
-      - C:\Users\hystck\Documents\top_secret_test.txt
-      - C:\Users\hystck\Documents\hda_master_test.pdf
+      - C:\Users\hystck\Documents\top_secret_test3.txt
+      - C:\Users\hystck\Documents\hda_master_test3.txt
