@@ -1,0 +1,11 @@
+
+imagename = "smbScenario"
+author = "David Konczewski"
+hostplatform = "windows"
+poolpath = "/home/wurstfingersalat/Downloads/hystckpool/"
+smbname = "smbServer"
+smbplatform = "unix"
+sourcePath = "C:\Users\hystck\Desktop\TestFile.txt"
+targetPath = r"\\192.168.103.102\public"
+username = "bla"
+password = "test"

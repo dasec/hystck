@@ -9,7 +9,7 @@ setup(
     name='hystck',
     version='1.0',
     packages=['hystck', 'hystck.attacks', 'hystck.botnet', 'hystck.botnet.net', 'hystck.botnet.net.meta', 'hystck.botnet.net.proto',
-              'hystck.core', 'hystck.botnet.common', 'hystck.botnet.core', 'hystck.botnet.core.bmoncomponents',
+              'hystck.core', 'hystck.generator', 'hystck.botnet.common', 'hystck.botnet.core', 'hystck.botnet.core.bmoncomponents',
               'hystck.utility', 'hystck.application', 'hystck.inputDevice', 'hystck.botnet.bots',
               'hystck.botnet.bots.hellobot', 'hystck.botnet.bots.mariposa', 'hystck.botnet.bots.zeus'],
     package_dir={'hystck': 'src/hystck'},
