@@ -33,10 +33,5 @@ run the command ```make html```. After this you will find the newest documentati
 
 ## Installation Guest
 
-## Windows automated installation (will be in installation sections)
-
-Run install.bat inside the install_tools folder. Both Python and VCC for Python are provided in the same folder.
-
-DEPRECATED https://www.dropbox.com/s/bc5iqp2aieb3fly/Installfiles-batchscript.zip?dl=0 - batchscript, pre setup python script and .msi files. (Temporary solution!)
 
 
