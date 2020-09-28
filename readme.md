@@ -42,6 +42,3 @@ DEPRECATED https://www.dropbox.com/s/bc5iqp2aieb3fly/Installfiles-batchscript.zi
 
 ## License and Copyright
 
-
-## Findings
-Ubuntu 19.10 is not installing virt-manager by default???
