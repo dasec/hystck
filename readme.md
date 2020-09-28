@@ -40,5 +40,3 @@ Run install.bat inside the install_tools folder. Both Python and VCC for Python 
 DEPRECATED https://www.dropbox.com/s/bc5iqp2aieb3fly/Installfiles-batchscript.zip?dl=0 - batchscript, pre setup python script and .msi files. (Temporary solution!)
 
 
-## License and Copyright
-
