@@ -1,0 +1,21 @@
+{
+    "general":{
+        "user":"hystck",
+        "pip-requirements":"PIP_requirements.txt",
+        "packet-requirements":"packet_requirements.txt",
+        "hystck-path":"~/hystck"
+    },
+    "tcpdump": {
+        "path":"/usr/sbin/tcpdump"
+    },
+    "libvirt-pools": {
+        "path":"/data",
+        "name":"hystck-pool"
+    },
+    "network-interfaces": {
+        "public-interface-config-file": "public.xml",
+        "private-interface-config-file":"private.xml",
+        "public-interface-name":"public",
+        "private-interface-name":"private"
+    }
+}
