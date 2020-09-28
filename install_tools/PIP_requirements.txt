@@ -11,6 +11,6 @@ protobuf==2.5.0
 mozrunner==7.7.0
 mozprofile==2.4.0
 smbprotocol
-urllib3==1.23
+urllib3==1.24.2
 pyyaml
 libvirt-python==5.10.0
