@@ -306,7 +306,8 @@ Comment=
         # Installs
         self.install_sys_dep()
         self.install_pip_dep()
-        self.install_sources()
+        if platform.system() == "Windows":
+            self.install_sources()
 
         # Check if installation is host or vm side
         if self.param == "host":
