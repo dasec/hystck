@@ -34,5 +34,9 @@ sh -c "python setup.py install --user"
 
 echo "  [+] pre_setup finished successfully."
 
+su - $USER
+
+echo "Please check if your chosen user has been added to groups libvirt and libvirtd. If this is not the case, restart the shell or reboot your system."
+
 echo "[+] Installation complete."
 exit 0

@@ -318,14 +318,13 @@ Comment=
 
             # Reboot to enable virt-manager user privileges
             # Python2.7: raw_input(); Python3.7: input()
-            answer = raw_input('System needs to be restarted for the changes to take effect. '
-                               'The installation is complete now, no further steps after restart. '
-                               'Do you want to restart now?: [y/n]')
-            if not answer or answer[0].lower() != 'y':
-                print('You did not indicate approval')
-                exit(1)
-            else:
-                os.system("reboot")
+           # answer = raw_input('Shell needs to be restarted for the changes to take effect. '
+            #                   'Do you want to restart now?: [y/n]')
+            #if not answer or answer[0].lower() != 'y':
+             #   print('You did not indicate approval')
+              #  exit(1)
+            #else:
+             #   os.system("reboot")
         elif self.param == "vm":
             self.logger.info("[X] Nothing to do inside vm.")
         else:
