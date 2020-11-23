@@ -34,9 +34,17 @@ sh -c "python setup.py install --user"
 
 echo "  [+] pre_setup finished successfully."
 
-su - $USER
-
-echo "Please check if your chosen user has been added to groups libvirt and libvirtd. If this is not the case, restart the shell or reboot your system."
+if [ $sel == 'h' ]
+then
+    echo "Please check if your chosen user has been added to groups libvirt and libvirtd. If this is not the case, restart the shell or reboot your system."
+    echo "You will be asked to enter your user password again in an attempt to reload your shell. "
+fi
 
 echo "[+] Installation complete."
+
+if [ $sel == 'h' ]
+then
+    su - $USER
+fi
+
 exit 0
