@@ -235,7 +235,7 @@ class UserManagementGuestSide(ApplicationGuestSide):
             cmd = base64.b64encode('net user ' + user + ' ' + password + ' /ADD')
             try:
                 #self.agent_object.do_command("runElevated " + cmd)
-                self.agent_object.shellExec(cmd)
+                subprocess.call(["net", "user", user, password, "/ADD"])
             except Exception as e:
                 self.logger.error("adding user failed: " + lineno() + ' ' + str(e))
         else:
