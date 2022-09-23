@@ -7,7 +7,7 @@ netifaces
 psutil
 netaddr
 enum34
-protobuf==2.5.0
+protobuf==3.18.3
 mozrunner==7.7.0
 mozprofile==2.4.0
 smbprotocol
